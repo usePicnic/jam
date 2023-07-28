@@ -4,7 +4,7 @@ import "./interfaces/ParaswapIntefaces.sol";
 import "../interfaces/IParaswapBridge.sol";
 
 contract ParaswapBridge is IParaswapBridge {
-    function swap(
+    function simpleSwap(
         address paraswapAddress,
         address approveAddress,
         SimpleData calldata paraswapParams,
@@ -17,8 +17,8 @@ contract ParaswapBridge is IParaswapBridge {
             fromToken: paraswapParams.fromToken,
             toToken: paraswapParams.toToken,
             fromAmount: amount,
-            toAmount: paraswapParams.toAmount,
-            expectedAmount: paraswapParams.expectedAmount,
+            toAmount: 1,
+            expectedAmount: 1,
             callees: paraswapParams.callees,
             exchangeData: paraswapParams.exchangeData,
             startIndexes: paraswapParams.startIndexes,
@@ -33,10 +33,70 @@ contract ParaswapBridge is IParaswapBridge {
 
         ParaswapInterface paraswap = ParaswapInterface(paraswapAddress);
 
-        uint256 receivedAmount = paraswap.simpleSwap(
+        paraswap.simpleSwap(
             updatedDescription
         );
 
-        emit DEFIBASKET_PARASWAP_SWAP(receivedAmount);
+        emit DEFIBASKET_PARASWAP_SWAP();
+    }
+
+    function complexSwap(
+        address fromToken,
+        address toToken,
+        address paraswapAddress,
+        address approveAddress,
+        bytes memory paraswapData,
+        uint256 amountInPercentage
+    ) external override {
+        // console.log("address this",address(this));
+        uint256 amount = IERC20(fromToken).balanceOf(address(this)) * amountInPercentage / 100000;
+        // console.log("from token", fromToken);
+        // console.log("amountInPercentage", amountInPercentage);
+        // console.log(amount);
+        IERC20(fromToken).approve(approveAddress, amount);    
+
+        // Modify paraswapParams in memory
+        assembly {
+            // Update fromAmount
+            let dataPointer := add(paraswapData, 32) // Skip the length field of 'bytes' type
+            mstore(add(dataPointer, 68), amount)
+            // Update toAmount
+            mstore(add(dataPointer, 100), 1)
+            // Update expectedAmount
+            mstore(add(dataPointer, 132), 115792089237316195423570985008687907853269984665640564039457584007913129639935) // MAX_UINT
+            // Update beneficiary
+            mstore(add(dataPointer, 176), shl(96, address()))
+        }         
+
+        (bool isSuccess, ) = paraswapAddress.call(paraswapData);
+        if (!isSuccess) {
+                assembly {
+                    let ptr := mload(0x40)
+                    let size := returndatasize()
+                    returndatacopy(ptr, 0, size)
+                    revert(ptr, size)
+                }
+            }        
+        // console.log("Paraswap swap successful");
+        emit DEFIBASKET_PARASWAP_SWAP();
+    }
+
+    function readBytesFromPosition(bytes memory data, uint256 position) public pure returns (bytes32 result) {
+        require(position + 32 <= data.length, "Position out of bounds");
+
+        assembly {
+            // Get a pointer to the data location
+            let dataPointer := add(data, 32) // Skip the length field of 'bytes' type
+
+            // Calculate the pointer to the starting position
+            let startPointer := add(dataPointer, position)
+
+            // Load 32 bytes from the start pointer
+            result := mload(startPointer)
+        }
+    }
+
+    function bytes32ToAddress(bytes32 b) public pure returns (address) {
+        return address(uint160(uint256(b)));
     }
 }

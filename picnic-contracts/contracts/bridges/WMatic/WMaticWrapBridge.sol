@@ -28,8 +28,12 @@ contract WMaticWrapBridge is IWMaticWrap {
       * @param percentageIn Percentage of MATIC to be wrapped into WMATIC
       */
     function wrap(uint256 percentageIn) external override {
+        // console.log("address this",address(this));
+        // console.log(address(this).balance * percentageIn / 100000);
         emit DEFIBASKET_WMATIC_WRAP(address(this).balance * percentageIn / 100000);
+        // console.log("oi");
         wmatic.deposit{value : address(this).balance * percentageIn / 100000}();
+        // console.log("wMaticBalance", IERC20(wMaticAddress).balanceOf(address(this)));
     }
 
     /**
