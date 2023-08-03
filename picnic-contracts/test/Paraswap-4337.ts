@@ -1,21 +1,6 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
 import constants from "../constants";
-import { wrapProvider } from "@zerodevapp/sdk/dist/src/Provider";
-import { ClientConfig } from "@zerodevapp/sdk/dist/src/ClientConfig";
-import {
-  EntryPoint, EntryPoint__factory,
-  Kernel, Kernel__factory,
-  KernelFactory, KernelFactory__factory
-} from '@zerodevapp/contracts-new'
-import { ZeroDevProvider } from "@zerodevapp/sdk/dist/src/ZeroDevProvider";
-import { KernelAccountAPI } from "@zerodevapp/sdk/dist/src/KernelAccountAPI";
-import { Signer, Wallet } from "ethers";
-import { resolveProperties } from "ethers/lib/utils";
-
-function sleep(ms: number): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
 
 const PARASWAP_ABI = [
   {
@@ -505,244 +490,165 @@ const PARASWAP_ABI = [
 ];
 const PARASWAP_ADDRESS = "0xDEF171Fe48CF0115B1d80b88dc8eAB59176FEe57";
 
-  let entryPoint: EntryPoint
-  let accountFactory: KernelFactory
-  let aaProvider: ZeroDevProvider
-  const provider = ethers.provider
-  const signer = provider.getSigner()
-  // create an AA provider for testing that bypasses the bundler
-  const createTestAAProvider = async (owner: Signer, address?: string): Promise<ZeroDevProvider> => {
-    const config: ClientConfig = {
-      entryPointAddress: entryPoint.address,
-      implementation: {
-        accountAPIClass: KernelAccountAPI,
-        factoryAddress: accountFactory.address
-      },
-      walletAddress: address,
-      bundlerUrl: '',
-      projectId: ''
-    }
-    const aaProvider = await wrapProvider(provider, config, owner)
-
-    const beneficiary = provider.getSigner().getAddress()
-    // for testing: bypass sending through a bundler, and send directly to our entrypoint..
-    aaProvider.httpRpcClient.sendUserOpToBundler = async (userOp) => {
-      try {
-        await entryPoint.handleOps([userOp], beneficiary)
-      } catch (e: any) {
-        // doesn't report error unless called with callStatic
-        await entryPoint.callStatic.handleOps([userOp], beneficiary).catch((e: any) => {
-          // eslint-disable-next-line
-          const message = e.errorArgs != null ? `${e.errorName}(${e.errorArgs.join(',')})` : e.message
-          throw new Error(message)
-        })
-      }
-      return ''
-    }
-
-    aaProvider.httpRpcClient.estimateUserOpGas = async (userOp) => {
-      const op = {
-        ...await resolveProperties(userOp),
-        // default values for missing fields.
-        paymasterAndData: '0x',
-        signature: '0x'.padEnd(66 * 2, '1b'), // TODO: each wallet has to put in a signature in the correct length
-        maxFeePerGas: 0,
-        maxPriorityFeePerGas: 0,
-        preVerificationGas: 0,
-        verificationGasLimit: 10e6
-      }
-      const callGasLimit = await provider.estimateGas({
-        from: entryPoint.address,
-        to: userOp.sender,
-        data: userOp.callData
-      }).then(b => b.toNumber())
-
-      return {
-        preVerificationGas: '1000000',
-        verificationGas: '1000000',
-        callGasLimit: callGasLimit.toString(),
-        validUntil: 0,
-        validAfter: 0
-      }
-    }
-    return aaProvider
-  }
-
 describe("ParaswapBridge", function(){
-  let owner;
-  let other;
-  let UniswapV2SwapBridge;
-  let uniswapV2SwapBridge;
-  let wallet;
-  let ParaswapBridge;
-  let wmaticBridge;
+  let owner, other, ParaswapBridge, wmaticBridge, picnicAccountContract, picnicSafeProxyFactory, picnicAccountSafeFactory;
 
   // const ADDRESSES = constants["POLYGON"];
   const TOKENS = constants["POLYGON"]["TOKENS"];
 
   
-  this.beforeEach(async function() {
-        // Get 2 signers to enable to test for permission rights
-        [owner, other] = await ethers.getSigners();
+  this.beforeEach(async function () {
+    // Get 2 signers to enable to test for permission rights
+    [owner, other] = await ethers.getSigners();
 
-        // Instantiate Paraswap bridge
-        ParaswapBridge = await ethers.getContractFactory("ParaswapBridge");
-        ParaswapBridge = await ParaswapBridge.deploy();
+    // Instantiate Paraswap bridge
+    ParaswapBridge = await ethers.getContractFactory("ParaswapBridge");
+    ParaswapBridge = await ParaswapBridge.deploy();
 
-        // Instantiate WMatic bridge
-        let WMaticBridge = await ethers.getContractFactory("WMaticWrapBridge");
-        wmaticBridge = await WMaticBridge.deploy();
+    // Instantiate WMatic bridge
+    let WMaticBridge = await ethers.getContractFactory("WMaticWrapBridge");
+    wmaticBridge = await WMaticBridge.deploy();
 
-        // Instantiate Wallet
-        // let Wallet = await ethers.getContractFactory("Wallet");
-        // wallet = await Wallet.deploy();
-        // const deployRecipient = await new SampleRecipient__factory(signer).deploy()
-        entryPoint = await new EntryPoint__factory(signer).deploy()
-        accountFactory = await new KernelFactory__factory(signer)
-          .deploy(entryPoint.address)
-        const aasigner = Wallet.createRandom()
+    // Instantiate Wallet
+    const PicnicAccountContract = await ethers.getContractFactory("PicnicAccountSafe");
+    picnicAccountContract = await PicnicAccountContract.deploy();
+    await picnicAccountContract.deployed();
 
-        aaProvider = await createTestAAProvider(aasigner)
-        // recipient = deployRecipient.connect(aaProvider.getSigner())
+    const PicnicSafeProxyFactory = await ethers.getContractFactory("PicnicProxyFactory");
+    picnicSafeProxyFactory = await PicnicSafeProxyFactory.deploy();
+    await picnicSafeProxyFactory.deployed();
+
+    const PicnicAccountSafeFactory = await ethers.getContractFactory("PicnicAccountSafeFactory");
+    picnicAccountSafeFactory = await PicnicAccountSafeFactory.deploy(picnicSafeProxyFactory.address, picnicAccountContract.address);
+
+    await picnicAccountSafeFactory.deployed();
+
   });
 
   describe("Actions", function() {
     it("Trade WMATIC for USDC", async function () {
+      const accountAddress = await picnicAccountSafeFactory.callStatic.createAccount(
+        ["0x506A613a261d16e9617A60339DC330Ff04ad5a12"],
+        "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+        "0x8d2b1368e354c310ada569c532a62594fc3141988221ac3270ad7865d5892fc3",
+      );
 
-        // WMATIC token
-        const sellToken = "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270"
-        // USDC token
-        const buyToken = "0x2791bca1f2de4661ed88a30c99a7a9449aa84174";
-        const sellAmount = ethers.utils.parseEther("1").toString();
-        const priceUrl = `https://apiv5.paraswap.io/prices/?srcToken=${sellToken}&destToken=${buyToken}&amount=${sellAmount}&side=SELL&network=137&includeContractMethods=MegaSwap`;
+      // WMATIC token
+      const sellToken = "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270"
+      // USDC token
+      const buyToken = "0x2791bca1f2de4661ed88a30c99a7a9449aa84174";
+      const sellAmount = ethers.utils.parseEther("1").toString();
+      const priceUrl = `https://apiv5.paraswap.io/prices/?srcToken=${sellToken}&destToken=${buyToken}&amount=${sellAmount}&side=SELL&network=137&includeContractMethods=MegaSwap`;
 
-        const req = await fetch(priceUrl);
-        const rawBody = await req.json();
-        const body = rawBody.priceRoute;
-      
-        const finalBody = {
-          network: body.network,
-          srcToken: body.srcToken,
-          srcDecimals: body.srcDecimals,
-          srcAmount: body.srcAmount,
-          destToken: body.destToken,
-          destDecimals: body.destDecimals,
-          destAmount: body.destAmount, 
-          side: body.side,
-          priceRoute: body,
-          userAddress: "0x6D763ee17cEA70cB1026Fa0F272dd620546A9B9F",
-        };
+      const req = await fetch(priceUrl);
+      const rawBody = await req.json();
+      const body = rawBody.priceRoute;
 
-        const transactionsUrl =
+      const finalBody = {
+        network: body.network,
+        srcToken: body.srcToken,
+        srcDecimals: body.srcDecimals,
+        srcAmount: body.srcAmount,
+        destToken: body.destToken,
+        destDecimals: body.destDecimals,
+        destAmount: body.destAmount,
+        side: body.side,
+        priceRoute: body,
+        userAddress: "0x6D763ee17cEA70cB1026Fa0F272dd620546A9B9F",
+      };
+
+      const transactionsUrl =
         "https://apiv5.paraswap.io/transactions/137?ignoreChecks=true";
-    
-        const req2 = await fetch(transactionsUrl, {
-          method: "POST",
-          body: JSON.stringify(finalBody),
-          headers: { "Content-Type": "application/json" },
-        });
-  
-        const transactionAPIOutput = await req2.json();
-        const functionCallBytes = transactionAPIOutput.data;
-  
-        const paraswap = new ethers.Contract(PARASWAP_ADDRESS, PARASWAP_ABI);
-        const decodedFunctionCall = paraswap.interface.parseTransaction({
-          data: functionCallBytes,
-        });
-  
-        // Set bridges addresses
-        var _bridgeAddresses = [wmaticBridge.address, ParaswapBridge.address];
-  
-        // Set encoded calls
-        var _bridgeEncodedCalls = [
-          wmaticBridge.interface.encodeFunctionData("wrap", [100000]),
-          ParaswapBridge.interface.encodeFunctionData("complexSwap", [
-            body.srcToken,
-            body.destToken,
-            body.contractAddress,
-            body.tokenTransferProxy,
-            functionCallBytes,
-            100000,
-          ]),
-        ];
-        // console.log("_bridgeAddresses", _bridgeAddresses);
-        // console.log("_bridgeEncodedCalls", _bridgeEncodedCalls);
 
-        const signer = aaProvider.getSigner();
-        const accountAddress = await signer.getAddress();
-        console.log("accountAddress", accountAddress);
+      const req2 = await fetch(transactionsUrl, {
+        method: "POST",
+        body: JSON.stringify(finalBody),
+        headers: { "Content-Type": "application/json" },
+      });
 
-        // Transfer money to wallet (similar as DeFi Basket contract would have done)
-        const transactionHash = await owner.sendTransaction({
-          to: accountAddress,
-          value: ethers.utils.parseEther("1"), // Sends exactly 1.0 ether
-        });
-        await transactionHash.wait();
+      const transactionAPIOutput = await req2.json();
+      const functionCallBytes = transactionAPIOutput.data;
 
-        console.log("balance", await ethers.provider.getBalance(accountAddress));
+      const paraswap = new ethers.Contract(PARASWAP_ADDRESS, PARASWAP_ABI);
+      const decodedFunctionCall = paraswap.interface.parseTransaction({
+        data: functionCallBytes,
+      });
 
-          const tx1 = await signer.execDelegateCall({
-            to: _bridgeAddresses[0],
-            data: _bridgeEncodedCalls[0],
-          },
-          {
-            gasLimit: 1500000,
-            maxFeePerGas: ethers.utils.parseUnits("100", "gwei"),
-            maxPriorityFeePerGas: ethers.utils.parseUnits("100", "gwei"),
-          });
-          const receipt1 = await tx1.wait()
-          console.log("receipt", receipt1.logs)
-          await sleep(2000);
-          let wMaticToken = await ethers.getContractAt(
-            "@openzeppelin/contracts/token/ERC20/IERC20.sol:IERC20",
-            TOKENS["WMAIN"]
+      // Set bridges addresses
+      var _bridgeAddresses = [wmaticBridge.address, ParaswapBridge.address];
+
+      // Set encoded calls
+      var _bridgeEncodedCalls = [
+        wmaticBridge.interface.encodeFunctionData("wrap", [100000]),
+        ParaswapBridge.interface.encodeFunctionData("complexSwap", [
+          body.srcToken,
+          body.destToken,
+          body.contractAddress,
+          body.tokenTransferProxy,
+          functionCallBytes,
+          100000,
+        ]),
+      ];
+
+      // Transfer money to wallet (similar as DeFi Basket contract would have done)
+      const transactionHash = await owner.sendTransaction({
+        to: picnicAccountContract.address,
+        value: ethers.utils.parseEther("1"), // Sends exactly 1.0 ether
+      });
+      await transactionHash.wait();
+
+      console.log("balance", await ethers.provider.getBalance(picnicAccountContract.address));
+
+      // const tx1 = await signer.execDelegateCall({
+      //     to: _bridgeAddresses[0],
+      //     data: _bridgeEncodedCalls[0],
+      //   },
+      //   {
+      //     gasLimit: 1500000,
+      //     maxFeePerGas: ethers.utils.parseUnits("100", "gwei"),
+      //     maxPriorityFeePerGas: ethers.utils.parseUnits("100", "gwei"),
+      //   }
+      //   );
+      //   const receipt1 = await tx1.wait()
+      //   console.log("receipt", receipt1.logs)
+      //   await sleep(2000);
+      //   let wMaticToken = await ethers.getContractAt(
+      //     "@openzeppelin/contracts/token/ERC20/IERC20.sol:IERC20",
+      //     TOKENS["WMAIN"]
+      // );
+      // let wMaticBalance = await wMaticToken.balanceOf(accountAddress);
+      //   console.log("wMatic balance", wMaticBalance.toString());
+      //   const tx2 = await signer.execDelegateCall({
+      //     to: _bridgeAddresses[1],
+      //     data: _bridgeEncodedCalls[1],
+      //   },
+      //   {
+      //     gasLimit: 1500000,
+      //     maxFeePerGas: ethers.utils.parseUnits("100", "gwei"),
+      //     maxPriorityFeePerGas: ethers.utils.parseUnits("100", "gwei"),
+      //   });
+      //   const receipt2 = await tx2.wait()
+      //   console.log("receipt2", receipt2.logs)
+      //   await sleep(2000);
+
+      //Execute bridge calls
+      for(let i=0; i< _bridgeAddresses.length; i++){
+        await picnicAccountContract._executeAndRevert(
+          _bridgeAddresses[i],
+          0,
+          _bridgeEncodedCalls[i],
+          1,
         );
-        let wMaticBalance = await wMaticToken.balanceOf(accountAddress);
-          console.log("wMatic balance", wMaticBalance.toString());
-          const tx2 = await signer.execDelegateCall({
-            to: _bridgeAddresses[1],
-            data: _bridgeEncodedCalls[1],
-          },
-          {
-            gasLimit: 1500000,
-            maxFeePerGas: ethers.utils.parseUnits("100", "gwei"),
-            maxPriorityFeePerGas: ethers.utils.parseUnits("100", "gwei"),
-          });
-          const receipt2 = await tx2.wait()
-          console.log("receipt2", receipt2.logs)
-          await sleep(2000);
-        //Execute bridge calls
-        // for(let i = 0; i < _bridgeAddresses.length; i++){
-        //   await signer.execDelegateCall({
-        //     to: _bridgeAddresses[i],
-        //     data: _bridgeEncodedCalls[i],
-        //   },
-        //   {
-        //     gasLimit: 1500000,
-        //     maxFeePerGas: ethers.utils.parseUnits("100", "gwei"),
-        //     maxPriorityFeePerGas: ethers.utils.parseUnits("100", "gwei"),
-        //   })
-        // }
+      }
 
-        // Transfer money to wallet (similar as DeFi Basket contract would have done)
-        // const transactionHash = await owner.sendTransaction({
-        //   to: wallet.address,
-        //   value: ethers.utils.parseEther("1"), // Sends exactly 1.0 ether
-        // });
-        // await transactionHash.wait();
-
-        // Execute bridge calls
-
-        // await wallet.useBridges(_bridgeAddresses, _bridgeEncodedCalls);
-
-        // Wallet DAI amount should be 0
-        let lpToken = await ethers.getContractAt(
-            "@openzeppelin/contracts/token/ERC20/IERC20.sol:IERC20",
-            TOKENS["USDC"]
-        );
-        let lpTokenBalance = await lpToken.balanceOf(accountAddress);
-        console.log("lpTokenBalance", lpTokenBalance.toString());
-        // expect(lpTokenBalance).to.be.above(0);
+      // Wallet DAI amount should be 0
+      let lpToken = await ethers.getContractAt(
+        "@openzeppelin/contracts/token/ERC20/IERC20.sol:IERC20",
+        TOKENS["USDC"]
+      );
+      let lpTokenBalance = await lpToken.balanceOf(picnicAccountContract.address);
+      console.log("lpTokenBalance", lpTokenBalance.toString());
+      expect(lpTokenBalance).to.be.above(0);
     });
   });
 });
