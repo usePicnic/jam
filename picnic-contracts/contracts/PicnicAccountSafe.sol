@@ -7,14 +7,12 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "./utils/Exec.sol";
 
-import "hardhat/console.sol";
-
-contract PicnicAccountSafe is Safe{
+contract PicnicAccountSafe is Safe {
     using ECDSA for bytes32;
     //EIP4337 trusted entrypoint
     address public entryPoint;
     //return value in case of signature failure, with no time-range.
-    uint256 constant internal SIG_VALIDATION_FAILED = 1;
+    uint256 internal constant SIG_VALIDATION_FAILED = 1;
 
     address public owner;
 
@@ -31,7 +29,10 @@ contract PicnicAccountSafe is Safe{
 
     function _onlyOwner() internal view {
         //directly from EOA owner, or through the account itself (which gets redirected through execute())
-        require(msg.sender == address(0) || msg.sender == address(this), "only owner");
+        require(
+            msg.sender == address(0) || msg.sender == address(this),
+            "only owner"
+        );
     }
 
     /// @dev Setup function sets initial storage of contract.
@@ -56,16 +57,22 @@ contract PicnicAccountSafe is Safe{
         address _entryPoint
     ) external {
         entryPoint = _entryPoint;
-
         _executeAndRevert(
             address(this),
             0,
-            abi.encodeCall(Safe.setup, (
-                _owners, _threshold,
-                to, data,
-                fallbackHandler,paymentToken,
-                payment, paymentReceiver
-            )),
+            abi.encodeCall(
+                Safe.setup,
+                (
+                    _owners,
+                    _threshold,
+                    to,
+                    data,
+                    fallbackHandler,
+                    paymentToken,
+                    payment,
+                    paymentReceiver
+                )
+            ),
             Enum.Operation.DelegateCall
         );
     }
@@ -76,29 +83,39 @@ contract PicnicAccountSafe is Safe{
     /// @param missingAccountFunds the minimum value this method should send the entrypoint.
     /// this value MAY be zero, in case there is enough deposit, or the userOp has a paymaster.
     /// @return validationData returns SIG_VALIDATION_FAILED value (1) for signature failure.
-    function validateUserOp (UserOperation calldata userOp, bytes32 userOpHash, uint256 missingAccountFunds)
-    external returns (uint256 validationData) {
+    function validateUserOp(
+        UserOperation calldata userOp,
+        bytes32 userOpHash,
+        uint256 missingAccountFunds
+    ) external returns (uint256 validationData) {
         _requireFromEntryPoint();
         validationData = _validateSignature(userOp, userOpHash);
-        require(userOp.nonce < type(uint64).max, "account: nonsequential nonce");
+        require(
+            userOp.nonce < type(uint64).max,
+            "account: nonsequential nonce"
+        );
         _payPrefund(missingAccountFunds);
     }
 
     /**
-    * ensure the request comes from the known entrypoint.
-    */
-    function _requireFromEntryPoint() internal virtual view {
+     * ensure the request comes from the known entrypoint.
+     */
+    function _requireFromEntryPoint() internal view virtual {
         require(msg.sender == entryPoint, "account: not from EntryPoint");
     }
 
-    function _validateSignature(UserOperation calldata userOp, bytes32 userOpHash)
-    internal view returns (uint256 validationData) {
+    function _validateSignature(
+        UserOperation calldata userOp,
+        bytes32 userOpHash
+    ) internal view returns (uint256 validationData) {
         bytes32 hash = userOpHash.toEthSignedMessageHash();
-        try this.checkSignatures(
-            hash,
-            bytes(abi.encode(userOp)),
-            userOp.signature
-        ){
+        try
+            this.checkSignatures(
+                hash,
+                bytes(abi.encode(userOp)),
+                userOp.signature
+            )
+        {
             return 0;
         } catch {
             return SIG_VALIDATION_FAILED;
@@ -108,7 +125,10 @@ contract PicnicAccountSafe is Safe{
 
     function _payPrefund(uint256 missingAccountFunds) internal {
         if (missingAccountFunds != 0) {
-            (bool success,) = payable(msg.sender).call{value : missingAccountFunds, gas : type(uint256).max}("");
+            (bool success, ) = payable(msg.sender).call{
+                value: missingAccountFunds,
+                gas: type(uint256).max
+            }("");
             (success);
             //ignore failure (its EntryPoint's job to verify, not account.)
         }
@@ -138,7 +158,7 @@ contract PicnicAccountSafe is Safe{
 
         //instead of sending a separate transaction to approve tokens
         //for the paymaster for each transaction, it can be approved here
-        if(paymaster != 0x0000000000000000000000000000000000000000){
+        if (paymaster != 0x0000000000000000000000000000000000000000) {
             IERC20 token = IERC20(approveToken);
             token.approve(paymaster, approveAmount);
         }
@@ -149,22 +169,8 @@ contract PicnicAccountSafe is Safe{
         uint256 value,
         bytes memory data,
         Enum.Operation operation
-    ) public {
-
-        bool success = execute(
-            to,
-            value,
-            data,
-            operation,
-            1000000
-        );
-
-        console.log(to);
-        console.log('address', address(this), address(this).balance);
-        console.log('value', value);
-        console.logBytes(data);
-        console.log(success);
-        console.log("wMatic2nce", IERC20(0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270).balanceOf(address(this)));        
+    ) internal {
+        bool success = execute(to, value, data, operation, 1000000);
 
         bytes memory returnData = Exec.getReturnData(type(uint256).max);
         // Revert with the actual reason string
@@ -176,8 +182,6 @@ contract PicnicAccountSafe is Safe{
             }
             revert(abi.decode(returnData, (string)));
         }
-
-        console.log('gogogo');
     }
 
     /// @dev There should be only one verified entrypoint per chain
