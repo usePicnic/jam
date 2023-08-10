@@ -1,4 +1,5 @@
-const { ethers } = require("hardhat");
+import { ethers } from "hardhat";
+import { expect } from "chai";
 
 describe("signature validation", function () {
   let picnicAccountContract: any,
@@ -10,8 +11,8 @@ describe("signature validation", function () {
     const PicnicAccountContract = await ethers.getContractFactory(
       "PicnicAccountSafe"
     );
-    picnicAccountContract = await PicnicAccountContract.deploy();
-    await picnicAccountContract.deployed();
+    const picnicSingleton = await PicnicAccountContract.deploy();
+    await picnicSingleton.deployed();
 
     const PicnicSafeProxyFactory = await ethers.getContractFactory(
       "PicnicProxyFactory"
@@ -24,24 +25,31 @@ describe("signature validation", function () {
     );
     picnicAccountSafeFactory = await PicnicAccountSafeFactory.deploy(
       picnicSafeProxyFactory.address,
-      picnicAccountContract.address
+      picnicSingleton.address
+    );
+    // signer = ethers.getSigner();
+    [signerAddress] = await ethers.provider.listAccounts();
+    console.log("signer", signerAddress);
+
+    const deployAddress =
+      await picnicAccountSafeFactory.callStatic.createAccount(
+        ["0x6ddf88ccd059f1c9364623de590aa034eb98a9c4"],
+        "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+        1
+      );
+
+    await picnicAccountSafeFactory.createAccount(
+      ["0x6ddf88ccd059f1c9364623de590aa034eb98a9c4"],
+      "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+      1
     );
 
-    // await picnicAccountSafeFactory.deployed();
-
-    // get default signer, in Signer abstraction form
-    signer = ethers.getSigner();
-
-    // get default signer, but just the address!
-    [signerAddress] = await ethers.provider.listAccounts();
+    picnicAccountContract = await ethers.getContractAt(
+      "PicnicAccountSafe",
+      deployAddress
+    );
   });
   it("should validate signature", async function () {
-    // const init = await picnicAccountSafeFactory.createAccount(
-    //   ["0x635cd7e327F90245A1697346b0570465cF1dE1E1"],
-    //   "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
-    //   ethers.BigNumber.from(42)
-    // );
-    // console.log(init);
     const userOpHash =
       "0xce0093b1232dcee824ee7785e3d86c5054c8ba3eb5dd5d143e4312cd56bd229e";
     const userOperation = {
@@ -64,6 +72,7 @@ describe("signature validation", function () {
       userOperation,
       userOpHash
     );
+    expect(validation.toString() == "0").to.be.true;
     console.log("validation", validation);
   });
 });
