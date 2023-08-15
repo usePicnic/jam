@@ -143,6 +143,16 @@ Each step in the output will specify the action type (e.g., `swap`, `borrow`, `l
 
 It's crucial to note that some `steps` might contain specific, pre-defined amounts, especially when the initial action's amount is already known. However, in situations where the precise amount for a step is dependent on the outcome of a previous step (and can't be determined off-chain), Jam employs "stores." These "stores" act as placeholders, starting their count from 0, and are utilized to handle intermediate transaction amounts. Such amounts are then replaced in the `calldata` of subsequent steps that necessitate the specification of exact amounts.
 
+### Some notes about executing `calldata`
+
+It’s important to note that transaction batching requires being executed in a smart wallet with `delegatecall` support.
+
+### Stores
+
+Some `steps` specify absolute amounts, such as when making the initial swap and the exact amount is known. However, more often than not, the input amount of one transaction depends on the exact output amount of the previous transaction, which is impossible to ascertain off-chain. For this reason, the API batcher's `calldata` will invoke a smart contract capable of replacing amounts in such transactions using what we call stores.
+
+"Stores", which start numbering from 0, act as placeholders for intermediate transaction amounts. These amounts are subsequently replaced in the `calldata` of steps that require inputting the exact amount.
+
 ## Project Status
 
 Jam is in its developmental phase. By October 2023, we anticipate having a fully functional API in production, supporting the most important DeFi types of actions and integrating with 10+ protocols to support 100+ assets.
