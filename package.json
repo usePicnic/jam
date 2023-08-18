@@ -1,0 +1,9 @@
+{
+  "name": "jam",
+  "workspaces": [
+    "api"
+  ],
+  "devDependencies": {
+    "prettier": "^2.8.3"
+  }
+}
