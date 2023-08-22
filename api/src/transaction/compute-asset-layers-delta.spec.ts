@@ -1,8 +1,9 @@
 import { test, expect } from "vitest";
 import { computeAssetLayersDelta } from "./compute-asset-layers-delta";
 import { compareAssetLayers } from "./test-utils";
+import { AssetLayers } from "./types";
 
-test("computeAssetLayerDelta", () => {
+test("computeAssetLayerDelta 1", () => {
   const currentAssetLayers = [
     {
       "72c7d69d-7bef-47e5-8907-4c4c6f0bd797": {
@@ -78,6 +79,436 @@ test("computeAssetLayerDelta", () => {
       "85d42621-43a2-4189-930f-9b1ff0cf74f4": {
         assetId: "85d42621-43a2-4189-930f-9b1ff0cf74f4",
         fraction: -0.0254,
+      },
+    },
+  ];
+
+  const received = computeAssetLayersDelta({
+    currentAssetLayers,
+    futureAssetLayers,
+  });
+
+  compareAssetLayers({ expected, received });
+});
+
+test("computeAssetLayerDelta 2", () => {
+  const currentAssetLayers: AssetLayers = [
+    {
+      "e251ecf6-48c2-4538-afcd-fbb92424054d": {
+        rewards: [],
+        assetId: "e251ecf6-48c2-4538-afcd-fbb92424054d",
+        fraction: 0.7528,
+      },
+      "eb84598f-9e6f-4a7c-a765-c78adcd74dc3": {
+        rewards: [],
+        assetId: "eb84598f-9e6f-4a7c-a765-c78adcd74dc3",
+        fraction: 0,
+      },
+      "a4c294f1-5cb0-431a-9df7-ac2f784e9449": {
+        rewards: [],
+        assetId: "a4c294f1-5cb0-431a-9df7-ac2f784e9449",
+        fraction: 0.24720000000000003,
+      },
+      "822504af-d552-460b-bfd7-3648e0592bab": {
+        rewards: [],
+        assetId: "822504af-d552-460b-bfd7-3648e0592bab",
+        fraction: 0,
+      },
+      "203a6af7-eb4b-4922-b8ed-de9bdb22db19": {
+        rewards: [],
+        assetId: "203a6af7-eb4b-4922-b8ed-de9bdb22db19",
+        fraction: 0,
+      },
+      "e938062f-929d-4f94-8ee0-e1223e50e2eb": {
+        rewards: [],
+        assetId: "e938062f-929d-4f94-8ee0-e1223e50e2eb",
+        fraction: 0,
+      },
+      "b77f9ec4-ce5a-459c-921d-6850439d75ce": {
+        rewards: [],
+        assetId: "b77f9ec4-ce5a-459c-921d-6850439d75ce",
+        fraction: 0,
+      },
+    },
+    {
+      "8ec9d949-6bdc-4dbe-8a46-738f9e27c920": {
+        rewards: [],
+        assetId: "8ec9d949-6bdc-4dbe-8a46-738f9e27c920",
+        fraction: 0.253,
+      },
+      "bff58e67-a9bc-43fe-a720-b77ff5f292b4": {
+        rewards: [],
+        assetId: "bff58e67-a9bc-43fe-a720-b77ff5f292b4",
+        fraction: 0,
+      },
+      "e7938d9a-9702-4eb0-bb0e-0fc0f636dbc1": {
+        rewards: [],
+        assetId: "e7938d9a-9702-4eb0-bb0e-0fc0f636dbc1",
+        fraction: 0.0004,
+      },
+      "ae8638a2-fbd5-4d31-934e-2f9a6faf6b79": {
+        rewards: [],
+        assetId: "ae8638a2-fbd5-4d31-934e-2f9a6faf6b79",
+        fraction: 0.2509,
+      },
+      "ba857983-22ec-4da7-a499-7fe1f128b877": {
+        rewards: [],
+        assetId: "ba857983-22ec-4da7-a499-7fe1f128b877",
+        fraction: 0,
+      },
+      "9c8618aa-c813-44bf-8bad-1fde15d57b60": {
+        rewards: [],
+        assetId: "9c8618aa-c813-44bf-8bad-1fde15d57b60",
+        fraction: 0.24850000000000003,
+      },
+      "c679d9c8-0433-4f78-9455-8dce23d358cd": {
+        rewards: [],
+        assetId: "c679d9c8-0433-4f78-9455-8dce23d358cd",
+        fraction: 0,
+      },
+      "43533e47-2f3d-48e1-a782-8efcbce5ccf2": {
+        rewards: [],
+        assetId: "43533e47-2f3d-48e1-a782-8efcbce5ccf2",
+        fraction: 0.24720000000000003,
+      },
+    },
+    {
+      "9701461a-dbb8-4065-a7c8-8c9db0e7e3dc": {
+        rewards: [],
+        assetId: "9701461a-dbb8-4065-a7c8-8c9db0e7e3dc",
+        fraction: 0.253,
+      },
+      "8facd57e-8b3d-4967-b553-5476f3113fb1": {
+        rewards: [],
+        assetId: "8facd57e-8b3d-4967-b553-5476f3113fb1",
+        fraction: 0.0004,
+      },
+      "e4e84ad4-8d50-42d9-8b48-90f474146079": {
+        rewards: [],
+        assetId: "e4e84ad4-8d50-42d9-8b48-90f474146079",
+        fraction: 0.2509,
+      },
+      "d558fec2-1035-41e2-be38-272fef16c7b9": {
+        rewards: [],
+        assetId: "d558fec2-1035-41e2-be38-272fef16c7b9",
+        fraction: 0.24850000000000003,
+      },
+      "ac640151-e047-4c7b-acfa-0ceb48c6a8c4": {
+        rewards: [],
+        assetId: "ac640151-e047-4c7b-acfa-0ceb48c6a8c4",
+        fraction: 0.0001,
+      },
+    },
+    {
+      "682968b6-ec76-4a4e-9844-70746a906e88": {
+        rewards: [
+          {
+            assetId: "8facd57e-8b3d-4967-b553-5476f3113fb1",
+            fraction: 0.0001,
+          },
+        ],
+        assetId: "682968b6-ec76-4a4e-9844-70746a906e88",
+        fraction: 0.253,
+      },
+      "499c28a9-8cfa-46df-9ac2-35fcd0373639": {
+        rewards: [
+          {
+            assetId: "8facd57e-8b3d-4967-b553-5476f3113fb1",
+            fraction: 0.0002,
+          },
+        ],
+        assetId: "499c28a9-8cfa-46df-9ac2-35fcd0373639",
+        fraction: 0.2509,
+      },
+      "d24e3609-30c3-489f-bec4-3193bc637a3e": {
+        rewards: [
+          {
+            assetId: "8facd57e-8b3d-4967-b553-5476f3113fb1",
+            fraction: 0.0001,
+          },
+        ],
+        assetId: "d24e3609-30c3-489f-bec4-3193bc637a3e",
+        fraction: 0.24850000000000003,
+      },
+      "cf1c5a25-0d5d-477e-95d0-732db1cf86b7": {
+        rewards: [],
+        assetId: "cf1c5a25-0d5d-477e-95d0-732db1cf86b7",
+        fraction: 0.0001,
+      },
+    },
+    {
+      "45f71644-cd4a-4e2e-9299-f69ebffa455f": {
+        rewards: [
+          {
+            assetId: "cf1c5a25-0d5d-477e-95d0-732db1cf86b7",
+            fraction: 0.0001,
+          },
+        ],
+        assetId: "45f71644-cd4a-4e2e-9299-f69ebffa455f",
+        fraction: 0.24710000000000001,
+      },
+    },
+  ];
+
+  const futureAssetLayers: AssetLayers = [
+    {
+      "e251ecf6-48c2-4538-afcd-fbb92424054d": {
+        rewards: [],
+        assetId: "e251ecf6-48c2-4538-afcd-fbb92424054d",
+        fraction: 0.7527000000000001,
+      },
+      "a4c294f1-5cb0-431a-9df7-ac2f784e9449": {
+        rewards: [],
+        assetId: "a4c294f1-5cb0-431a-9df7-ac2f784e9449",
+        fraction: 0.2473,
+      },
+      "822504af-d552-460b-bfd7-3648e0592bab": {
+        rewards: [],
+        assetId: "822504af-d552-460b-bfd7-3648e0592bab",
+        fraction: 0,
+      },
+      "e938062f-929d-4f94-8ee0-e1223e50e2eb": {
+        rewards: [],
+        assetId: "e938062f-929d-4f94-8ee0-e1223e50e2eb",
+        fraction: 0,
+      },
+      "b77f9ec4-ce5a-459c-921d-6850439d75ce": {
+        rewards: [],
+        assetId: "b77f9ec4-ce5a-459c-921d-6850439d75ce",
+        fraction: 0,
+      },
+    },
+    {
+      "8ec9d949-6bdc-4dbe-8a46-738f9e27c920": {
+        rewards: [],
+        assetId: "8ec9d949-6bdc-4dbe-8a46-738f9e27c920",
+        fraction: 0.253,
+      },
+      "bff58e67-a9bc-43fe-a720-b77ff5f292b4": {
+        rewards: [],
+        assetId: "bff58e67-a9bc-43fe-a720-b77ff5f292b4",
+        fraction: 0,
+      },
+      "ae8638a2-fbd5-4d31-934e-2f9a6faf6b79": {
+        rewards: [],
+        assetId: "ae8638a2-fbd5-4d31-934e-2f9a6faf6b79",
+        fraction: 0.251,
+      },
+      "ba857983-22ec-4da7-a499-7fe1f128b877": {
+        rewards: [],
+        assetId: "ba857983-22ec-4da7-a499-7fe1f128b877",
+        fraction: 0,
+      },
+      "9c8618aa-c813-44bf-8bad-1fde15d57b60": {
+        rewards: [],
+        assetId: "9c8618aa-c813-44bf-8bad-1fde15d57b60",
+        fraction: 0.2487,
+      },
+      "c679d9c8-0433-4f78-9455-8dce23d358cd": {
+        rewards: [],
+        assetId: "c679d9c8-0433-4f78-9455-8dce23d358cd",
+        fraction: 0,
+      },
+      "43533e47-2f3d-48e1-a782-8efcbce5ccf2": {
+        rewards: [],
+        assetId: "43533e47-2f3d-48e1-a782-8efcbce5ccf2",
+        fraction: 0.2473,
+      },
+    },
+    {
+      "9701461a-dbb8-4065-a7c8-8c9db0e7e3dc": {
+        rewards: [],
+        assetId: "9701461a-dbb8-4065-a7c8-8c9db0e7e3dc",
+        fraction: 0.253,
+      },
+      "e4e84ad4-8d50-42d9-8b48-90f474146079": {
+        rewards: [],
+        assetId: "e4e84ad4-8d50-42d9-8b48-90f474146079",
+        fraction: 0.251,
+      },
+      "d558fec2-1035-41e2-be38-272fef16c7b9": {
+        rewards: [],
+        assetId: "d558fec2-1035-41e2-be38-272fef16c7b9",
+        fraction: 0.2487,
+      },
+      "45f71644-cd4a-4e2e-9299-f69ebffa455f": {
+        rewards: [],
+        assetId: "45f71644-cd4a-4e2e-9299-f69ebffa455f",
+        fraction: 0.2473,
+      },
+    },
+    {
+      "682968b6-ec76-4a4e-9844-70746a906e88": {
+        rewards: [],
+        assetId: "682968b6-ec76-4a4e-9844-70746a906e88",
+        fraction: 0.253,
+      },
+      "499c28a9-8cfa-46df-9ac2-35fcd0373639": {
+        rewards: [],
+        assetId: "499c28a9-8cfa-46df-9ac2-35fcd0373639",
+        fraction: 0.251,
+      },
+      "d24e3609-30c3-489f-bec4-3193bc637a3e": {
+        rewards: [],
+        assetId: "d24e3609-30c3-489f-bec4-3193bc637a3e",
+        fraction: 0.2487,
+      },
+    },
+  ];
+
+  const expected: AssetLayers = [
+    {
+      "e251ecf6-48c2-4538-afcd-fbb92424054d": {
+        rewards: [],
+        assetId: "e251ecf6-48c2-4538-afcd-fbb92424054d",
+        fraction: -0.00009999999999990905,
+      },
+      "a4c294f1-5cb0-431a-9df7-ac2f784e9449": {
+        rewards: [],
+        assetId: "a4c294f1-5cb0-431a-9df7-ac2f784e9449",
+        fraction: 0.00009999999999998011,
+      },
+      "822504af-d552-460b-bfd7-3648e0592bab": {
+        rewards: [],
+        assetId: "822504af-d552-460b-bfd7-3648e0592bab",
+        fraction: 0,
+      },
+      "e938062f-929d-4f94-8ee0-e1223e50e2eb": {
+        rewards: [],
+        assetId: "e938062f-929d-4f94-8ee0-e1223e50e2eb",
+        fraction: 0,
+      },
+      "b77f9ec4-ce5a-459c-921d-6850439d75ce": {
+        rewards: [],
+        assetId: "b77f9ec4-ce5a-459c-921d-6850439d75ce",
+        fraction: 0,
+      },
+      "eb84598f-9e6f-4a7c-a765-c78adcd74dc3": {
+        assetId: "eb84598f-9e6f-4a7c-a765-c78adcd74dc3",
+        fraction: 0,
+      },
+      "203a6af7-eb4b-4922-b8ed-de9bdb22db19": {
+        assetId: "203a6af7-eb4b-4922-b8ed-de9bdb22db19",
+        fraction: 0,
+      },
+    },
+    {
+      "8ec9d949-6bdc-4dbe-8a46-738f9e27c920": {
+        rewards: [],
+        assetId: "8ec9d949-6bdc-4dbe-8a46-738f9e27c920",
+        fraction: 0,
+      },
+      "bff58e67-a9bc-43fe-a720-b77ff5f292b4": {
+        rewards: [],
+        assetId: "bff58e67-a9bc-43fe-a720-b77ff5f292b4",
+        fraction: 0,
+      },
+      "ae8638a2-fbd5-4d31-934e-2f9a6faf6b79": {
+        rewards: [],
+        assetId: "ae8638a2-fbd5-4d31-934e-2f9a6faf6b79",
+        fraction: 0.00010000000000001563,
+      },
+      "ba857983-22ec-4da7-a499-7fe1f128b877": {
+        rewards: [],
+        assetId: "ba857983-22ec-4da7-a499-7fe1f128b877",
+        fraction: 0,
+      },
+      "9c8618aa-c813-44bf-8bad-1fde15d57b60": {
+        rewards: [],
+        assetId: "9c8618aa-c813-44bf-8bad-1fde15d57b60",
+        fraction: 0.00019999999999999573,
+      },
+      "c679d9c8-0433-4f78-9455-8dce23d358cd": {
+        rewards: [],
+        assetId: "c679d9c8-0433-4f78-9455-8dce23d358cd",
+        fraction: 0,
+      },
+      "43533e47-2f3d-48e1-a782-8efcbce5ccf2": {
+        rewards: [],
+        assetId: "43533e47-2f3d-48e1-a782-8efcbce5ccf2",
+        fraction: 0.00009999999999998011,
+      },
+      "e7938d9a-9702-4eb0-bb0e-0fc0f636dbc1": {
+        assetId: "e7938d9a-9702-4eb0-bb0e-0fc0f636dbc1",
+        fraction: -0.0004,
+      },
+    },
+    {
+      "9701461a-dbb8-4065-a7c8-8c9db0e7e3dc": {
+        rewards: [],
+        assetId: "9701461a-dbb8-4065-a7c8-8c9db0e7e3dc",
+        fraction: 0,
+      },
+      "e4e84ad4-8d50-42d9-8b48-90f474146079": {
+        rewards: [],
+        assetId: "e4e84ad4-8d50-42d9-8b48-90f474146079",
+        fraction: 0.00010000000000001563,
+      },
+      "d558fec2-1035-41e2-be38-272fef16c7b9": {
+        rewards: [],
+        assetId: "d558fec2-1035-41e2-be38-272fef16c7b9",
+        fraction: 0.00019999999999999573,
+      },
+      "45f71644-cd4a-4e2e-9299-f69ebffa455f": {
+        rewards: [],
+        assetId: "45f71644-cd4a-4e2e-9299-f69ebffa455f",
+        fraction: 0.2473,
+      },
+      "8facd57e-8b3d-4967-b553-5476f3113fb1": {
+        assetId: "8facd57e-8b3d-4967-b553-5476f3113fb1",
+        fraction: -0.0004,
+      },
+      "ac640151-e047-4c7b-acfa-0ceb48c6a8c4": {
+        assetId: "ac640151-e047-4c7b-acfa-0ceb48c6a8c4",
+        fraction: -0.0001,
+      },
+    },
+    {
+      "682968b6-ec76-4a4e-9844-70746a906e88": {
+        rewards: [
+          {
+            assetId: "8facd57e-8b3d-4967-b553-5476f3113fb1",
+            fraction: -0.0001,
+          },
+        ],
+        assetId: "682968b6-ec76-4a4e-9844-70746a906e88",
+        fraction: 0,
+      },
+      "499c28a9-8cfa-46df-9ac2-35fcd0373639": {
+        rewards: [
+          {
+            assetId: "8facd57e-8b3d-4967-b553-5476f3113fb1",
+            fraction: -0.0002,
+          },
+        ],
+        assetId: "499c28a9-8cfa-46df-9ac2-35fcd0373639",
+        fraction: 0.00010000000000001563,
+      },
+      "d24e3609-30c3-489f-bec4-3193bc637a3e": {
+        rewards: [
+          {
+            assetId: "8facd57e-8b3d-4967-b553-5476f3113fb1",
+            fraction: -0.0001,
+          },
+        ],
+        assetId: "d24e3609-30c3-489f-bec4-3193bc637a3e",
+        fraction: 0.00019999999999999573,
+      },
+      "cf1c5a25-0d5d-477e-95d0-732db1cf86b7": {
+        assetId: "cf1c5a25-0d5d-477e-95d0-732db1cf86b7",
+        fraction: -0.0001,
+      },
+    },
+    {
+      "45f71644-cd4a-4e2e-9299-f69ebffa455f": {
+        rewards: [
+          {
+            assetId: "cf1c5a25-0d5d-477e-95d0-732db1cf86b7",
+            fraction: -0.0001,
+          },
+        ],
+        assetId: "45f71644-cd4a-4e2e-9299-f69ebffa455f",
+        fraction: -0.24710000000000001,
       },
     },
   ];

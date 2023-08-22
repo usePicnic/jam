@@ -252,7 +252,6 @@ export function constructAssetLayers({
 }) {
   let baseAssetLayers: AssetLayers = [];
   for (let i = 0; i < allocation.length; i += 1) {
-    debugger;
     const maxLayer = getMaxLayerDepth({
       assetStore,
       assetId: allocation[i].assetId,
