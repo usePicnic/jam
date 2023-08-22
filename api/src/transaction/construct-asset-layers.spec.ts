@@ -1,25 +1,7 @@
-import { expect, test } from "vitest";
-import { constructAssetLayers } from "./asset-layers";
+import { test } from "vitest";
+import { constructAssetLayers } from "./construct-asset-layers";
 import { AssetStore, AssetLayers, FractionAllocation } from "./types";
-
-function compareAssetLayers({
-  expected,
-  received,
-}: {
-  expected: AssetLayers;
-  received: AssetLayers;
-}) {
-  expect(received.length).toEqual(expected.length);
-  expected.forEach((v, i) => {
-    expect(received[i].length).toEqual(expected[i].length);
-    Object.keys(expected[i]).forEach((assetId) => {
-      expect(received[i][assetId].fraction).toBeCloseTo(
-        expected[i][assetId].fraction,
-        10
-      );
-    });
-  });
-}
+import { compareAssetLayers } from "./test-utils";
 
 test("constructAssetLayers: several assets, several layers, no rewards", () => {
   const assetStore: AssetStore = {
