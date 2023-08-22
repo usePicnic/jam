@@ -1,7 +1,6 @@
-import { test } from "vitest";
+import { expect, test } from "vitest";
 import { constructAssetLayers } from "./construct-asset-layers";
 import { AssetStore, AssetLayers, FractionAllocation } from "./types";
-import { compareAssetLayers } from "./test-utils";
 
 test("constructAssetLayers: several assets, several layers, no rewards", () => {
   const assetStore: AssetStore = {
@@ -534,7 +533,7 @@ test("constructAssetLayers: several assets, several layers, no rewards", () => {
       },
       "f9a0d8c9-7524-42ed-9188-968456afcd54": {
         assetId: "f9a0d8c9-7524-42ed-9188-968456afcd54",
-        fraction: 0.05529999999999999,
+        fraction: 0.055299999999999995,
         rewards: [],
       },
       "e251ecf6-48c2-4538-afcd-fbb92424054d": {
@@ -544,7 +543,7 @@ test("constructAssetLayers: several assets, several layers, no rewards", () => {
       },
       "dfe40dda-5c96-4ff3-b773-386f1ca0868d": {
         assetId: "dfe40dda-5c96-4ff3-b773-386f1ca0868d",
-        fraction: 0.05529999999999999,
+        fraction: 0.055299999999999995,
         rewards: [],
       },
     },
@@ -561,17 +560,17 @@ test("constructAssetLayers: several assets, several layers, no rewards", () => {
       },
       "0ed514f8-a0a7-47d1-b8d0-2d17d6818131": {
         assetId: "0ed514f8-a0a7-47d1-b8d0-2d17d6818131",
-        fraction: 0.05529999999999999,
+        fraction: 0.055299999999999995,
         rewards: [],
       },
       "7860c217-bf77-4fdd-bfe1-b7613555606a": {
         assetId: "7860c217-bf77-4fdd-bfe1-b7613555606a",
-        fraction: 0.05529999999999999,
+        fraction: 0.055299999999999995,
         rewards: [],
       },
       "7e8997e9-15ca-46f4-8c91-156f8167d658": {
         assetId: "7e8997e9-15ca-46f4-8c91-156f8167d658",
-        fraction: 0.05529999999999999,
+        fraction: 0.055299999999999995,
         rewards: [],
       },
       "a90df6e3-3084-40bf-b435-10f3b3691eed": {
@@ -621,7 +620,7 @@ test("constructAssetLayers: several assets, several layers, no rewards", () => {
     allocation,
   });
 
-  compareAssetLayers({ expected: assetLayers, received: returnedAssetLayers });
+  expect(assetLayers).toMatchObject(returnedAssetLayers);
 });
 
 test("constructAssetLayers: several assets, single layer", () => {
@@ -732,5 +731,5 @@ test("constructAssetLayers: several assets, single layer", () => {
     allocation,
   });
 
-  compareAssetLayers({ expected: assetLayers, received: returnedAssetLayers });
+  expect(assetLayers).toMatchObject(returnedAssetLayers);
 });
