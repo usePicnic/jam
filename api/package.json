@@ -1,5 +1,5 @@
 {
-  "name": "picnic-defi-batcher",
+  "name": "jam",
   "version": "0.0.1",
   "description": "Picnic's DeFi Batcher: An API for enabling multi-step DeFi transactions using ERC4337 wallets.",
   "main": "index.js",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/usePicnic/picnic-defi-batcher.git"
+    "url": "git+https://github.com/usePicnic/jam.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/usePicnic/picnic-defi-batcher/issues"
+    "url": "https://github.com/usePicnic/jam/issues"
   },
-  "homepage": "https://github.com/usePicnic/picnic-defi-batcher#readme",
+  "homepage": "https://github.com/usePicnic/jam#readme",
   "dependencies": {
     "body-parser": "^1.20.2",
     "compression": "^1.7.4",
