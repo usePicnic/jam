@@ -1,7 +1,9 @@
 {
   "name": "jam",
+  "description": "Picnic's DeFi Batcher: An API for enabling multi-step DeFi transactions using ERC4337 wallets.",
   "workspaces": [
-    "api"
+    "api",
+    "orchestrator"
   ],
   "devDependencies": {
     "prettier": "^2.8.3"
