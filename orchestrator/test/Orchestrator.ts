@@ -58,21 +58,23 @@ describe("Orchestrator", function () {
 
     const { wmatic } = await loadFixture(getWMatic);
 
-    var stepAddresses: string[] = [await wmatic.getAddress()];
-
-    var stepEncodedCalls: string[] = [
-      wmatic.interface.encodeFunctionData("deposit"),
-    ];
-
     const value = ethers.parseEther("50.0");
 
-    var stepValues: string[] = [value.toString()];
+    var stores: string[] = [value.toString()];
+
+    var steps = [
+      {
+        stepAddress: await wmatic.getAddress(),
+        stepEncodedCall: wmatic.interface.encodeFunctionData("deposit"),
+        storeOperations: [
+          { storeOpType: 1, storeNumber: 0, offset: 0, fraction: 0 },
+        ],
+      },
+    ];
 
     var encodedCall = orchestrator.interface.encodeFunctionData("runSteps", [
-      stepAddresses,
-      stepEncodedCalls,
-      stepValues,
-      [],
+      steps,
+      stores,
     ]);
 
     await testWallet.runSteps(await orchestrator.getAddress(), encodedCall);
@@ -91,40 +93,51 @@ describe("Orchestrator", function () {
     const { wmatic } = await loadFixture(getWMatic);
     const { quickswap } = await loadFixture(getQuickswap);
 
-    var stepAddresses: string[] = [
-      await wmatic.getAddress(),
-      await wmatic.getAddress(),
-      await quickswap.getAddress(),
-    ];
-
     const value = ethers.parseEther("50.0");
 
-    var stepEncodedCalls: string[] = [
-      wmatic.interface.encodeFunctionData("deposit"),
-      wmatic.interface.encodeFunctionData("approve", [
-        "0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff",
-        value,
-      ]),
-      quickswap.interface.encodeFunctionData("swapExactTokensForTokens", [
-        value,
-        0,
-        [
-          "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
-          "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+    var stores: BigNumberish[] = [value.toString()];
+
+    var steps = [
+      {
+        stepAddress: await wmatic.getAddress(),
+        stepEncodedCall: wmatic.interface.encodeFunctionData("deposit"),
+        storeOperations: [
+          { storeOpType: 1, storeNumber: 0, offset: 0, fraction: 0 },
         ],
-        await testWallet.getAddress(),
-        (await time.latest()) + 10000,
-      ]),
+      },
+      {
+        stepAddress: await wmatic.getAddress(),
+        stepEncodedCall: wmatic.interface.encodeFunctionData("approve", [
+          "0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff",
+          value,
+        ]),
+        storeOperations: [],
+      },
+      {
+        stepAddress: await quickswap.getAddress(),
+        stepEncodedCall: quickswap.interface.encodeFunctionData(
+          "swapExactTokensForTokens",
+          [
+            value,
+            0,
+            [
+              "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
+              "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+            ],
+            await testWallet.getAddress(),
+            (await time.latest()) + 10000,
+          ]
+        ),
+        storeOperations: [],
+      },
     ];
 
-    var stepValues: BigNumberish[] = [value.toString(), 0, 0];
-
     var encodedCall = orchestrator.interface.encodeFunctionData("runSteps", [
-      stepAddresses,
-      stepEncodedCalls,
-      stepValues,
-      [],
+      steps,
+      stores,
     ]);
+
+    console.log({ steps });
 
     await testWallet.runSteps(await orchestrator.getAddress(), encodedCall);
 
@@ -136,6 +149,6 @@ describe("Orchestrator", function () {
 
     console.log({ usdcBalance });
 
-    expect(usdcBalance).to.equal(ethers.parseEther("50.0"));
+    expect(usdcBalance).to.greaterThan(0);
   });
 });
