@@ -27,6 +27,22 @@ contract Orchestrator {
         return encodedCall;
     }
 
+    // Gets the result of a call at a given offset, returns a uint256
+    function getResultOffset(
+        bytes memory result,
+        uint256 offset
+    ) public pure returns (uint256) {
+        require(offset + 32 <= result.length, "Invalid offset"); // Make sure the offset is within bounds
+
+        uint256 resultUint256;
+
+        assembly {
+            resultUint256 := mload(add(result, add(offset, 0x20)))
+        }
+
+        return resultUint256;
+    }
+
     struct StoreOperation {
         uint16 storeOpType;
         // Type 1: Retrieve store and assign to value
@@ -67,17 +83,15 @@ contract Orchestrator {
                         steps[i].storeOperations[j].offset,
                         stores[steps[i].storeOperations[j].storeNumber]
                     );
-                } else if (steps[i].storeOperations[j].storeOpType == 3) {}
+                }
             }
 
             if (value > 0) {
                 (isSuccess, result) = steps[i].stepAddress.call{value: value}(
-                    steps[i].stepEncodedCall
+                    encodedCall
                 );
             } else {
-                (isSuccess, result) = steps[i].stepAddress.call(
-                    steps[i].stepEncodedCall
-                );
+                (isSuccess, result) = steps[i].stepAddress.call(encodedCall);
             }
 
             if (!isSuccess) {
@@ -89,7 +103,16 @@ contract Orchestrator {
                 }
             }
 
-            console.logBytes(result);
+            for (uint16 j = 0; j < steps[i].storeOperations.length; j++) {
+                if (steps[i].storeOperations[j].storeOpType == 3) {
+                    stores[
+                        steps[i].storeOperations[j].storeNumber
+                    ] += getResultOffset(
+                        result,
+                        steps[i].storeOperations[j].offset
+                    );
+                }
+            }
         }
     }
 }
