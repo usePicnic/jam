@@ -6,7 +6,7 @@ import {
 } from "@nomicfoundation/hardhat-toolbox/network-helpers";
 import { BigNumberish } from "ethers";
 
-describe("Orchestrator", function () {
+describe("Maestro", function () {
   async function deployTestWallet() {
     const [owner] = await ethers.getSigners();
 
@@ -18,13 +18,13 @@ describe("Orchestrator", function () {
     return { testWallet, owner };
   }
 
-  async function deployOrchestrator() {
+  async function deployMaestro() {
     const [owner] = await ethers.getSigners();
 
-    const Orchestrator = await ethers.getContractFactory("Orchestrator");
-    const orchestrator = await Orchestrator.deploy();
+    const Maestro = await ethers.getContractFactory("Maestro");
+    const maestro = await Maestro.deploy();
 
-    return { orchestrator, owner };
+    return { maestro, owner };
   }
 
   async function getWMatic() {
@@ -58,7 +58,7 @@ describe("Orchestrator", function () {
   }
 
   it("wMATIC deposit", async function () {
-    const { orchestrator } = await loadFixture(deployOrchestrator);
+    const { maestro } = await loadFixture(deployMaestro);
 
     const { testWallet } = await loadFixture(deployTestWallet);
 
@@ -78,12 +78,12 @@ describe("Orchestrator", function () {
       },
     ];
 
-    var encodedCall = orchestrator.interface.encodeFunctionData("runSteps", [
+    var encodedCall = maestro.interface.encodeFunctionData("runSteps", [
       steps,
       stores,
     ]);
 
-    await testWallet.runSteps(await orchestrator.getAddress(), encodedCall);
+    await testWallet.runSteps(await maestro.getAddress(), encodedCall);
 
     const wmaticBalance = await wmatic.balanceOf(await testWallet.getAddress());
 
@@ -92,7 +92,7 @@ describe("Orchestrator", function () {
   });
 
   it("wMATIC deposit, swap WMATIC to USDC on Quickswap", async function () {
-    const { orchestrator } = await loadFixture(deployOrchestrator);
+    const { maestro } = await loadFixture(deployMaestro);
 
     const { testWallet } = await loadFixture(deployTestWallet);
 
@@ -138,12 +138,12 @@ describe("Orchestrator", function () {
       },
     ];
 
-    var encodedCall = orchestrator.interface.encodeFunctionData("runSteps", [
+    var encodedCall = maestro.interface.encodeFunctionData("runSteps", [
       steps,
       stores,
     ]);
 
-    await testWallet.runSteps(await orchestrator.getAddress(), encodedCall);
+    await testWallet.runSteps(await maestro.getAddress(), encodedCall);
 
     const { token: usdc } = await getERC20({
       address: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
@@ -157,7 +157,7 @@ describe("Orchestrator", function () {
   });
 
   it("wMATIC deposit, swap WMATIC to USDC on Quickswap, supply liquidity on Compound", async function () {
-    const { orchestrator } = await loadFixture(deployOrchestrator);
+    const { maestro } = await loadFixture(deployMaestro);
 
     const { testWallet } = await loadFixture(deployTestWallet);
 
@@ -247,12 +247,12 @@ describe("Orchestrator", function () {
       },
     ];
 
-    var encodedCall = orchestrator.interface.encodeFunctionData("runSteps", [
+    var encodedCall = maestro.interface.encodeFunctionData("runSteps", [
       steps,
       stores,
     ]);
 
-    await testWallet.runSteps(await orchestrator.getAddress(), encodedCall);
+    await testWallet.runSteps(await maestro.getAddress(), encodedCall);
 
     const usdcBalance = await usdc.balanceOf(await testWallet.getAddress());
     const cometBalance = await comet.balanceOf(await testWallet.getAddress());
