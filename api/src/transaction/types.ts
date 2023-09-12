@@ -1,20 +1,17 @@
 import { BigNumberish } from "ethers";
 
-interface Asset {
+export interface Asset {
   id: string;
   name: string;
-  networkName: string;
+  chainId: number;
   active: boolean;
   address: string;
   color: string;
   decimals: number;
   symbol: string;
-  type: string;
+  type: AssetType;
   visible: boolean;
-  linkedAssets?: {
-    assetId: string;
-    fraction: number;
-  }[];
+  linkedAssets?: LinkedAsset[];
   rawLogoUri?: string;
   logos?: {
     logoUri: string;
@@ -24,8 +21,28 @@ interface Asset {
   }[];
 }
 
-export interface AssetStore {
-  [key: string]: Asset;
+export interface LinkedAsset {
+  assetId: string;
+  fraction: number;
+}
+
+export class AssetStore {
+  // Class that takes in its constructor a list of assets and organizes them in two methods:
+  // - byId: a map of assetId -> Asset
+  // - byAddress: a map of address -> Asset
+
+  byId: { [key: string]: Asset };
+  byAddress: { [key: string]: Asset };
+
+  constructor(assets: Asset[]) {
+    this.byId = {};
+    this.byAddress = {};
+
+    assets.forEach((asset) => {
+      this.byId[asset.id] = asset;
+      this.byAddress[asset.address] = asset;
+    });
+}
 }
 
 export interface AbsoluteAllocationItem {
@@ -44,3 +61,10 @@ export type FractionAllocation = FractionAllocationItem[];
 
 export type AssetLayer = { [key: string]: FractionAllocationItem };
 export type AssetLayers = AssetLayer[];
+
+export type AssetType =
+  | "token"
+  | "networkToken"
+  | "beefyDeposit"
+  | "gammaDeposit";
+

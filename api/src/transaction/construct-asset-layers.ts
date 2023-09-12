@@ -24,7 +24,7 @@ function constructAssetLayersRecursive({
   rewards?: FractionAllocationItem[];
 }): AssetLayer[] {
   let layers = [...accumulatedLayers];
-  const asset = assetStore[assetId];
+  const asset = assetStore.byId[assetId];
   if (asset.linkedAssets !== undefined) {
     for (let i = 0; i < asset.linkedAssets.length; i += 1) {
       layers = constructAssetLayersRecursive({
@@ -196,7 +196,7 @@ export function accumulateLayersUpToMax({
   rewards?: FractionAllocation;
 }) {
   let layers = [...previousLayers];
-  const asset = assetStore[assetId];
+  const asset = assetStore.byId[assetId];
   if (asset.linkedAssets !== undefined) {
     for (let i = 0; i < asset.linkedAssets.length; i += 1) {
       layers = accumulateLayersUpToMax({
