@@ -45,6 +45,8 @@ export class AssetStore {
 }
 }
 
+export type AssetPrices = { [key: string]: number };
+
 export interface AbsoluteAllocationItem {
   assetId: string;
   amountStr: BigNumberish;
