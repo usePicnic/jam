@@ -5,8 +5,17 @@ import {
   Asset,
   AssetStore,
   AssetType,
+  DetailedSteps,
+  FractionAllocation,
+  FractionAllocationItem,
+  LinkedAsset,
 } from "./types";
-import { Provider } from "@ethersproject/providers";
+import {
+  getAmount,
+  getGammaPair,
+  getGammaTVLs,
+} from "./asset-type-strategies-helpers";
+import { Contract, Provider } from "ethers";
 
 const USDC_ADDRESS = "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174";
 const SELL_AMOUNT = "25000000"; // 25 USD
@@ -127,6 +136,51 @@ class TokenStrategy extends InterfaceStrategy {
     return requestTree[asset.address].price;
   }
 
+class GammaDepositStrategy extends InterfaceStrategy {
+  fetchPriceData({ provider, assetStore, asset }: FetchPriceDataParams) {
+    const linkedAssets = asset.linkedAssets.map(
+      (linkedAsset) => assetStore.byId[linkedAsset.assetId]
+    );
+    const pair = getGammaPair({ provider, address: asset.address });
+
+    let requestTree: RequestTree = {};
+    requestTree[asset.address] = {};
+
+    console.log({ pair, getFunction: pair.getFunction("getTotalAmounts") })
+    requestTree[asset.address].totalAmount = () =>
+      pair.getFunction("getTotalAmounts").call(null);
+
+    requestTree[asset.address].supply = () => pair.getFunction("totalSupply").call(null);
+
+    // Underlying Prices
+    linkedAssets.map((linkedAsset) => {
+      const fetchedData = fetchPriceData({
+        provider,
+        assetStore,
+        asset: linkedAsset,
+      });
+      requestTree = {
+        ...requestTree,
+        ...fetchedData,
+      };
+    });
+
+    return requestTree;
+  }
+
+  getPrice({ assetStore, asset, requestTree }: GetPriceParams) {
+    const tvls = getGammaTVLs({ asset, assetStore, requestTree });
+    const tvl = tvls.reduce((a, b) => a + b, 0);
+
+    const supply = getAmount({
+      amount: requestTree[asset.address].supply,
+      decimals: asset.decimals,
+    });
+
+    console.log({ tvls, tvl, supply, supplyRaw: requestTree[asset.address].supply, decimals: asset.decimals })
+
+    return tvl / supply;
+  }
 }
 
 export const assetTypeStrategies: {
@@ -137,4 +191,6 @@ export const assetTypeStrategies: {
   137: {
     token: new TokenStrategy(),
     networkToken: new NetworkTokenStrategy(),
+    gammaDeposit: new GammaDepositStrategy(),
+  },
 };

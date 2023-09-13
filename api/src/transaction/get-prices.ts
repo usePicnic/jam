@@ -1,6 +1,4 @@
-import { Provider } from "@ethersproject/providers";
-import * as Sentry from "@sentry/node";
-import { logger } from "../utils/logger";
+import { Provider } from "ethers";
 import { retry } from "../utils/retry";
 import { fetchPriceData, getPrice } from "./asset-type-strategies";
 import { AssetPrices, AssetStore } from "./types";
@@ -23,18 +21,17 @@ export async function fetchUnderlyingPromises(
       const keys2 = Object.keys(fetchObject[key]);
       await Promise.all(
         keys2.map(async (key2) => {
-          try {
-            fetchObject[key][key2] = await retry(
-              async () => {
-                return await fetchObject[key][key2]();
-              },
-              () => {},
-              8,
-              30
-            );
-          } catch (e) {
-            logger.error(`fetchUnderlyingPromises: ${e}`);
-          }
+          fetchObject[key][key2] = await retry(
+            async () => {
+              const ret = await fetchObject[key][key2]();
+              return ret;
+            },
+            () => {
+              console.log("retrying...");
+            },
+            1,
+            100
+          );
         })
       );
     })
@@ -52,25 +49,17 @@ export async function getPrices({
   provider: Provider;
   assetIds: string[];
 }): Promise<AssetPrices> {
-  debugger;
   const assetPrices: AssetPrices = {};
   let fetchRequestTree: RequestTree = {};
 
   assetIds.map((assetId) => {
     const asset = assetStore.byId[assetId];
-    // fetchObject still has lots of promises underneath
-    try {
-      const fetchedData = fetchPriceData({ provider, assetStore, asset });
+
+    const fetchedData = fetchPriceData({ provider, assetStore, asset });
       fetchRequestTree = {
         ...fetchRequestTree,
         ...fetchedData,
       };
-    } catch (e) {
-      logger.error(`Failed to get price (fetchData) for asset ${assetId}`, {
-        e,
-      });
-      Sentry.captureException(e);
-    }
   });
 
   // Fetching promises underneath
