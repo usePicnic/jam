@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.9;
 
-// import "./IMaestro.sol";
+// import "./IRouter.sol";
 
 // Uncomment this line to use console.log
 import "hardhat/console.sol";
 
-//  is IMaestro
-contract Maestro {
+//  is IRouter
+contract Router {
     // This function takes the original ABI-encoded calldata `encodedCall`,
     // the offset at which you want to replace data, and the new data you want to insert.
     function modifyCallData(
@@ -64,7 +64,7 @@ contract Maestro {
     }
 
     function runSteps(Step[] calldata steps, uint256[] memory stores) external {
-        require(steps.length > 0, "MAESTRO: INVALID LENGTHS");
+        require(steps.length > 0, "ROUTER: INVALID LENGTHS");
 
         bool isSuccess;
         bytes memory result;
