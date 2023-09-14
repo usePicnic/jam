@@ -1,5 +1,3 @@
-import { logger } from "./logger";
-
 /**
  * Wait for the given milliseconds
  * @param {number} milliseconds The given time to wait
@@ -33,7 +31,7 @@ function retry(promise, onRetry, maxRetries, k) {
         // (2 ** 2) * 100 = 400 ms
         // (2 ** 3) * 100 = 800 ms
         const timeToWait = 2 ** retries * k;
-        logger.debug(`waiting for ${timeToWait}ms...`);
+        console.log(`waiting for ${timeToWait}ms...`);
         await waitFor(timeToWait);
       }
       return await promise();
@@ -44,7 +42,7 @@ function retry(promise, onRetry, maxRetries, k) {
         onRetry();
         return retryWithBackoff(retries + 1);
       } else {
-        logger.error("Max retries reached. Bubbling the error up");
+        console.error("Max retries reached. Bubbling the error up");
         throw e;
       }
     }

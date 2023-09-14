@@ -17,8 +17,6 @@
     "lodash": "^4.17.21",
     "mongoose": "^7.4.2",
     "node-fetch": "^2.6.8",
-    "pino": "^8.15.0",
-    "pino-pretty": "^10.2.0",
     "zod": "3.21.4"
   },
   "devDependencies": {
