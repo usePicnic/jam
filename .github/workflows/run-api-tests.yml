@@ -2,6 +2,9 @@ name: run-api-tests
 on: [push]
 jobs:
   run-api-tests:
+    env:
+      ALCHEMY_KEY: ${{ secrets.ALCHEMY_KEY }}
+
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
