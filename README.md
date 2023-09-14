@@ -6,6 +6,8 @@ An open-source API for enabling multi-step DeFi transactions using ERC4337 walle
 
 Picnic's DeFi Transaction Batcher is an API designed to simplify complex multi-step DeFi operations into single transactions using the ERC4337 standard. By batching transactions, we aim to enhance user experience and enable developers to integrate more efficient and diverse DeFi functionalities into their projects.
 
+This project is supported by an [Ethereum Foundation grant](https://erc4337.mirror.xyz/hRn_41cef8oKn44ZncN9pXvY3VID6LZOtpLlktXYtmA).
+
 ## Key Features
 
 - Batching DeFi transactions in a single step.
