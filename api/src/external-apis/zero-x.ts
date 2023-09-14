@@ -1,6 +1,7 @@
 import { Asset } from "../transaction/types";
 import { zeroxNames } from "./exchanges";
 import { ParamsAPI } from "./params-api";
+import fetch from "node-fetch";
 
 export type Order0X = {
   // Fields originally from 0X API

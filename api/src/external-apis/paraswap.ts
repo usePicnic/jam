@@ -2,6 +2,7 @@ import { formatUnits } from "ethers";
 import { Asset } from "../transaction/types";
 import { limiterParaswap, useLimiter } from "./use-limiter";
 import { get0xPrice } from "./zero-x";
+import fetch from "node-fetch";
 
 async function callParaswapFullAPI({
   buyToken,
