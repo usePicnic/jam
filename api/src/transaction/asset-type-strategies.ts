@@ -135,6 +135,7 @@ class TokenStrategy extends InterfaceStrategy {
   getPrice({ assetStore, asset, requestTree }: GetPriceParams) {
     return requestTree[asset.address].price;
   }
+}
 
 class GammaDepositStrategy extends InterfaceStrategy {
   fetchPriceData({ provider, assetStore, asset }: FetchPriceDataParams) {
