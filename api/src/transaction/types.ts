@@ -71,3 +71,86 @@ export type AssetType =
   | "beefyDeposit"
   | "gammaDeposit";
 
+export type StoreOperations = {
+  storeOpType: 1 | 2 | 3;
+  storeNumber: BigNumberish;
+  offset: BigNumberish;
+  fraction: BigNumberish;
+};
+export type DetailedStep = {
+  stepAddress: string;
+  stepEncodedCall: string;
+  storeOperations: StoreOperations[];
+};
+export class DetailedStore {
+  assetId: string;
+  value: BigNumberish;
+
+  constructor(assetId: string, value: BigNumberish) {
+    this.assetId = assetId;
+    this.value = value;
+  }
+}
+export class DetailedStores {
+  byId: { [key: string]: number };
+  stores: DetailedStore[];
+
+  constructor() {
+    this.byId = {};
+    this.stores = [];
+  }
+
+  findOrInitializeStoreIdx({
+    assetId,
+    value,
+  }: {
+    assetId: string;
+    value?: BigNumberish;
+  }): number {
+    const idx = this.byId[assetId];
+    if (idx !== undefined) {
+      if (value !== undefined) {
+        throw new Error(
+          "A store with this assetId already exists, value should not be set."
+        );
+      }
+      return idx;
+    } else {
+      const newValue = value ?? 0;
+      const newStore = new DetailedStore(assetId, newValue);
+      const newIndex = this.stores.length;
+      this.stores.push(newStore);
+      this.byId[assetId] = newIndex;
+      return newIndex;
+    }
+  }
+
+  equals(other: DetailedStores): boolean {
+    // Compare lengths of stores array
+    if (this.stores.length !== other.stores.length) return false;
+
+    // Compare byId mappings
+    for (const [key, value] of Object.entries(this.byId)) {
+      if (other.byId[key] !== value) return false;
+    }
+
+    // Compare stores array
+    for (let i = 0; i < this.stores.length; i++) {
+      const thisStore = this.stores[i];
+      const otherStore = other.stores[i];
+      if (
+        thisStore.assetId !== otherStore.assetId ||
+        thisStore.value !== otherStore.value
+      ) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+}
+
+export type DetailedRouterOp = {
+  steps: DetailedStep[];
+  stores: DetailedStores;
+};

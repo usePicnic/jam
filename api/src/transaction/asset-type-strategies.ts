@@ -74,6 +74,15 @@ export function fetchPriceData({
   }
 }
 
+interface GenerateStepParams {
+  assetAllocation: FractionAllocationItem;
+  assetStore: AssetStore;
+  value: number;
+  // currentAllocation: FractionAllocation;
+  currentSteps: RouterOperation;
+}
+
+
 interface FetchPriceDataParams {
   provider: Provider;
   assetStore: AssetStore;
@@ -87,6 +96,10 @@ interface GetPriceParams {
 }
 
 export abstract class InterfaceStrategy {
+  abstract generateStep({
+    assetStore,
+    currentSteps,
+  }: GenerateStepParams): Promise<RouterOperation>;
   abstract fetchPriceData({
     provider,
     assetStore,
@@ -110,6 +123,15 @@ class NetworkTokenStrategy extends InterfaceStrategy {
     return requestTree["networkToken"].price;
   }
 
+  async generateStep({
+    assetAllocation,
+    assetStore,
+    value,
+    currentAllocation,
+    currentSteps,
+  }: GenerateStepParams) {
+    return currentSteps;
+  }
 }
 
 class TokenStrategy extends InterfaceStrategy {
@@ -135,6 +157,16 @@ class TokenStrategy extends InterfaceStrategy {
   getPrice({ assetStore, asset, requestTree }: GetPriceParams) {
     return requestTree[asset.address].price;
   }
+
+  async generateStep({
+    assetAllocation,
+    assetStore,
+    value,
+    currentAllocation,
+    currentSteps,
+  }: GenerateStepParams) {
+    return currentSteps;
+  }
 }
 
 class GammaDepositStrategy extends InterfaceStrategy {
@@ -147,11 +179,12 @@ class GammaDepositStrategy extends InterfaceStrategy {
     let requestTree: RequestTree = {};
     requestTree[asset.address] = {};
 
-    console.log({ pair, getFunction: pair.getFunction("getTotalAmounts") })
+    console.log({ pair, getFunction: pair.getFunction("getTotalAmounts") });
     requestTree[asset.address].totalAmount = () =>
       pair.getFunction("getTotalAmounts").call(null);
 
-    requestTree[asset.address].supply = () => pair.getFunction("totalSupply").call(null);
+    requestTree[asset.address].supply = () =>
+      pair.getFunction("totalSupply").call(null);
 
     // Underlying Prices
     linkedAssets.map((linkedAsset) => {
@@ -181,6 +214,16 @@ class GammaDepositStrategy extends InterfaceStrategy {
     console.log({ tvls, tvl, supply, supplyRaw: requestTree[asset.address].supply, decimals: asset.decimals })
 
     return tvl / supply;
+  }
+
+  async generateStep({
+    assetAllocation,
+    assetStore,
+    value,
+    currentAllocation,
+    currentSteps,
+  }: GenerateStepParams) {
+    return currentSteps;
   }
 }
 
