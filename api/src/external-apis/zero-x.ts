@@ -1,5 +1,5 @@
+import { zeroxNames } from "../path/exchanges";
 import { Asset } from "../transaction/types";
-import { zeroxNames } from "./exchanges";
 import { ParamsAPI } from "./params-api";
 import fetch from "node-fetch";
 
@@ -30,7 +30,7 @@ export type Order0X = {
         assetInIndex: number;
         assetOutIndex: number;
         userData: string;
-      }
+      },
     ];
   };
   source: string;

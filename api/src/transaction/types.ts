@@ -5,6 +5,7 @@ export interface Asset {
   name: string;
   chainId: number;
   active: boolean;
+  price: number;
   address: string;
   color: string;
   decimals: number;

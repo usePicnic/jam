@@ -1,6 +1,9 @@
 import { RateLimiter } from "limiter";
 
+export const limiter0x = new RateLimiter(1, 1100);
+export const limiterKyber = new RateLimiter(6, 50);
 export const limiterParaswap = new RateLimiter(1, 1100);
+export const limiterOneInch = new RateLimiter(6, 50);
 export const limiterParaswapFull = new RateLimiter(1, 1100);
 
 const sleep = (ms: number): Promise<void> =>
