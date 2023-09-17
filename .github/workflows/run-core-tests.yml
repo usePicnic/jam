@@ -1,4 +1,4 @@
-name: run-api-tests
+name: run-core-tests
 on: [push]
 jobs:
   run-api-tests:
@@ -17,7 +17,7 @@ jobs:
         run: npm install
         working-directory: ./api
 
-      - name: Run API tests
+      - name: Run core tests
         run: |
           npm run test
-        working-directory: ./api
+        working-directory: ./core
