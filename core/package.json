@@ -1,0 +1,22 @@
+{
+  "name": "core",
+  "main": "index.js",
+  "scripts": {
+    "test": "vitest"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "ethers": "^6.7.0",
+    "limiter": "^1.1.5",
+    "lodash": "^4.17.21",
+    "node-fetch": "^2.6.8",
+    "zod": "3.21.4"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.197",
+    "@types/node-fetch": "^2.6.4",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6",
+    "vitest": "^0.34.1"
+  }
+}
