@@ -18,7 +18,7 @@ export interface RouteAggregator {
   paraswapFull?: Route[];
 }
 export interface Route {
-  percentage: number;
+  fraction: number;
   exchange: Exchange;
   fromToken: string;
   toToken: string;

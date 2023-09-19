@@ -106,13 +106,13 @@ export function processParaswapBestRoute(priceRoute) {
         swapExchange.destToken = paraswapConvertMATICtoWMATIC(swap.destToken);
 
         const exchange = paraswapExchanges[swapExchange.exchange];
-        const percentage = (route.percent * swapExchange.percent) / 100;
+        const fraction = (route.percent * swapExchange.percent) / 10000;
         const paramsList = exchange.getParams("paraswap", swapExchange);
 
         paramsList.map((params) => {
           const route = {
             exchange,
-            percentage,
+            fraction,
             params,
             fromToken: swapExchange.srcToken,
             toToken: swapExchange.destToken,

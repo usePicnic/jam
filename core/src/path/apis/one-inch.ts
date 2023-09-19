@@ -44,7 +44,7 @@ export async function getOneInchData(
 
   return [
     {
-      percentage: 100,
+      fraction: 1,
       exchange: new OneInch(),
       fromToken: sellToken.address,
       toToken: buyToken.address,

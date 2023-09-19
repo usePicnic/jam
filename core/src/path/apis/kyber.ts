@@ -83,15 +83,14 @@ export function processKyberSwaps(data: any): Route[] {
   data.swaps.map((swapBatch) => {
     swapBatch.map((swap) => {
       const exchange = kyberExchanges[swap.exchange];
-      const percentage =
-        (swapBatch[0].swapAmount / totalTakerAmount[swapBatch[0].tokenIn]) *
-        100;
+      const fraction =
+        swapBatch[0].swapAmount / totalTakerAmount[swapBatch[0].tokenIn];
       const paramsList = exchange.getParams("kyber", swap);
 
       paramsList.map((params) => {
         const route = {
           exchange,
-          percentage,
+          fraction,
           params,
           fromToken: swap.tokenIn,
           toToken: swap.tokenOut,

@@ -82,7 +82,7 @@ export async function getParaswapFullData(
 
   return [
     {
-      percentage: 100,
+      fraction: 1,
       exchange: new Paraswap(),
       fromToken: sellToken.address,
       toToken: buyToken.address,

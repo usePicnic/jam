@@ -51,7 +51,7 @@ export async function getZeroXFullData(
 
   return [
     {
-      percentage: 100,
+      fraction: 1,
       exchange: new ZeroX(),
       fromToken: sellToken.address,
       toToken: buyToken.address,

@@ -129,7 +129,7 @@ function getFirstLeg(sellToken: string, buyToken: string): any {
     const exchange = new Curve();
     const route = {
       exchange,
-      percentage: 100,
+      fraction: 1,
       params,
       fromToken: tokens[token][fromTokenIdx],
       toToken: tokens[token][toTokenIdx],
@@ -148,7 +148,7 @@ function getFirstLeg(sellToken: string, buyToken: string): any {
     const exchange = new BalancerV2();
     const route = {
       exchange,
-      percentage: 100,
+      fraction: 1,
       params,
       fromToken: tokens[token][fromTokenIdx],
       toToken: tokens[token][toTokenIdx],
@@ -169,7 +169,7 @@ function getJarvisRoute(isRedeem: boolean, firstLeg: Route[]): Route[] {
     return [
       {
         exchange,
-        percentage: 100,
+        fraction: 1,
         params: { poolAddress: synthereums[firstLeg[0].toToken], isRedeem },
         fromToken: firstLeg[0].toToken,
         toToken: USDC,
@@ -179,7 +179,7 @@ function getJarvisRoute(isRedeem: boolean, firstLeg: Route[]): Route[] {
     return [
       {
         exchange,
-        percentage: 100,
+        fraction: 1,
         params: { poolAddress: synthereums[firstLeg[0].fromToken], isRedeem },
         fromToken: USDC,
         toToken: firstLeg[0].fromToken,
@@ -199,7 +199,7 @@ function jarvisRoutine(sellToken: string, buyToken: string) {
     if (Object.keys(synthereums).includes(sellToken)) {
       const route = {
         exchange,
-        percentage: 100,
+        fraction: 1,
         params: { poolAddress: synthereums[sellToken], isRedeem: true },
         fromToken: sellToken,
         toToken: USDC,
@@ -210,7 +210,7 @@ function jarvisRoutine(sellToken: string, buyToken: string) {
     if (Object.keys(synthereums).includes(buyToken)) {
       const route = {
         exchange,
-        percentage: 100,
+        fraction: 1,
         params: { poolAddress: synthereums[buyToken], isRedeem: false },
         fromToken: USDC,
         toToken: buyToken,

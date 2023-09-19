@@ -141,14 +141,13 @@ export function process0xData(data: any): Route[] {
   const result = [] as Route[];
   const totalTakerAmount = get0xTotalTakerAmount(data);
 
-  let percentage: number;
+  let fraction: number;
   data.orders.map((order) => {
     if (order.makerAmount == "0") {
-      percentage = 100;
+      fraction = 1;
     } else {
-      percentage =
-        (100 * parseFloat(order.takerAmount)) /
-        totalTakerAmount[order.takerToken];
+      fraction =
+        parseFloat(order.takerAmount) / totalTakerAmount[order.takerToken];
     }
 
     const exchange = zeroxExchanges[order.source];
@@ -157,7 +156,7 @@ export function process0xData(data: any): Route[] {
     paramsList.map((params) => {
       const route = {
         exchange,
-        percentage,
+        fraction,
         params,
         fromToken: params.tokenIn ? params.tokenIn : order.takerToken,
         toToken: params.tokenOut ? params.tokenOut : order.makerToken,
