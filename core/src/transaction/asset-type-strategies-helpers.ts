@@ -41,8 +41,8 @@ export function getGammaTVLs({
   assetStore: AssetStore;
   requestTree: RequestTree;
 }) {
-  const linkedAssets = asset.linkedAssets.map(
-    (linkedAsset) => assetStore.byId[linkedAsset.assetId]
+  const linkedAssets = asset.linkedAssets.map((linkedAsset) =>
+    assetStore.getAssetById(linkedAsset.assetId)
   );
 
   return linkedAssets.map((linkedAsset, i) => {

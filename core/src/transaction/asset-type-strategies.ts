@@ -5,7 +5,7 @@ import {
   Asset,
   AssetStore,
   AssetType,
-  DetailedSteps,
+  RouterOperation,
   FractionAllocation,
   FractionAllocationItem,
   LinkedAsset,
@@ -79,7 +79,7 @@ interface GenerateStepParams {
   assetStore: AssetStore;
   value: number;
   // currentAllocation: FractionAllocation;
-  currentSteps: RouterOperation;
+  routerOperation: RouterOperation;
 }
 
 
@@ -98,7 +98,7 @@ interface GetPriceParams {
 export abstract class InterfaceStrategy {
   abstract generateStep({
     assetStore,
-    currentSteps,
+    routerOperation,
   }: GenerateStepParams): Promise<RouterOperation>;
   abstract fetchPriceData({
     provider,
@@ -128,9 +128,9 @@ class NetworkTokenStrategy extends InterfaceStrategy {
     assetStore,
     value,
     currentAllocation,
-    currentSteps,
+    routerOperation,
   }: GenerateStepParams) {
-    return currentSteps;
+    return routerOperation;
   }
 }
 
@@ -142,7 +142,7 @@ class TokenStrategy extends InterfaceStrategy {
 
     const price = () =>
       getParaswapPrice({
-        sellToken: assetStore.byAddress[sellToken],
+        sellToken: assetStore.getAssetByAddress(sellToken),
         buyToken: asset,
         sellAmount,
       });
@@ -163,16 +163,16 @@ class TokenStrategy extends InterfaceStrategy {
     assetStore,
     value,
     currentAllocation,
-    currentSteps,
+    routerOperation,
   }: GenerateStepParams) {
-    return currentSteps;
+    return routerOperation;
   }
 }
 
 class GammaDepositStrategy extends InterfaceStrategy {
   fetchPriceData({ provider, assetStore, asset }: FetchPriceDataParams) {
-    const linkedAssets = asset.linkedAssets.map(
-      (linkedAsset) => assetStore.byId[linkedAsset.assetId]
+    const linkedAssets = asset.linkedAssets.map((linkedAsset) =>
+      assetStore.getAssetById(linkedAsset.assetId)
     );
     const pair = getGammaPair({ provider, address: asset.address });
 
@@ -221,9 +221,9 @@ class GammaDepositStrategy extends InterfaceStrategy {
     assetStore,
     value,
     currentAllocation,
-    currentSteps,
+    routerOperation,
   }: GenerateStepParams) {
-    return currentSteps;
+    return routerOperation;
   }
 }
 

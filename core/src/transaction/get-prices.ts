@@ -53,7 +53,7 @@ export async function getPrices({
   let fetchRequestTree: RequestTree = {};
 
   assetIds.map((assetId) => {
-    const asset = assetStore.byId[assetId];
+    const asset = assetStore.getAssetById(assetId);
 
     const fetchedData = fetchPriceData({ provider, assetStore, asset });
       fetchRequestTree = {
@@ -66,7 +66,7 @@ export async function getPrices({
   const requestTree = await fetchUnderlyingPromises(fetchRequestTree);
 
   assetIds.map((assetId) => {
-    const asset = assetStore.byId[assetId];
+    const asset = assetStore.getAssetById(assetId);
     assetPrices[assetId] = getPrice({ assetStore, asset, requestTree });
   });
 
