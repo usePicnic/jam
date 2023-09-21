@@ -8,7 +8,7 @@ import {
 } from "./types";
 import { generateSteps } from "./generate-steps";
 import { getProvider } from "utils/get-provider";
-import { calculateFractionAllocation } from "./compute-fraction-allocation";
+import { calculateFractionAllocation } from "./calculate-fraction-allocation";
 
 test("generateSteps 1", async () => {
   const assetStore = new AssetStore([
