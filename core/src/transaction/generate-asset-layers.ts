@@ -8,7 +8,7 @@ import {
 
 // Recursively constructs asset layers based on linked assets and rewards.
 // Expands the layers with the linked assets and their associated fractions.
-function constructAssetLayersRecursive({
+function generateAssetLayersRecursive({
   layerNumber,
   assetStore,
   assetId,
@@ -27,7 +27,7 @@ function constructAssetLayersRecursive({
   const asset = assetStore.getAssetById(assetId);
   if (asset.linkedAssets !== undefined) {
     for (let i = 0; i < asset.linkedAssets.length; i += 1) {
-      layers = constructAssetLayersRecursive({
+      layers = generateAssetLayersRecursive({
         layerNumber: layerNumber + 1,
         assetStore,
         assetId: asset.linkedAssets[i].assetId,
@@ -39,7 +39,7 @@ function constructAssetLayersRecursive({
 
   if (rewards.length > 0) {
     for (let i = 0; i < rewards.length; i += 1) {
-      layers = constructAssetLayersRecursive({
+      layers = generateAssetLayersRecursive({
         layerNumber: layerNumber + 1,
         assetStore,
         assetId: rewards[i].assetId,
@@ -69,7 +69,7 @@ export function getMaxLayerDepth({
   assetId: string;
   rewards?: FractionAllocationItem[];
 }) {
-  const layers = constructAssetLayersRecursive({
+  const layers = generateAssetLayersRecursive({
     layerNumber: 0,
     assetStore,
     assetId,
@@ -243,7 +243,7 @@ export function accumulateLayersUpToMax({
 
 // Constructs the overall asset layers based on a provided allocation.
 // Uses a combination of helper functions to ensure assets are organized properly in their respective layers.
-export function constructAssetLayers({
+export function generateAssetLayers({
   assetStore,
   allocation,
 }: {

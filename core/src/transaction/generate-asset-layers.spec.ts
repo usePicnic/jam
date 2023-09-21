@@ -1,8 +1,8 @@
 import { expect, test } from "vitest";
-import { constructAssetLayers } from "./construct-asset-layers";
+import { generateAssetLayers } from "./generate-asset-layers";
 import { AssetStore, AssetLayers, FractionAllocation, Asset } from "./types";
 
-test("constructAssetLayers: several assets, several layers, no rewards", () => {
+test("generateAssetLayers: several assets, several layers, no rewards", () => {
   const assetStore = new AssetStore([
     {
       id: "f9a0d8c9-7524-42ed-9188-968456afcd54",
@@ -615,7 +615,7 @@ test("constructAssetLayers: several assets, several layers, no rewards", () => {
     },
   ];
 
-  const returnedAssetLayers = constructAssetLayers({
+  const returnedAssetLayers = generateAssetLayers({
     assetStore,
     allocation,
   });
@@ -623,7 +623,7 @@ test("constructAssetLayers: several assets, several layers, no rewards", () => {
   expect(assetLayers).toMatchObject(returnedAssetLayers);
 });
 
-test("constructAssetLayers: several assets, single layer", () => {
+test("generateAssetLayers: several assets, single layer", () => {
   const assetStore = new AssetStore([
     {
       id: "054c5826-a523-45ac-b58e-4d35735279e5",
@@ -726,7 +726,7 @@ test("constructAssetLayers: several assets, single layer", () => {
     },
   ];
 
-  const returnedAssetLayers = constructAssetLayers({
+  const returnedAssetLayers = generateAssetLayers({
     assetStore,
     allocation,
   });

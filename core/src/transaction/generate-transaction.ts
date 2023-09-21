@@ -4,9 +4,9 @@ import {
   CurrentAllocation,
   FractionAllocation,
 } from "./types";
-import { constructAssetLayers } from "./construct-asset-layers";
+import { generateAssetLayers } from "./generate-asset-layers";
 import { calculateFractionAllocation } from "./calculate-fraction-allocation";
-import { computeAssetLayersDelta } from "./compute-asset-layers-delta";
+import { calculateAssetLayersDelta } from "./calculate-asset-layers-delta";
 import { getProvider } from "../utils/get-provider";
 import { generateSteps } from "./generate-steps";
 
@@ -49,19 +49,19 @@ export async function generateTransaction({
       assetStore,
     });
 
-  const currentAssetLayers = constructAssetLayers({
+  const currentAssetLayers = generateAssetLayers({
     assetStore,
     allocation: inputFractionAllocation,
   });
   console.log("currentAssetLayers", { currentAssetLayers });
 
-  const futureAssetLayers = constructAssetLayers({
+  const futureAssetLayers = generateAssetLayers({
     assetStore,
     allocation: outputAllocation,
   });
   console.log("futureAssetLayers", { futureAssetLayers });
 
-  const diff = computeAssetLayersDelta({
+  const diff = calculateAssetLayersDelta({
     currentAssetLayers,
     futureAssetLayers,
   });

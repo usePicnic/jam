@@ -1,5 +1,5 @@
 import { test, expect } from "vitest";
-import { computeAssetLayersDelta } from "./compute-asset-layers-delta";
+import { calculateAssetLayersDelta } from "./calculate-asset-layers-delta";
 import { AssetLayers } from "./types";
 
 test("computeAssetLayerDelta 1", () => {
@@ -88,7 +88,7 @@ test("computeAssetLayerDelta 1", () => {
     },
   ];
 
-  const received = computeAssetLayersDelta({
+  const received = calculateAssetLayersDelta({
     currentAssetLayers,
     futureAssetLayers,
   });
@@ -524,7 +524,7 @@ test("computeAssetLayerDelta 2", () => {
     },
   ];
 
-  const received = computeAssetLayersDelta({
+  const received = calculateAssetLayersDelta({
     currentAssetLayers,
     futureAssetLayers,
   });
@@ -623,7 +623,7 @@ test("computeAssetLayerDelta 3", () => {
     },
   ];
 
-  const received = computeAssetLayersDelta({
+  const received = calculateAssetLayersDelta({
     currentAssetLayers,
     futureAssetLayers,
   });

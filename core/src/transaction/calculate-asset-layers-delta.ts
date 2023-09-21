@@ -1,7 +1,7 @@
 import { AssetLayers, FractionAllocationItem } from "./types";
 import _ from "lodash";
 
-export function computeAssetLayersDelta({
+export function calculateAssetLayersDelta({
   currentAssetLayers,
   futureAssetLayers,
 }: {
