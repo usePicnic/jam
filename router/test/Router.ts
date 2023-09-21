@@ -6,6 +6,14 @@ import {
 } from "@nomicfoundation/hardhat-toolbox/network-helpers";
 import { BigNumberish } from "ethers";
 
+enum StoreOpType {
+  RetrieveStoreAssignValue, // 0
+  RetrieveStoreAssignCall, // 1
+  RetrieveResultAssignStore, // 2
+  RetrieveStoreAssignValueSubtract, // 3
+  RetrieveStoreAssignCallSubtract, // 4
+}
+
 describe("Router", function () {
   async function deployTestWallet() {
     const [owner] = await ethers.getSigners();
@@ -73,7 +81,12 @@ describe("Router", function () {
         stepAddress: await wmatic.getAddress(),
         stepEncodedCall: wmatic.interface.encodeFunctionData("deposit"),
         storeOperations: [
-          { storeOpType: 1, storeNumber: 0, offset: 0, fraction: 0 },
+          {
+            storeOpType: StoreOpType.RetrieveStoreAssignValue,
+            storeNumber: 0,
+            offset: 0,
+            fraction: 1000000,
+          },
         ],
       },
     ];
@@ -108,7 +121,12 @@ describe("Router", function () {
         stepAddress: await wmatic.getAddress(),
         stepEncodedCall: wmatic.interface.encodeFunctionData("deposit"),
         storeOperations: [
-          { storeOpType: 1, storeNumber: 0, offset: 0, fraction: 0 },
+          {
+            storeOpType: StoreOpType.RetrieveStoreAssignValue,
+            storeNumber: 0,
+            offset: 0,
+            fraction: 1000000,
+          },
         ],
       },
       {
@@ -179,7 +197,12 @@ describe("Router", function () {
         stepAddress: await wmatic.getAddress(),
         stepEncodedCall: wmatic.interface.encodeFunctionData("deposit"),
         storeOperations: [
-          { storeOpType: 1, storeNumber: 0, offset: 0, fraction: 0 },
+          {
+            storeOpType: StoreOpType.RetrieveStoreAssignValue,
+            storeNumber: 0,
+            offset: 0,
+            fraction: 1000000,
+          },
         ],
       },
       {
@@ -207,10 +230,10 @@ describe("Router", function () {
         ),
         storeOperations: [
           {
-            storeOpType: 3,
+            storeOpType: StoreOpType.RetrieveResultAssignStore,
             storeNumber: 1,
             offset: 32 + 32 + 32 * (2 - 1),
-            fraction: 0,
+            fraction: 1000000,
           },
         ],
       },
@@ -222,10 +245,10 @@ describe("Router", function () {
         ]),
         storeOperations: [
           {
-            storeOpType: 2,
+            storeOpType: StoreOpType.RetrieveStoreAssignCall,
             storeNumber: 1,
             offset: 4 + 32,
-            fraction: 1,
+            fraction: 1000000,
           },
         ],
       },
@@ -238,10 +261,10 @@ describe("Router", function () {
         ]),
         storeOperations: [
           {
-            storeOpType: 2,
+            storeOpType: StoreOpType.RetrieveStoreAssignCall,
             storeNumber: 1,
             offset: 4 + 32,
-            fraction: 1,
+            fraction: 1000000,
           },
         ],
       },

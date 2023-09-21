@@ -8,6 +8,26 @@ import "hardhat/console.sol";
 
 //  is IRouter
 contract Router {
+    enum StoreOpType {
+        // 0: Retrieve store and assign to value
+        // - retrieve store value at "storeNumber", multiply by "fraction" and set "value"
+        RetrieveStoreAssignValue,
+        // 1: Retrieve store and assign to encodedCall
+        // - retrieve store value at "storeNumber", multiply by "fraction" and set "offset" at "stepEncodedCall"
+        RetrieveStoreAssignCall,
+        // 2: Retrieve result and adds to store
+        // - retrieve result value at "offset" of "result" and add to "storeNumber"
+        RetrieveResultAssignStore,
+        // 3: Retrieve store, assign to value and subtract calculated value from store
+        // - retrieve store value at "storeNumber", multiply by "fraction" and set "value"
+        // - subtracts calculated value from store
+        RetrieveStoreAssignValueSubtract,
+        // 4: Retrieve store, assign to encodedCall at offset and subtract calculated value from store
+        // - retrieve store value at "storeNumber", multiply by "fraction" and set "offset" at "stepEncodedCall"
+        // - subtracts calculated value from store
+        RetrieveStoreAssignCallSubtract
+    }
+
     // This function takes the original ABI-encoded calldata `encodedCall`,
     // the offset at which you want to replace data, and the new data you want to insert.
     function modifyCallData(
@@ -44,13 +64,7 @@ contract Router {
     }
 
     struct StoreOperation {
-        uint16 storeOpType;
-        // Type 1: Retrieve store and assign to value
-        // - retrieve store value at "storeNumber", multiply by "fraction", (((subtract result))) and set "value"
-        // Type 2: Retrieve store and assign to encodedCall
-        // - retrieve store value at "storeNumber", multiply by "fraction", (((subtract result))) and set "offset" at "stepEncodedCall"
-        // Type 3: Retrieve result and assign to store
-        // - retrieve result value at "offset" of "result" and add to "storeNumber"
+        StoreOpType storeOpType;
         uint256 storeNumber;
         uint256 offset;
         uint256 fraction;
@@ -75,14 +89,49 @@ contract Router {
             bytes memory encodedCall = steps[i].stepEncodedCall;
 
             for (uint16 j = 0; j < steps[i].storeOperations.length; j++) {
-                if (steps[i].storeOperations[j].storeOpType == 1) {
-                    value = stores[steps[i].storeOperations[j].storeNumber];
-                } else if (steps[i].storeOperations[j].storeOpType == 2) {
+                uint256 storeValue = stores[
+                    steps[i].storeOperations[j].storeNumber
+                ];
+                uint256 fraction = steps[i].storeOperations[j].fraction;
+                uint256 calculatedValue = 0;
+                StoreOpType storeOpType = steps[i]
+                    .storeOperations[j]
+                    .storeOpType;
+
+                if (
+                    storeOpType == StoreOpType.RetrieveStoreAssignValue ||
+                    storeOpType == StoreOpType.RetrieveStoreAssignValueSubtract
+                ) {
+                    calculatedValue = (storeValue * fraction) / 1000000;
+                    value = calculatedValue;
+                }
+
+                if (
+                    storeOpType == StoreOpType.RetrieveStoreAssignCall ||
+                    storeOpType == StoreOpType.RetrieveStoreAssignCallSubtract
+                ) {
+                    calculatedValue = (storeValue * fraction) / 1000000;
+
                     encodedCall = modifyCallData(
                         encodedCall,
                         steps[i].storeOperations[j].offset,
-                        stores[steps[i].storeOperations[j].storeNumber]
+                        calculatedValue
                     );
+                }
+
+                if (
+                    storeOpType ==
+                    StoreOpType.RetrieveStoreAssignValueSubtract ||
+                    storeOpType == StoreOpType.RetrieveStoreAssignCallSubtract
+                ) {
+                    require(
+                        stores[steps[i].storeOperations[j].storeNumber] >=
+                            calculatedValue,
+                        "Insufficient store value"
+                    );
+                    stores[
+                        steps[i].storeOperations[j].storeNumber
+                    ] -= calculatedValue;
                 }
             }
 
@@ -104,7 +153,10 @@ contract Router {
             }
 
             for (uint16 j = 0; j < steps[i].storeOperations.length; j++) {
-                if (steps[i].storeOperations[j].storeOpType == 3) {
+                if (
+                    steps[i].storeOperations[j].storeOpType ==
+                    StoreOpType.RetrieveResultAssignStore
+                ) {
                     stores[
                         steps[i].storeOperations[j].storeNumber
                     ] += getResultOffset(
