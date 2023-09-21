@@ -8,25 +8,29 @@ import {
   AssetStore,
   RouterOperation,
   DetailedStores,
+  CurrentAllocation,
 } from "./types";
 import _ from "lodash";
 
 async function processBridges({
+  chainId,
   assetStore,
-  portfolioValue,
+  totalValue,
   currentLayer,
   // currentAllocation,
   isPositive,
-  output,
+  routerOperation,
 }: {
+  chainId: number;
   assetStore: AssetStore;
-  portfolioValue: number;
+  totalValue: number;
   currentLayer: AssetLayer;
   // currentAllocation: FractionAllocation;
   isPositive: boolean;
-  output: RouterOperation;
+  routerOperation: RouterOperation;
 }): Promise<RouterOperation> {
-  debugger;
+  let output = routerOperation;
+
   const assetIds = Object.keys(currentLayer);
   for (const assetId of assetIds) {
     const rewardsSum =
@@ -49,19 +53,19 @@ async function processBridges({
       (!isPositive && fraction < 0) ||
       (!isPositive && harvestRewards)
     ) {
-      const asset = assetStore.byId[assetId];
-      const value = portfolioValue * fraction;
+      const asset = assetStore.getAssetById(assetId);
+      const value = totalValue * fraction;
       console.log("step", { asset, fraction, rewards });
 
       const assetAllocation = currentLayer[assetId];
 
       // TODO: remove hardcoded chainId
-      output = await assetTypeStrategies[137][asset.type].generateStep({
+      output = await assetTypeStrategies[chainId][asset.type].generateStep({
         assetAllocation,
         assetStore,
         value,
         // currentAllocation,
-        currentSteps: output,
+        routerOperation: output,
       });
 
       // console.log("currentAllocation", { currentAllocation });
@@ -91,7 +95,14 @@ function splitAssets({ swapLayer }: { swapLayer: AssetLayer }) {
 type Swap = {
   from: string;
   to: string;
-  fraction: number; // TODO: should be called percentage?
+  fraction: number;
+};
+
+type SwapWithRoute = {
+  from: string;
+  to: string;
+  fraction: number;
+  routes: Route[];
 };
 
 function calculateSwaps({ swapLayer }: { swapLayer: AssetLayer }): {
@@ -112,8 +123,8 @@ function calculateSwaps({ swapLayer }: { swapLayer: AssetLayer }): {
       const to = positiveAssets[i];
 
       if (
-        updatedSwapLayer[positiveAssets[i]].fraction > 0.0001 &&
-        updatedSwapLayer[negativeAssets[j]].fraction < -0.0001
+        updatedSwapLayer[to].fraction > 0.0001 &&
+        updatedSwapLayer[from].fraction < -0.0001
       ) {
         if (updatedSwapLayer[to].fraction <= -updatedSwapLayer[from].fraction) {
           const fraction = updatedSwapLayer[to].fraction;
@@ -141,24 +152,93 @@ function calculateSwaps({ swapLayer }: { swapLayer: AssetLayer }): {
   return { swaps, updatedSwapLayer };
 }
 
-async function swapsToSRouterOperation({
+export async function buildSwapOutput({
+  swaps,
+  assetStore,
+  routerOperation,
+  currentLayer,
+  currentAllocation,
+}: {
+  swaps: SwapWithRoute[];
+  // amounts: number[];
+  assetStore: AssetStore;
+  routerOperation: RouterOperation;
+  currentLayer: AssetLayer;
+  currentAllocation: CurrentAllocation;
+  // swapBridgeContracts: { [key: string]: Contract };
+  // realAssets;
+}): Promise<RouterOperation> {
+  console.log("buildSwapOutput", { swaps: JSON.stringify(swaps) });
+
+  let output = routerOperation;
+
+  for (let i = 0; i < swaps.length; i += 1) {
+    for (let j = 0; j < swaps[i].routes.length; j += 1) {
+      // const fromAsset = assetStore.getAssetByAddress(
+      //   swaps[i].routes[j].fromToken
+      // );
+
+      // const toAsset = assetStore.getAssetByAddress(swaps[i].routes[j].toToken);
+
+      const amount = swaps[i].fraction * swaps[i].routes[j].fraction;
+      // console.log(
+      //   `builtSwapOutput i=${i} j=${j} swaps[i].fraction: ${swaps[i].fraction} swaps[i].routes[j].fraction: ${swaps[i].routes[j].fraction} amount: ${amount}`
+      // );
+
+      swaps[i].routes[j].fraction =
+        amount /
+        currentAllocation.getAssetByAddress({
+          address: swaps[i].routes[j].fromToken,
+        }).fraction;
+
+      console.log(`buildSwapOutput: fraction: %d`, swaps[i].routes[j].fraction);
+
+      currentAllocation.updateFraction({
+        address: swaps[i].routes[j].fromToken,
+        delta: -amount,
+      });
+      currentAllocation.updateFraction({
+        address: swaps[i].routes[j].toToken,
+        delta: amount,
+      });
+
+      // const bridgeName = swaps[i].routes[j].exchange.contractName;
+      // console.log(`bridgeName: ${bridgeName}`);
+
+      // const bridgeCall = await generateSwap(swapBridgeContracts, swaps[i].routes[j]);
+
+      // output = output.concat(bridgeCall);
+      swaps[i].routes[j].exchange.buildSwapOutput({
+        path: swaps[i].routes[j],
+        routerOperation: output,
+      });
+      // output = await generateSwapSteps({
+      // });
+    }
+  }
+
+  return output;
+}
+
+async function swapsToRouterOperation({
   chainId,
-  portfolioValue,
+  totalValue,
   assetStore,
   swaps,
   currentLayer,
-  // currentAllocation,
-  output,
+  currentAllocation,
+  routerOperation,
 }: {
   chainId: number;
-  portfolioValue: number;
+  totalValue: number;
   assetStore: AssetStore;
   swaps: Swap[];
   currentLayer: AssetLayer;
-  // currentAllocation: FractionAllocation;
-  output: RouterOperation;
+  currentAllocation: CurrentAllocation;
+  routerOperation: RouterOperation;
 }): Promise<RouterOperation> {
-  console.log("Running swapsToSRouterOperation");
+  let output = routerOperation;
+  console.log("Running swapsToRouterOperation");
 
   const promises: Promise<Route[]>[] = [];
   // const swapBridgeContracts = getSwapBridgeContracts(network);
@@ -166,8 +246,8 @@ async function swapsToSRouterOperation({
   for (let i = 0; i < swaps.length; i += 1) {
     console.log("swap %d", i);
 
-    const fromAsset = assetStore.byId[swaps[i].from];
-    const toAsset = assetStore.byId[swaps[i].to];
+    const fromAsset = assetStore.getFullAssetById(swaps[i].from);
+    const toAsset = assetStore.getFullAssetById(swaps[i].to);
 
     console.log(`fromAsset name: ${fromAsset.name}, type: ${fromAsset.type}`, {
       fromAsset,
@@ -176,6 +256,7 @@ async function swapsToSRouterOperation({
       toAsset,
     });
 
+    console.log(`swap ${i}`, swaps[i]);
     console.log(
       `swaps[${i}].fraction: ${
         swaps[i].fraction
@@ -187,7 +268,8 @@ async function swapsToSRouterOperation({
     // console.log(`realAssets[swaps[${i}].from]: ${realAssets[swaps[i].from]}`);
 
     const fraction = swaps[i].fraction;
-    const swapValue = portfolioValue * fraction; // TODO: This value is incorrect
+    const swapValue = totalValue * fraction;
+
     promises.push(
       calculatePath({
         chainId,
@@ -200,19 +282,32 @@ async function swapsToSRouterOperation({
 
   const paths = await Promise.all(promises);
 
-  console.log({ paths });
+  const swapsWithRoutes = _.zipWith(
+    swaps,
+    paths,
+    (swap, routes): SwapWithRoute => {
+      return { ...swap, routes };
+    }
+  );
+
+  console.log({ swapsWithRoutes: JSON.stringify(swapsWithRoutes) });
+
+  console.log({ paths: JSON.stringify(paths) });
 
   // const assetByAddressMap = getAssetByAddressMap(assetMap);
 
-  const fractions = swaps.map((swap) => swap.fraction);
+  // const fractions = swaps.map((swap) => swap.fraction);
 
-  // const output = await buildSwapOutput(
-  //   paths,
-  //   amounts,
-  //   assetByAddressMap,
-  //   swapBridgeContracts,
-  //   realAssets
-  // );
+  output = await buildSwapOutput({
+    swaps: swapsWithRoutes,
+    // amounts,
+    assetStore,
+    routerOperation,
+    // swapBridgeContracts,
+    // realAssets,
+    currentAllocation,
+    currentLayer,
+  });
 
   return output;
 }
@@ -221,31 +316,37 @@ export async function generateSteps({
   chainId,
   diff,
   assetStore,
-  portfolioValue, // TODO: check whether it's better to include a usdValue on each asset
+  totalValue, // TODO: check whether it's better to include a usdValue on each asset
+  inputAllocation,
   currentAllocation,
 }: {
   chainId: number;
   diff: AssetLayers;
   assetStore: AssetStore;
-  portfolioValue: number;
-  currentAllocation: AbsoluteAllocation;
+  totalValue: number;
+  inputAllocation: AbsoluteAllocation;
+  currentAllocation: CurrentAllocation;
 }): Promise<RouterOperation> {
   let output: RouterOperation = { steps: [], stores: new DetailedStores() };
-  for (const allocation of currentAllocation) {
+  for (const allocation of inputAllocation) {
+    const asset = assetStore.getAssetById(allocation.assetId);
+
     output.stores.findOrInitializeStoreIdx({
       assetId: allocation.assetId,
+      address: asset.address,
       value: allocation.amountStr,
     });
   }
 
   for (let i = diff.length - 1; i > 0; i -= 1) {
     output = await processBridges({
+      chainId,
       assetStore,
-      portfolioValue,
+      totalValue,
       currentLayer: diff[i],
       // currentAllocation,
       isPositive: false,
-      output,
+      routerOperation: output,
     });
   }
 
@@ -258,14 +359,14 @@ export async function generateSteps({
 
   console.log("Swaps", { swaps });
 
-  output = await swapsToSRouterOperation({
+  output = await swapsToRouterOperation({
     chainId,
-    portfolioValue,
+    totalValue,
     assetStore,
     swaps,
     currentLayer: diff[0],
-    // currentAllocation,
-    output,
+    currentAllocation,
+    routerOperation: output,
   });
 
   console.log("Post swaps output", {
@@ -275,12 +376,13 @@ export async function generateSteps({
 
   for (let i = diff.length - 1; i > 0; i -= 1) {
     output = await processBridges({
+      chainId,
       assetStore,
-      portfolioValue,
+      totalValue,
       currentLayer: diff[i],
       // currentAllocation,
       isPositive: true,
-      output,
+      routerOperation: output,
     });
   }
 

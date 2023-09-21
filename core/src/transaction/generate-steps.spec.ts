@@ -3,9 +3,12 @@ import {
   AbsoluteAllocation,
   AssetLayers,
   AssetStore,
+  CurrentAllocation,
   RouterOperation,
 } from "./types";
 import { generateSteps } from "./generate-steps";
+import { getProvider } from "utils/get-provider";
+import { calculateFractionAllocation } from "./compute-fraction-allocation";
 
 test("generateSteps 1", async () => {
   const assetStore = new AssetStore([
@@ -16,7 +19,6 @@ test("generateSteps 1", async () => {
       address: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
       color: "#2775ca",
       decimals: 6,
-      price: 1,
       logos: [
         {
           logoUri: "/asset-logos/e251ecf6-48c2-4538-afcd-fbb92424054d.png",
@@ -38,7 +40,6 @@ test("generateSteps 1", async () => {
       address: "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",
       color: "#54ae93",
       decimals: 6,
-      price: 0.9998946111079892,
       logos: [
         {
           logoUri: "/asset-logos/dfe40dda-5c96-4ff3-b773-386f1ca0868d.png",
@@ -60,7 +61,6 @@ test("generateSteps 1", async () => {
       symbol: "USDC/USDT",
       color: "#54ae93",
       decimals: 18,
-      price: 1779366626533.4192,
       address: "0xA7565DFeb16010153D3368E002Ec53CBfaf96e05",
       active: true,
       visible: false,
@@ -99,7 +99,6 @@ test("generateSteps 1", async () => {
       decimals: 18,
       address: "0xAb4E02911A7d09BC8300F39332F087d51c183038",
       active: true,
-      price: 1813987568192,
       visible: true,
       type: "beefyDeposit",
       logos: [
@@ -129,7 +128,6 @@ test("generateSteps 1", async () => {
       active: true,
       address: "0x53E0bca35eC356BD5ddDFebbD1Fc0fD03FaBad39",
       color: "#2753d8",
-      price: 6.01,
       decimals: 18,
       logos: [
         {
@@ -176,7 +174,7 @@ test("generateSteps 1", async () => {
     },
   ];
 
-  const currentAllocation: AbsoluteAllocation = [
+  const inputAllocation: AbsoluteAllocation = [
     {
       assetId: "e251ecf6-48c2-4538-afcd-fbb92424054d",
       amountStr: "100000000000000000000",
@@ -187,15 +185,39 @@ test("generateSteps 1", async () => {
     },
   ];
 
+  const chainId = 137;
+  const provider = await getProvider({ chainId });
+  await assetStore.cachePrices({
+    allocation: [
+      ...inputAllocation,
+      { assetId: "eebcd7b6-3af1-41b2-b547-b0f5b226664e", fraction: 1 },
+    ],
+    provider,
+    assetStore,
+  });
+
   const expectedSteps: RouterOperation = {
     steps: [],
     stores: [1234],
   };
 
+  const { totalValue, fractionAllocation: inputFractionAllocation } =
+    calculateFractionAllocation({
+      absoluteAllocation: inputAllocation,
+      assetStore,
+    });
+
+  const currentAllocation = new CurrentAllocation({
+    fractionAllocation: inputFractionAllocation,
+    assetStore,
+  });
+
   const received = await generateSteps({
+    chainId,
     diff,
     assetStore,
-    portfolioValue: 100,
+    totalValue,
+    inputAllocation,
     currentAllocation,
   });
 
