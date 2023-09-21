@@ -56,10 +56,10 @@ export async function getPrices({
     const asset = assetStore.getAssetById(assetId);
 
     const fetchedData = fetchPriceData({ provider, assetStore, asset });
-      fetchRequestTree = {
-        ...fetchRequestTree,
-        ...fetchedData,
-      };
+    fetchRequestTree = {
+      ...fetchRequestTree,
+      ...fetchedData,
+    };
   });
 
   // Fetching promises underneath
