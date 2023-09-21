@@ -1,3 +1,7 @@
+import { RouterOperation, StoreOperations } from "transaction/types";
+import { Route } from "./apis/api";
+import { IERC20 } from "../interfaces";
+
 const paramDict = {
   IUniswapV2: getUniswapV2Params,
   IBalancerSwap: getBalancerParams,
@@ -7,6 +11,37 @@ const paramDict = {
   IUniswapV3Swap: getUniswapV3Params,
   IDodoV2Swap: getDodoV2Params,
 };
+
+const MAGIC_REPLACER =
+  "0x22e876a8f23cf658879db6745b42ab3e944e526ad8e0eb1cad27a4cac1d0621f";
+const FRACTION_MULTIPLIER = 1000000000000000000;
+
+function getMagicOffset({
+  encodedFunctionData,
+  magicReplacer,
+}: {
+  encodedFunctionData: string;
+  magicReplacer: string;
+}): { updatedEncodedFunctionData: string; offset: number } {
+  // Convert magicReplacer to hexadecimal representation
+  // const magicReplacerHex = BigInt(magicReplacer).toString(16).padStart(64, "0");
+
+  // Locate the magic replacer within the encoded function data
+  const magicReplacerWithout0x = MAGIC_REPLACER.substring(2);
+  const indexOf = encodedFunctionData.indexOf(magicReplacerWithout0x);
+
+  // If the magic replacer is found, replace it with zeroes
+  if (indexOf === -1) {
+    throw new Error("Magic replacer not found");
+  }
+
+  const before = encodedFunctionData.substring(0, indexOf);
+  const after = encodedFunctionData.substring(indexOf + 64);
+  const zeroReplacer = "0".repeat(64);
+  const updatedEncodedFunctionData = before + zeroReplacer + after;
+
+  return { updatedEncodedFunctionData, offset: indexOf / 2 };
+}
 
 export abstract class Exchange {
   abstract name: string;
@@ -19,6 +54,14 @@ export abstract class Exchange {
   getParams(aggregator: Aggregator, data: any): ExchangeParams {
     return paramDict[this.dexInterface](aggregator, data);
   }
+
+  abstract buildSwapOutput({
+    path,
+    routerOperation,
+  }: {
+    path: Route;
+    routerOperation: RouterOperation;
+  }): RouterOperation;
 }
 export class OneInch extends Exchange {
   name = "OneInch";
@@ -153,6 +196,53 @@ class UniswapV3 extends Exchange {
   nameKyber = "uniswapv3";
   contractName = "UniswapV3SwapBridge";
   dexInterface = "IUniswapV3Swap" as DEXInterface;
+
+  buildSwapOutput({
+    path,
+    routerOperation,
+  }: {
+    path: Route;
+    routerOperation: RouterOperation;
+  }) {
+    const output = routerOperation;
+
+    const storeNumber = routerOperation.stores.findOrInitializeStoreIdx({
+      address: path.fromToken,
+    });
+
+    let stepEncodedCall = IERC20.encodeFunctionData("approve", [
+      path.params.pool,
+      MAGIC_REPLACER,
+    ]);
+
+    console.log({ MAGIC_REPLACER });
+    const { updatedEncodedFunctionData, offset } = getMagicOffset({
+      encodedFunctionData: stepEncodedCall,
+      magicReplacer: MAGIC_REPLACER,
+    });
+    stepEncodedCall = updatedEncodedFunctionData;
+
+    const storeOperations: StoreOperations[] = [
+      {
+        storeOpType: 1 << 1,
+        storeNumber,
+        offset,
+        fraction: path.fraction * FRACTION_MULTIPLIER,
+      },
+    ];
+
+    output.steps.push({
+      stepAddress: path.fromToken,
+      stepEncodedCall,
+      storeOperations,
+    });
+
+    console.log({ output });
+
+    console.log("Uniswap_V3 buildSwapOutput", { path, routerOperation });
+
+    return output;
+  }
 }
 
 export class Jarvis extends Exchange {

@@ -43,7 +43,7 @@ export class AssetStore {
       this.#byId[asset.id] = asset;
       this.#byAddress[asset.address] = asset;
     });
-}
+  }
 
   // Function that gets asset by ID, if not found throws an error
   getAssetById(assetId: string): Asset {
@@ -326,7 +326,7 @@ export class DetailedStores {
       this.stores.push(newStore);
 
       if (assetId) {
-      this.byId[assetId] = newIndex;
+        this.byId[assetId] = newIndex;
       }
       if (address) {
         this.byAddress[address] = newIndex;
