@@ -251,8 +251,16 @@ export type AssetType =
   | "beefyDeposit"
   | "gammaDeposit";
 
+export enum StoreOpType {
+  RetrieveStoreAssignValue, // 0
+  RetrieveStoreAssignCall, // 1
+  RetrieveResultAssignStore, // 2
+  RetrieveStoreAssignValueSubtract, // 3
+  RetrieveStoreAssignCallSubtract, // 4
+}
+
 export type StoreOperations = {
-  storeOpType: 1 | 2 | 3;
+  storeOpType: StoreOpType;
   storeNumber: BigNumberish;
   offset: BigNumberish;
   fraction: BigNumberish;
@@ -305,11 +313,12 @@ export class DetailedStores {
       throw new Error("Either assetId or address must be defined");
     }
 
+    const checksummedAddress = address ? getAddress(address) : undefined;
     let idx;
     if (assetId) {
       idx = this.byId[assetId];
-    } else if (address) {
-      idx = this.byAddress[address];
+    } else if (checksummedAddress) {
+      idx = this.byAddress[checksummedAddress];
     }
 
     if (idx !== undefined) {
@@ -321,15 +330,19 @@ export class DetailedStores {
       return idx;
     } else {
       const newValue = value ?? 0;
-      const newStore = new DetailedStore({ assetId, address, value: newValue });
+      const newStore = new DetailedStore({
+        assetId,
+        address: checksummedAddress,
+        value: newValue,
+      });
       const newIndex = this.stores.length;
       this.stores.push(newStore);
 
       if (assetId) {
         this.byId[assetId] = newIndex;
       }
-      if (address) {
-        this.byAddress[address] = newIndex;
+      if (checksummedAddress) {
+        this.byAddress[checksummedAddress] = newIndex;
       }
 
       return newIndex;

@@ -1,6 +1,11 @@
-import { RouterOperation, StoreOperations } from "transaction/types";
+import {
+  DetailedStep,
+  RouterOperation,
+  StoreOpType,
+} from "../transaction/types";
 import { Route } from "./apis/api";
-import { IERC20 } from "../interfaces";
+import { IERC20, ISwapRouter, UniV3Pool } from "../interfaces";
+import { Contract, Provider } from "ethers";
 
 const paramDict = {
   IUniswapV2: getUniswapV2Params,
@@ -14,33 +19,40 @@ const paramDict = {
 
 const MAGIC_REPLACER =
   "0x22e876a8f23cf658879db6745b42ab3e944e526ad8e0eb1cad27a4cac1d0621f";
-const FRACTION_MULTIPLIER = 1000000000000000000;
+const FRACTION_MULTIPLIER = 1000000;
 
 function getMagicOffset({
-  encodedFunctionData,
+  data,
   magicReplacer,
 }: {
-  encodedFunctionData: string;
+  data: string;
   magicReplacer: string;
-}): { updatedEncodedFunctionData: string; offset: number } {
-  // Convert magicReplacer to hexadecimal representation
-  // const magicReplacerHex = BigInt(magicReplacer).toString(16).padStart(64, "0");
-
+}): { data: string; offset: number } {
   // Locate the magic replacer within the encoded function data
-  const magicReplacerWithout0x = MAGIC_REPLACER.substring(2);
-  const indexOf = encodedFunctionData.indexOf(magicReplacerWithout0x);
+  const magicReplacerWithout0x = magicReplacer.substring(2);
+  const indexOf = data.indexOf(magicReplacerWithout0x);
 
-  // If the magic replacer is found, replace it with zeroes
   if (indexOf === -1) {
     throw new Error("Magic replacer not found");
   }
 
-  const before = encodedFunctionData.substring(0, indexOf);
-  const after = encodedFunctionData.substring(indexOf + 64);
+  const before = data.substring(0, indexOf);
+  const after = data.substring(indexOf + 64);
   const zeroReplacer = "0".repeat(64);
-  const updatedEncodedFunctionData = before + zeroReplacer + after;
+  const updatedData = before + zeroReplacer + after;
 
-  return { updatedEncodedFunctionData, offset: indexOf / 2 };
+  return {
+    data: updatedData,
+    offset: indexOf / 2 - 1,
+  };
+}
+
+interface BuildSwapOutputParams {
+  chainId: number;
+  walletAddress: string;
+  provider: Provider;
+  path: Route;
+  routerOperation: RouterOperation;
 }
 
 export abstract class Exchange {
@@ -56,12 +68,12 @@ export abstract class Exchange {
   }
 
   abstract buildSwapOutput({
+    chainId,
+    walletAddress,
+    provider,
     path,
     routerOperation,
-  }: {
-    path: Route;
-    routerOperation: RouterOperation;
-  }): RouterOperation;
+  }: BuildSwapOutputParams): Promise<RouterOperation>;
 }
 export class OneInch extends Exchange {
   name = "OneInch";
@@ -197,49 +209,163 @@ class UniswapV3 extends Exchange {
   contractName = "UniswapV3SwapBridge";
   dexInterface = "IUniswapV3Swap" as DEXInterface;
 
-  buildSwapOutput({
+  async buildSwapOutput({
+    chainId,
+    walletAddress,
+    provider,
     path,
     routerOperation,
-  }: {
-    path: Route;
-    routerOperation: RouterOperation;
-  }) {
+  }: BuildSwapOutputParams) {
+    // {
+    //   exchange: {
+    //     name: "Uniswap_V3",
+    //     name0x: "Uniswap_V3",
+    //     nameParaswap: "UniswapV3",
+    //     nameKyber: "uniswapv3",
+    //     contractName: "UniswapV3SwapBridge",
+    //     dexInterface: "IUniswapV3Swap",
+    //   },
+    //   fraction: 1,
+    //   params: {
+    //     tokenAddressPath: [
+    //       "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
+    //       "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+    //     ],
+    //     pool: "0x9b08288c3be4f62bbf8d1c20ac9c5e6f9467d8b7",
+    //   },
+    //   fromToken: "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
+    //   toToken: "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+    // }
     const output = routerOperation;
 
-    const storeNumber = routerOperation.stores.findOrInitializeStoreIdx({
+    const swapRouterAddress = "0xE592427A0AEce92De3Edee1F18E0157C05861564";
+    const storeNumberFrom = routerOperation.stores.findOrInitializeStoreIdx({
       address: path.fromToken,
     });
-
-    let stepEncodedCall = IERC20.encodeFunctionData("approve", [
-      path.params.pool,
-      MAGIC_REPLACER,
-    ]);
-
-    console.log({ MAGIC_REPLACER });
-    const { updatedEncodedFunctionData, offset } = getMagicOffset({
-      encodedFunctionData: stepEncodedCall,
-      magicReplacer: MAGIC_REPLACER,
+    const storeNumberTo = routerOperation.stores.findOrInitializeStoreIdx({
+      address: path.toToken,
     });
-    stepEncodedCall = updatedEncodedFunctionData;
 
-    const storeOperations: StoreOperations[] = [
-      {
-        storeOpType: 1 << 1,
-        storeNumber,
-        offset,
-        fraction: path.fraction * FRACTION_MULTIPLIER,
-      },
-    ];
+    // let approveEncodedCall = ;
+
+    const { data: approveEncodedCall, offset: approveFromOffset } =
+      getMagicOffset({
+        data: IERC20.encodeFunctionData("approve", [
+          swapRouterAddress,
+          MAGIC_REPLACER,
+        ]),
+        magicReplacer: MAGIC_REPLACER,
+      });
 
     output.steps.push({
       stepAddress: path.fromToken,
-      stepEncodedCall,
-      storeOperations,
+      stepEncodedCall: approveEncodedCall,
+      storeOperations: [
+        {
+          storeOpType: StoreOpType.RetrieveStoreAssignCall,
+          storeNumber: storeNumberFrom,
+          offset: approveFromOffset,
+          fraction: path.fraction * FRACTION_MULTIPLIER,
+        },
+      ],
     });
 
-    console.log({ output });
+    const block = await provider.getBlock("latest");
 
-    console.log("Uniswap_V3 buildSwapOutput", { path, routerOperation });
+    if (block === null) {
+      throw new Error("Failed to fetch the latest block");
+    }
+
+    if (!path.params.pool) {
+      const { data: swapEncodedCall, offset: swapFromOffset } = getMagicOffset({
+        data: ISwapRouter.encodeFunctionData("exactInput", [
+          path.params.tokenAddressPath, // path
+          walletAddress, // recipient
+          block.timestamp + 1000, // deadline
+          MAGIC_REPLACER, // amountIn
+          1, // amountOutMinimum
+        ]),
+        magicReplacer: MAGIC_REPLACER,
+      });
+
+      const { offset: swapToOffset } = getMagicOffset({
+        data: ISwapRouter.encodeFunctionResult("exactInput", [MAGIC_REPLACER]),
+        magicReplacer: MAGIC_REPLACER,
+      });
+
+      output.steps.push({
+        stepAddress: swapRouterAddress,
+        stepEncodedCall: swapEncodedCall,
+        storeOperations: [
+          {
+            storeOpType: StoreOpType.RetrieveStoreAssignCallSubtract,
+            storeNumber: storeNumberFrom,
+            offset: swapFromOffset,
+            fraction: path.fraction * FRACTION_MULTIPLIER,
+          },
+          {
+            storeOpType: StoreOpType.RetrieveResultAssignStore,
+            storeNumber: storeNumberTo,
+            offset: swapToOffset,
+            fraction: 0,
+          },
+        ],
+      });
+    } else {
+      const uniV3Pool = new Contract(path.params.pool, UniV3Pool, provider);
+
+      if (path.params.tokenAddressPath?.length !== 2) {
+        throw new Error("Uniswap_V3: tokenAddressPath must have length of 2");
+      }
+
+      const { data: swapEncodedCall, offset: swapFromOffset } = getMagicOffset({
+        data: ISwapRouter.encodeFunctionData("exactInputSingle", [
+          {
+            tokenIn: path.params.tokenAddressPath[0], // tokenIn
+            tokenOut: path.params.tokenAddressPath[1], // tokenOut
+            fee: await uniV3Pool.fee(), // fee
+            recipient: walletAddress, // recipient
+            deadline: block.timestamp + 100000, // deadline
+            amountIn: MAGIC_REPLACER, // amountIn
+            amountOutMinimum: 1, // amountOutMinimum
+            sqrtPriceLimitX96: 0, // sqrtPriceLimitX96 , max uint160
+          },
+        ]),
+        magicReplacer: MAGIC_REPLACER,
+      });
+
+      const { offset: swapToOffset } = getMagicOffset({
+        data: ISwapRouter.encodeFunctionResult("exactInputSingle", [
+          MAGIC_REPLACER,
+        ]),
+        magicReplacer: MAGIC_REPLACER,
+      });
+
+      output.steps.push({
+        stepAddress: swapRouterAddress,
+        stepEncodedCall: swapEncodedCall,
+        storeOperations: [
+          {
+            storeOpType: StoreOpType.RetrieveStoreAssignCallSubtract,
+            storeNumber: storeNumberFrom,
+            offset: swapFromOffset,
+            fraction: path.fraction * FRACTION_MULTIPLIER,
+          },
+          {
+            storeOpType: StoreOpType.RetrieveResultAssignStore,
+            storeNumber: storeNumberTo,
+            offset: swapToOffset,
+            fraction: 0,
+          },
+        ],
+      });
+    }
+
+    console.log("Uniswap_V3 buildSwapOutput", {
+      path,
+      output,
+      outputJ: JSON.stringify(output),
+    });
 
     return output;
   }

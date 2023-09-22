@@ -1,3 +1,4 @@
+import { Provider } from "ethers";
 import { Route } from "../path/apis/api";
 import { calculatePath } from "../path/calculate-path";
 import { assetTypeStrategies } from "./asset-type-strategies";
@@ -14,6 +15,7 @@ import _ from "lodash";
 
 async function processBridges({
   chainId,
+  walletAddress,
   assetStore,
   totalValue,
   currentLayer,
@@ -22,6 +24,7 @@ async function processBridges({
   routerOperation,
 }: {
   chainId: number;
+  walletAddress: string;
   assetStore: AssetStore;
   totalValue: number;
   currentLayer: AssetLayer;
@@ -153,12 +156,18 @@ function calculateSwaps({ swapLayer }: { swapLayer: AssetLayer }): {
 }
 
 export async function buildSwapOutput({
+  chainId,
+  walletAddress,
+  provider,
   swaps,
   assetStore,
   routerOperation,
   currentLayer,
   currentAllocation,
 }: {
+  chainId: number;
+  walletAddress: string;
+  provider: Provider;
   swaps: SwapWithRoute[];
   // amounts: number[];
   assetStore: AssetStore;
@@ -208,7 +217,10 @@ export async function buildSwapOutput({
       // const bridgeCall = await generateSwap(swapBridgeContracts, swaps[i].routes[j]);
 
       // output = output.concat(bridgeCall);
-      swaps[i].routes[j].exchange.buildSwapOutput({
+      output = await swaps[i].routes[j].exchange.buildSwapOutput({
+        chainId,
+        walletAddress,
+        provider,
         path: swaps[i].routes[j],
         routerOperation: output,
       });
@@ -222,6 +234,8 @@ export async function buildSwapOutput({
 
 async function swapsToRouterOperation({
   chainId,
+  walletAddress,
+  provider,
   totalValue,
   assetStore,
   swaps,
@@ -230,6 +244,8 @@ async function swapsToRouterOperation({
   routerOperation,
 }: {
   chainId: number;
+  walletAddress: string;
+  provider: Provider;
   totalValue: number;
   assetStore: AssetStore;
   swaps: Swap[];
@@ -299,6 +315,9 @@ async function swapsToRouterOperation({
   // const fractions = swaps.map((swap) => swap.fraction);
 
   output = await buildSwapOutput({
+    chainId,
+    walletAddress,
+    provider,
     swaps: swapsWithRoutes,
     // amounts,
     assetStore,
@@ -314,6 +333,8 @@ async function swapsToRouterOperation({
 
 export async function generateSteps({
   chainId,
+  walletAddress,
+  provider,
   diff,
   assetStore,
   totalValue, // TODO: check whether it's better to include a usdValue on each asset
@@ -321,6 +342,8 @@ export async function generateSteps({
   currentAllocation,
 }: {
   chainId: number;
+  walletAddress: string;
+  provider: Provider;
   diff: AssetLayers;
   assetStore: AssetStore;
   totalValue: number;
@@ -341,6 +364,7 @@ export async function generateSteps({
   for (let i = diff.length - 1; i > 0; i -= 1) {
     output = await processBridges({
       chainId,
+      walletAddress,
       assetStore,
       totalValue,
       currentLayer: diff[i],
@@ -361,6 +385,8 @@ export async function generateSteps({
 
   output = await swapsToRouterOperation({
     chainId,
+    walletAddress,
+    provider,
     totalValue,
     assetStore,
     swaps,
@@ -377,6 +403,7 @@ export async function generateSteps({
   for (let i = diff.length - 1; i > 0; i -= 1) {
     output = await processBridges({
       chainId,
+      walletAddress,
       assetStore,
       totalValue,
       currentLayer: diff[i],

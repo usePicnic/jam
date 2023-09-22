@@ -12,11 +12,13 @@ import { generateSteps } from "./generate-steps";
 
 export async function generateTransaction({
   chainId,
+  walletAddress,
   inputAllocation,
   outputAllocation,
   assetStore,
 }: {
   chainId: number;
+  walletAddress: string;
   assetStore: AssetStore;
   inputAllocation: AbsoluteAllocation;
   outputAllocation: FractionAllocation;
@@ -74,6 +76,8 @@ export async function generateTransaction({
 
   const received = await generateSteps({
     chainId,
+    walletAddress,
+    provider,
     diff,
     assetStore,
     totalValue,

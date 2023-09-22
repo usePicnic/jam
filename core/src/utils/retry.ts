@@ -40,7 +40,7 @@ function retry(promise, onRetry, maxRetries, k) {
       // otherwise, let the caller handle the error
       if (retries < maxRetries) {
         onRetry();
-        return retryWithBackoff(retries + 1);
+        return await retryWithBackoff(retries + 1);
       } else {
         console.error("Max retries reached. Bubbling the error up");
         throw e;

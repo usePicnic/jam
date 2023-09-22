@@ -95,6 +95,7 @@ test("generateTransaction basic usage", async () => {
     ],
     assetStore,
     chainId: 137,
+    walletAddress: "0x7D5dE92431EaAC58A27d3C3b8d9EfcFdda8383ab",
   });
 });
 
