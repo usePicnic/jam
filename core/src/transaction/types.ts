@@ -380,7 +380,40 @@ export class DetailedStores {
   }
 }
 
-export type RouterOperation = {
+export class RouterOperation {
   steps: DetailedStep[];
   stores: DetailedStores;
-};
+
+  constructor() {
+    this.steps = [];
+    this.stores = new DetailedStores();
+  }
+
+  getTransactionData(): {
+    steps: {
+      stepAddress: string;
+      stepEncodedCall: string;
+      storeOperations: {
+        storeOpType: BigNumberish;
+        storeNumber: BigNumberish;
+        offset: BigNumberish;
+        fraction: BigNumberish;
+      }[];
+    }[];
+    stores: BigNumberish[];
+  } {
+    return {
+      steps: this.steps.map((step) => ({
+        stepAddress: step.stepAddress,
+        stepEncodedCall: step.stepEncodedCall,
+        storeOperations: step.storeOperations.map((storeOperation) => ({
+          storeOpType: storeOperation.storeOpType,
+          storeNumber: storeOperation.storeNumber,
+          offset: storeOperation.offset,
+          fraction: storeOperation.fraction,
+        })),
+      })),
+      stores: this.stores.stores.map((store) => store.value),
+    };
+  }
+}

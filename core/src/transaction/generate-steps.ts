@@ -350,7 +350,8 @@ export async function generateSteps({
   inputAllocation: AbsoluteAllocation;
   currentAllocation: CurrentAllocation;
 }): Promise<RouterOperation> {
-  let output: RouterOperation = { steps: [], stores: new DetailedStores() };
+  let output = new RouterOperation();
+
   for (const allocation of inputAllocation) {
     const asset = assetStore.getAssetById(allocation.assetId);
 
