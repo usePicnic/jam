@@ -20,6 +20,12 @@ export interface Asset {
     symbol: string;
     color: string;
   }[];
+  maxSize?: number;
+  allowSlot?: number;
+  balanceSlot?: number;
+  callParams?: {
+    proxy?: string;
+  };
 }
 
 export type AssetWithPrice = Asset & { price: number };

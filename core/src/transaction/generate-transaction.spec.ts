@@ -52,6 +52,8 @@ test("generateTransaction basic usage", async () => {
       symbol: "WMATIC",
       type: "token",
       visible: false,
+      allowSlot: 4,
+      balanceSlot: 3,
     },
     {
       id: "e251ecf6-48c2-4538-afcd-fbb92424054d",
@@ -73,6 +75,8 @@ test("generateTransaction basic usage", async () => {
       symbol: "USDC",
       type: "token",
       visible: false,
+      allowSlot: 1,
+      balanceSlot: 0,
     },
   ]);
 
