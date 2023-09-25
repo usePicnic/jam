@@ -6,7 +6,8 @@
     "baseUrl": "src",
     "outDir": "build",
     "sourceMap": true,
-    "strict": true
+    "strict": true,
+    "resolveJsonModule": true
   },
   "include": ["src/**/*"],
   "exclude": ["build", "node_modules"]

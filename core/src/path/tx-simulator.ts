@@ -1,24 +1,10 @@
-import {
-  Contract,
-  JsonRpcProvider,
-  Provider,
-  ethers,
-  parseUnits,
-} from "ethers";
-import { Exchange, ExchangeParams, exchanges } from "./exchanges";
-import { Asset, DetailedStores, RouterOperation } from "../transaction/types";
+import { BigNumberish, Contract, JsonRpcProvider, Provider } from "ethers";
+import { Exchange, exchanges } from "./exchanges";
+import { Asset, RouterOperation } from "../transaction/types";
 import { Route, RouteAggregator, getAggregatorResults } from "./apis/api";
 import { RouterSimulator } from "../interfaces";
 import { loadConfig } from "../config/load-config";
 import { generateTokenApprovalStateDiff } from "../simulation/generate-token-approval-state-diff";
-
-async function simulateTransaction(
-  provider: JsonRpcProvider,
-  callData: any,
-  stateOverrides: any
-): Promise<string> {
-  return await provider.send("eth_call", [callData, "latest", stateOverrides]);
-}
 
 async function processTx({
   chainId,
@@ -41,6 +27,8 @@ async function processTx({
   const routerOperation = await getParams({
     chainId,
     walletAddress: config.networks[chainId].routerSimulatorAddress,
+    sellAsset,
+    amountIn,
     provider,
     routes,
   });
@@ -84,7 +72,19 @@ async function processTx({
     data: populatedTx.data,
   };
 
-  return await simulateTransaction(provider, callData, stateOverrides);
+  let ret;
+
+  try {
+    ret = await provider.send("eth_call", [callData, "latest", stateOverrides]);
+  } catch (e) {
+    console.error("Failed to simulate transaction", {
+      callData,
+      stateOverrides: JSON.stringify(stateOverrides),
+    });
+    return "0x";
+  }
+
+  return ret;
 
   // try {
   // } catch (e) {
@@ -107,7 +107,7 @@ export async function simulateTxFromAggResults({
   sellAsset: Asset;
   buyToken: string;
   sellAmount: string;
-}): Promise<string[]> {
+}): Promise<(BigNumberish | null)[]> {
   const txPromises = Object.keys(aggResults).map(async (key) => {
     try {
       const result = await processTx({
@@ -118,7 +118,7 @@ export async function simulateTxFromAggResults({
         buyToken,
       });
       if (result === "0x") {
-        return "-0x1";
+        return null;
       }
       return result;
     } catch (e) {
@@ -127,19 +127,26 @@ export async function simulateTxFromAggResults({
       }
 
       console.error("Error during transaction simulation", { error: e });
-      return "-0x1";
+      return null;
     }
   });
 
   return await Promise.all(txPromises);
 }
 
-export function pickWinnerRoute(aggResults: any, simulatedTxs: string[]) {
+export function pickWinnerRoute(
+  aggResults: RouteAggregator,
+  simulatedTxs: string[]
+) {
   let maxIndex = -1;
   let maxValue = BigInt(0);
 
   const aggKeys = Object.keys(aggResults);
   simulatedTxs.map((x, i) => {
+    if (x === null) {
+      return;
+    }
+
     const bn = BigInt(x);
     console.log("pickWinnerRoute: Simulated amount for", {
       key: aggKeys[i],
@@ -223,15 +230,24 @@ export async function simulateAndChooseRoute({
 async function getParams({
   chainId,
   provider,
+  sellAsset,
+  amountIn,
   walletAddress,
   routes,
 }: {
   chainId: number;
   provider: Provider;
+  sellAsset: Asset;
+  amountIn: string;
   walletAddress: string;
   routes: Route[];
 }): Promise<RouterOperation> {
   let routerOperation = new RouterOperation();
+  routerOperation.stores.findOrInitializeStoreIdx({
+    assetId: sellAsset.id,
+    address: sellAsset.address,
+    value: amountIn,
+  });
 
   for (const route of routes) {
     routerOperation = await route.exchange.buildSwapOutput({
