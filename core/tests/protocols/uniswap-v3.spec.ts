@@ -69,29 +69,41 @@ test("uniswap v3: WMATIC to USDC", async () => {
   expect(swappedValue).toBeGreaterThan(0);
 });
 
-// test("generateTransaction should reject empty input or output", async () => {
-//   await expect(() =>
-//     generateTransaction({
-//       inputAllocation: [
-//         {
-//           assetId: "2376e258-b097-4aa1-b1bc-e550e0049bc6",
-//           amountStr: "1000000",
-//         },
-//       ],
-//       outputAllocation: [],
-//       assetStore: {},
-//     })
-//   ).rejects.toThrow();
+test("uniswap v3: WETH to WBTC", async () => {
+  const assetStore = new AssetStore();
 
-//   await expect(() =>
-//     generateTransaction({
-//       inputAllocation: [],
-//       outputAllocation: [
-//         {
-//           assetId: "2376e258-b097-4aa1-b1bc-e550e0049bc6",
-//           percentage: 100,
-//         },
-//       ],
-//     })
-//   ).rejects.toThrow();
-// });
+  const provider = await getProvider({ chainId: 137 });
+
+  await assetStore.cachePrices({
+    allocation: [
+      { assetId: "d604439e-d464-4df5-bed1-66815b348cab", fraction: 1 },
+    ],
+    provider,
+    assetStore,
+  });
+
+  const swappedValue = await simulateAssetSwapTransaction({
+    chainId: 137,
+    routes: [
+      {
+        exchange: new UniswapV3(),
+        fraction: 1,
+        params: {
+          tokenAddressPath: [
+            "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
+            "0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6",
+          ],
+          pool: "0x50eaedb835021e4a108b7290636d62e9765cc6d7",
+        },
+        fromToken: "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
+        toToken: "0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6",
+      },
+    ],
+    sellAsset: assetStore.getAssetById("88f2647c-740e-4bbb-baed-c809302fea79"),
+    amountIn: "1000000000000000000",
+    buyToken: "0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6",
+  });
+
+  console.log({ swappedValue });
+  expect(swappedValue).toBeGreaterThan(0);
+});
