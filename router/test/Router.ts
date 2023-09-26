@@ -45,7 +45,10 @@ describe("Router", function () {
   }
 
   async function getERC20({ address }: { address: string }) {
-    const token = await ethers.getContractAt("IERC20", address);
+    const token = await ethers.getContractAt(
+      "contracts/tests/interfaces/IERC20.sol:IERC20",
+      address
+    );
 
     return { token };
   }
