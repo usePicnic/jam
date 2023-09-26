@@ -4,7 +4,7 @@ import {
   StoreOpType,
 } from "../transaction/types";
 import { Route } from "./apis/api";
-import { IERC20, ISwapRouter, UniV3Pool } from "../interfaces";
+import { IERC20, ISwapRouter, UniV3Pool, ZeroXERC20 } from "../interfaces";
 import { Contract, Provider } from "ethers";
 
 const paramDict = {
@@ -67,13 +67,15 @@ export abstract class Exchange {
     return paramDict[this.dexInterface](aggregator, data);
   }
 
-  abstract buildSwapOutput({
+  buildSwapOutput({
     chainId,
     walletAddress,
     provider,
     path,
     routerOperation,
-  }: BuildSwapOutputParams): Promise<RouterOperation>;
+  }: BuildSwapOutputParams): Promise<RouterOperation> {
+    throw new Error(`buildSwapOutput not implemented for ${this.name}`);
+  }
 }
 export class OneInch extends Exchange {
   name = "OneInch";
@@ -100,6 +102,111 @@ export class ZeroX extends Exchange {
   nameKyber = "";
   contractName = "ZeroXBridge";
   dexInterface = "IZeroXBridge" as DEXInterface;
+
+  async buildSwapOutput({
+    chainId,
+    walletAddress,
+    provider,
+    path,
+    routerOperation,
+  }: BuildSwapOutputParams) {
+    // {
+    //   fraction: 1,
+    //   exchange: {
+    //     name: "ZeroX",
+    //     name0x: "",
+    //     nameParaswap: "",
+    //     nameKyber: "",
+    //     contractName: "ZeroXBridge",
+    //     dexInterface: "IZeroXBridge",
+    //   },
+    //   fromToken: "0x553d3D295e0f695B9228246232eDF400ed3560B5",
+    //   toToken: "0xa3Fa99A148fA48D14Ed51d610c367C61876997F1",
+    //   params: {
+    //     zeroXAddress: "0xdef1c0ded9bec7f1a1670819833240f027b25eff",
+    //     approveAddress: "0xdef1c0ded9bec7f1a1670819833240f027b25eff",
+    //     data: "0x415565b0000000000000000000000000553d3d295e0f695b9228246232edf400ed3560b5000000000000000000000000a3fa99a148fa48d14ed51d610c367c61876997f10000000000000000000000000000000000000000000000000c7d713b49da00000000000000000000000000000000000000000000000000676c5f8d9cddb9b25800000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000042000000000000000000000000000000000000000000000000000000000000000140000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000038000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000553d3d295e0f695b9228246232edf400ed3560b5000000000000000000000000a3fa99a148fa48d14ed51d610c367c61876997f100000000000000000000000000000000000000000000000000000000000001400000000000000000000000000000000000000000000000000000000000000340000000000000000000000000000000000000000000000000000000000000034000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000000c7d713b49da0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003400000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000012556e69737761705633000000000000000000000000000000000000000000000000000000000000000c7d713b49da00000000000000000000000000000000000000000000000000676c5f8d9cddb9b258000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000e0000000000000000000000000e592427a0aece92de3edee1f18e0157c05861564000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000042553d3d295e0f695b9228246232edf400ed3560b5000bb82791bca1f2de4661ed88a30c99a7a9449aa841740001f4a3fa99a148fa48d14ed51d610c367c61876997f1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000e00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000002000000000000000000000000553d3d295e0f695b9228246232edf400ed3560b5000000000000000000000000eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee0000000000000000000000000000000000000000000000000000000000000000869584cd000000000000000000000000100000000000000000000000000000000000001100000000000000000000000000000000f0d0d9c4adc22a446c739b50dba221cf",
+    //   },
+    // }
+    const output = routerOperation;
+
+    const storeNumberFrom = routerOperation.stores.findOrInitializeStoreIdx({
+      address: path.fromToken,
+    });
+    const storeNumberTo = routerOperation.stores.findOrInitializeStoreIdx({
+      address: path.toToken,
+    });
+
+    const { data: approveEncodedCall, offset: approveFromOffset } =
+      getMagicOffset({
+        data: IERC20.encodeFunctionData("approve", [
+          path.params.approveAddress,
+          MAGIC_REPLACER,
+        ]),
+        magicReplacer: MAGIC_REPLACER,
+      });
+
+    output.steps.push({
+      stepAddress: path.fromToken,
+      stepEncodedCall: approveEncodedCall,
+      storeOperations: [
+        {
+          storeOpType: StoreOpType.RetrieveStoreAssignCall,
+          storeNumber: storeNumberFrom,
+          offset: approveFromOffset,
+          fraction: path.fraction * FRACTION_MULTIPLIER,
+        },
+      ],
+    });
+
+    const decodedTransformERC20 = ZeroXERC20.decodeFunctionData(
+      "transformERC20",
+      path.params.data
+    );
+
+    const { data: swapEncodedCall, offset: swapFromOffset } = getMagicOffset({
+      data: ZeroXERC20.encodeFunctionData("transformERC20", [
+        path.fromToken, // inputToken
+        path.toToken, // outputToken
+        MAGIC_REPLACER, // inputTokenAmount
+        1, // minOutputTokenAmount
+        decodedTransformERC20[4], // transformations
+      ]),
+      magicReplacer: MAGIC_REPLACER,
+    });
+
+    const { offset: swapToOffset } = getMagicOffset({
+      data: ZeroXERC20.encodeFunctionResult("transformERC20", [MAGIC_REPLACER]),
+      magicReplacer: MAGIC_REPLACER,
+    });
+
+    output.steps.push({
+      stepAddress: path.params.zeroXAddress as string,
+      stepEncodedCall: swapEncodedCall,
+      storeOperations: [
+        {
+          storeOpType: StoreOpType.RetrieveStoreAssignCallSubtract,
+          storeNumber: storeNumberFrom,
+          offset: swapFromOffset,
+          fraction: path.fraction * FRACTION_MULTIPLIER,
+        },
+        {
+          storeOpType: StoreOpType.RetrieveResultAssignStore,
+          storeNumber: storeNumberTo,
+          offset: swapToOffset,
+          fraction: 0,
+        },
+      ],
+    });
+
+    console.log("ZeroX buildSwapOutput", {
+      path,
+      output,
+      outputJ: JSON.stringify(output),
+    });
+
+    return output;
+  }
 }
 
 export class QuickSwap extends Exchange {
