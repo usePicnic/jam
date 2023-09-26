@@ -1,6 +1,6 @@
 import { test, expect } from "vitest";
-import { calculateAssetLayersDelta } from "./calculate-asset-layers-delta";
-import { AssetLayers } from "./types";
+import { calculateAssetLayersDelta } from "src/transaction/calculate-asset-layers-delta";
+import { AssetLayers } from "src/transaction/types";
 
 test("computeAssetLayerDelta 1", () => {
   const currentAssetLayers = [

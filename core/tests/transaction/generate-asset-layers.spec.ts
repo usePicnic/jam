@@ -1,6 +1,11 @@
 import { expect, test } from "vitest";
-import { generateAssetLayers } from "./generate-asset-layers";
-import { AssetStore, AssetLayers, FractionAllocation, Asset } from "./types";
+import { generateAssetLayers } from "src/transaction/generate-asset-layers";
+import {
+  AssetStore,
+  AssetLayers,
+  FractionAllocation,
+  Asset,
+} from "src/transaction/types";
 
 test("generateAssetLayers: several assets, several layers, no rewards", () => {
   const assetStore = new AssetStore([

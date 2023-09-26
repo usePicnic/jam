@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
-import { getPrices } from "./get-prices";
-import { Asset, AssetStore } from "./types";
-import { getProvider } from "../utils/get-provider";
+import { getPrices } from "src/transaction/get-prices";
+import { Asset, AssetStore } from "src/transaction/types";
+import { getProvider } from "src/utils/get-provider";
 
 test("network token", async () => {
   const assetStore = new AssetStore([
