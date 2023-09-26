@@ -4,7 +4,13 @@ import {
   StoreOpType,
 } from "../transaction/types";
 import { Route } from "./apis/api";
-import { IERC20, ISwapRouter, UniV3Pool, ZeroXERC20 } from "../interfaces";
+import {
+  IERC20,
+  ISwapRouter,
+  IUniswapV2Router02,
+  UniV3Pool,
+  ZeroXERC20,
+} from "../interfaces";
 import { Contract, Provider } from "ethers";
 
 const paramDict = {
@@ -209,58 +215,278 @@ export class ZeroX extends Exchange {
   }
 }
 
-export class QuickSwap extends Exchange {
+export abstract class UniswapV2BasedExchange extends Exchange {
+  // Common properties and methods here
+  protected async buildUniswapV2SwapOutput({
+    chainId,
+    walletAddress,
+    provider,
+    path,
+    routerOperation,
+    routerAddress,
+  }: BuildSwapOutputParams & { routerAddress: string }) {
+    // {
+    //   exchange: {
+    //     name: "QuickSwap",
+    //     name0x: "QuickSwap",
+    //     nameParaswap: "QuickSwap",
+    //     nameKyber: "quickswap",
+    //     contractName: "QuickswapSwapBridge",
+    //     dexInterface: "IUniswapV2",
+    //   },
+    //   fraction: 0.05,
+    //   params: {
+    //     path: [
+    //       "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+    //       "0xa3fa99a148fa48d14ed51d610c367c61876997f1",
+    //     ],
+    //   },
+    //   fromToken: "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+    //   toToken: "0xa3fa99a148fa48d14ed51d610c367c61876997f1",
+    // }
+    const output = routerOperation;
+
+    const storeNumberFrom = routerOperation.stores.findOrInitializeStoreIdx({
+      address: path.fromToken,
+    });
+    const storeNumberTo = routerOperation.stores.findOrInitializeStoreIdx({
+      address: path.toToken,
+    });
+
+    const { data: approveEncodedCall, offset: approveFromOffset } =
+      getMagicOffset({
+        data: IERC20.encodeFunctionData("approve", [
+          routerAddress,
+          MAGIC_REPLACER,
+        ]),
+        magicReplacer: MAGIC_REPLACER,
+      });
+
+    output.steps.push({
+      stepAddress: path.fromToken,
+      stepEncodedCall: approveEncodedCall,
+      storeOperations: [
+        {
+          storeOpType: StoreOpType.RetrieveStoreAssignCall,
+          storeNumber: storeNumberFrom,
+          offset: approveFromOffset,
+          fraction: path.fraction * FRACTION_MULTIPLIER,
+        },
+      ],
+    });
+
+    const block = await provider.getBlock("latest");
+
+    if (block === null) {
+      throw new Error("Failed to fetch the latest block");
+    }
+
+    const { data: swapEncodedCall, offset: swapFromOffset } = getMagicOffset({
+      data: IUniswapV2Router02.encodeFunctionData("swapExactTokensForTokens", [
+        MAGIC_REPLACER, // amountIn
+        1, // amountOutMin
+        path.params.path, // path
+        walletAddress, // to
+        block.timestamp + 1000, // deadline
+      ]),
+      magicReplacer: MAGIC_REPLACER,
+    });
+
+    const { offset: swapToOffset } = getMagicOffset({
+      data: IUniswapV2Router02.encodeFunctionResult(
+        "swapExactTokensForTokens",
+        [
+          path.params.path.map((_, index) =>
+            index === path.params.path.length - 1 ? MAGIC_REPLACER : 0
+          ),
+        ]
+      ),
+      magicReplacer: MAGIC_REPLACER,
+    });
+
+    output.steps.push({
+      stepAddress: routerAddress,
+      stepEncodedCall: swapEncodedCall,
+      storeOperations: [
+        {
+          storeOpType: StoreOpType.RetrieveStoreAssignCallSubtract,
+          storeNumber: storeNumberFrom,
+          offset: swapFromOffset,
+          fraction: path.fraction * FRACTION_MULTIPLIER,
+        },
+        {
+          storeOpType: StoreOpType.RetrieveResultAssignStore,
+          storeNumber: storeNumberTo,
+          offset: swapToOffset,
+          fraction: 0,
+        },
+      ],
+    });
+
+    console.log("ZeroX buildSwapOutput", {
+      path,
+      output,
+      outputJ: JSON.stringify(output),
+    });
+
+    return output;
+  }
+}
+
+export class QuickSwap extends UniswapV2BasedExchange {
   name = "QuickSwap";
   name0x = "QuickSwap";
   nameParaswap = "QuickSwap";
   nameKyber = "quickswap";
   contractName = "QuickswapSwapBridge";
   dexInterface = "IUniswapV2" as DEXInterface;
+
+  async buildSwapOutput({
+    chainId,
+    walletAddress,
+    provider,
+    path,
+    routerOperation,
+  }: BuildSwapOutputParams) {
+    return this.buildUniswapV2SwapOutput({
+      routerAddress: "0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff",
+      chainId,
+      walletAddress,
+      provider,
+      path,
+      routerOperation,
+    });
+  }
 }
 
-export class SushiSwap extends Exchange {
+export class SushiSwap extends UniswapV2BasedExchange {
   name = "SushiSwap";
   name0x = "SushiSwap";
   nameParaswap = "SushiSwap";
   nameKyber = "sushiswap";
   contractName = "SushiSwapBridge";
   dexInterface = "IUniswapV2" as DEXInterface;
+
+  async buildSwapOutput({
+    chainId,
+    walletAddress,
+    provider,
+    path,
+    routerOperation,
+  }: BuildSwapOutputParams) {
+    return this.buildUniswapV2SwapOutput({
+      routerAddress: "0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506",
+      chainId,
+      walletAddress,
+      provider,
+      path,
+      routerOperation,
+    });
+  }
 }
 
-export class ApeSwap extends Exchange {
+export class ApeSwap extends UniswapV2BasedExchange {
   name = "ApeSwap";
   name0x = "ApeSwap";
   nameParaswap = "ApeSwap";
   nameKyber = "apeswap";
   contractName = "ApeSwapBridge";
   dexInterface = "IUniswapV2" as DEXInterface;
+
+  async buildSwapOutput({
+    chainId,
+    walletAddress,
+    provider,
+    path,
+    routerOperation,
+  }: BuildSwapOutputParams) {
+    return this.buildUniswapV2SwapOutput({
+      routerAddress: "0xC0788A3aD43d79aa53B09c2EaCc313A787d1d607",
+      chainId,
+      walletAddress,
+      provider,
+      path,
+      routerOperation,
+    });
+  }
 }
 
-export class Dfyn extends Exchange {
+export class Dfyn extends UniswapV2BasedExchange {
   name = "Dfyn";
   name0x = "Dfyn";
   nameParaswap = "Dfyn";
   nameKyber = "dfyn";
   contractName = "DfynSwapBridge";
   dexInterface = "IUniswapV2" as DEXInterface;
+
+  async buildSwapOutput({
+    chainId,
+    walletAddress,
+    provider,
+    path,
+    routerOperation,
+  }: BuildSwapOutputParams) {
+    return this.buildUniswapV2SwapOutput({
+      routerAddress: "0xA102072A4C07F06EC3B4900FDC4C7B80b6c57429",
+      chainId,
+      walletAddress,
+      provider,
+      path,
+      routerOperation,
+    });
+  }
 }
 
-export class MMFSwap extends Exchange {
+export class MMFSwap extends UniswapV2BasedExchange {
   name = "MMFSwap";
   name0x = "";
   nameParaswap = "";
   nameKyber = "mmf";
   contractName = "MMFSwapBridge";
   dexInterface = "IUniswapV2" as DEXInterface;
+
+  async buildSwapOutput({
+    chainId,
+    walletAddress,
+    provider,
+    path,
+    routerOperation,
+  }: BuildSwapOutputParams) {
+    return this.buildUniswapV2SwapOutput({
+      routerAddress: "0x51aBA405De2b25E5506DeA32A6697F450cEB1a17",
+      chainId,
+      walletAddress,
+      provider,
+      path,
+      routerOperation,
+    });
+  }
 }
 
-export class MeshSwap extends Exchange {
+export class MeshSwap extends UniswapV2BasedExchange {
   name = "MeshSwap";
   name0x = "MeshSwap";
   nameParaswap = "";
   nameKyber = "";
   contractName = "MeshSwapBridge";
   dexInterface = "IUniswapV2" as DEXInterface;
+
+  async buildSwapOutput({
+    chainId,
+    walletAddress,
+    provider,
+    path,
+    routerOperation,
+  }: BuildSwapOutputParams) {
+    return this.buildUniswapV2SwapOutput({
+      routerAddress: "0x10f4A785F458Bc144e3706575924889954946639",
+      chainId,
+      walletAddress,
+      provider,
+      path,
+      routerOperation,
+    });
+  }
 }
 
 export class DodoV2 extends Exchange {
