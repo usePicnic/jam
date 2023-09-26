@@ -102,7 +102,7 @@ export class ZeroX extends Exchange {
   dexInterface = "IZeroXBridge" as DEXInterface;
 }
 
-class QuickSwap extends Exchange {
+export class QuickSwap extends Exchange {
   name = "QuickSwap";
   name0x = "QuickSwap";
   nameParaswap = "QuickSwap";
@@ -111,7 +111,7 @@ class QuickSwap extends Exchange {
   dexInterface = "IUniswapV2" as DEXInterface;
 }
 
-class SushiSwap extends Exchange {
+export class SushiSwap extends Exchange {
   name = "SushiSwap";
   name0x = "SushiSwap";
   nameParaswap = "SushiSwap";
@@ -120,7 +120,7 @@ class SushiSwap extends Exchange {
   dexInterface = "IUniswapV2" as DEXInterface;
 }
 
-class ApeSwap extends Exchange {
+export class ApeSwap extends Exchange {
   name = "ApeSwap";
   name0x = "ApeSwap";
   nameParaswap = "ApeSwap";
@@ -129,7 +129,7 @@ class ApeSwap extends Exchange {
   dexInterface = "IUniswapV2" as DEXInterface;
 }
 
-class Dfyn extends Exchange {
+export class Dfyn extends Exchange {
   name = "Dfyn";
   name0x = "Dfyn";
   nameParaswap = "Dfyn";
@@ -138,7 +138,7 @@ class Dfyn extends Exchange {
   dexInterface = "IUniswapV2" as DEXInterface;
 }
 
-class MMFSwap extends Exchange {
+export class MMFSwap extends Exchange {
   name = "MMFSwap";
   name0x = "";
   nameParaswap = "";
@@ -147,7 +147,7 @@ class MMFSwap extends Exchange {
   dexInterface = "IUniswapV2" as DEXInterface;
 }
 
-class MeshSwap extends Exchange {
+export class MeshSwap extends Exchange {
   name = "MeshSwap";
   name0x = "MeshSwap";
   nameParaswap = "";
@@ -156,7 +156,7 @@ class MeshSwap extends Exchange {
   dexInterface = "IUniswapV2" as DEXInterface;
 }
 
-class DodoV2 extends Exchange {
+export class DodoV2 extends Exchange {
   name = "DODO_V2";
   name0x = "DODO_V2";
   nameParaswap = "DODOV2";
@@ -174,7 +174,7 @@ export class BalancerV2 extends Exchange {
   dexInterface = "IBalancerSwap" as DEXInterface;
 }
 
-class KyberDMM extends Exchange {
+export class KyberDMM extends Exchange {
   name = "KyberDMM";
   name0x = "KyberDMM";
   nameParaswap = "KyberDmm";
@@ -192,7 +192,7 @@ export class Curve extends Exchange {
   dexInterface = "ICurveSwap" as DEXInterface;
 }
 
-class CurveV2 extends Exchange {
+export class CurveV2 extends Exchange {
   name = "Curve_V2";
   name0x = "Curve_V2";
   nameParaswap = "CurveV2";
@@ -201,7 +201,7 @@ class CurveV2 extends Exchange {
   dexInterface = "ICurveV2Swap" as DEXInterface;
 }
 
-class UniswapV3 extends Exchange {
+export class UniswapV3 extends Exchange {
   name = "Uniswap_V3";
   name0x = "Uniswap_V3";
   nameParaswap = "UniswapV3";

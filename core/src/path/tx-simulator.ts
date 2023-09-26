@@ -6,7 +6,7 @@ import { RouterSimulator } from "../interfaces";
 import { loadConfig } from "../config/load-config";
 import { generateTokenApprovalStateDiff } from "../simulation/generate-token-approval-state-diff";
 
-async function processTx({
+export async function simulateAssetSwapTransaction({
   chainId,
   routes,
   sellAsset,
@@ -18,7 +18,7 @@ async function processTx({
   sellAsset: Asset;
   amountIn: string;
   buyToken: string;
-}): Promise<string> {
+}): Promise<BigNumberish | null> {
   const provider = new JsonRpcProvider(
     `https://polygon-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_KEY}`
   );
@@ -72,19 +72,20 @@ async function processTx({
     data: populatedTx.data,
   };
 
-  let ret;
-
   try {
-    ret = await provider.send("eth_call", [callData, "latest", stateOverrides]);
+    const ret = await provider.send("eth_call", [
+      callData,
+      "latest",
+      stateOverrides,
+    ]);
+    return BigInt(ret);
   } catch (e) {
     console.error("Failed to simulate transaction", {
       callData,
       stateOverrides: JSON.stringify(stateOverrides),
     });
-    return "0x";
+    return null;
   }
-
-  return ret;
 
   // try {
   // } catch (e) {
@@ -110,16 +111,13 @@ export async function simulateTxFromAggResults({
 }): Promise<(BigNumberish | null)[]> {
   const txPromises = Object.keys(aggResults).map(async (key) => {
     try {
-      const result = await processTx({
+      const result = await simulateAssetSwapTransaction({
         chainId,
         routes: aggResults[key],
         sellAsset,
         amountIn: sellAmount,
         buyToken,
       });
-      if (result === "0x") {
-        return null;
-      }
       return result;
     } catch (e) {
       if (e.message.includes("Asset allowSlot or balanceSlot are undefined")) {
@@ -136,8 +134,8 @@ export async function simulateTxFromAggResults({
 
 export function pickWinnerRoute(
   aggResults: RouteAggregator,
-  simulatedTxs: string[]
-) {
+  simulatedTxs: (BigNumberish | null)[]
+): Route[] {
   let maxIndex = -1;
   let maxValue = BigInt(0);
 
@@ -165,7 +163,7 @@ export function pickWinnerRoute(
   }
 
   const winnerAgg = aggKeys[maxIndex];
-  console.log("pickWinnerRoute: winnerAgg", winnerAgg);
+  console.log("pickWinnerRoute", { winnerAgg });
   return aggResults[winnerAgg];
 }
 

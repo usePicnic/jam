@@ -13,19 +13,17 @@ export interface Asset {
   type: AssetType;
   visible: boolean;
   linkedAssets?: LinkedAsset[];
-  rawLogoUri?: string;
-  logos?: {
-    logoUri: string;
-    name: string;
-    symbol: string;
-    color: string;
-  }[];
   maxSize?: number;
   allowSlot?: number;
   balanceSlot?: number;
-  callParams?: {
-    proxy?: string;
-  };
+  callParams?: any;
+  // rawLogoUri?: string;
+  // logos?: {
+  //   logoUri: string;
+  //   name: string;
+  //   symbol: string;
+  //   color: string;
+  // }[];
 }
 
 export type AssetWithPrice = Asset & { price: number };
@@ -40,12 +38,15 @@ export class AssetStore {
   #byAddress: { [key: string]: Asset };
   #prices: { [key: string]: number };
 
-  constructor(assets: Asset[]) {
+  constructor(assets?: Asset[]) {
     this.#byId = {};
     this.#byAddress = {};
     this.#prices = {};
 
-    assets.forEach((asset) => {
+    const definiteAssets: Asset[] =
+      assets ?? require("../../../data/assets.json");
+
+    definiteAssets.forEach((asset) => {
       this.#byId[asset.id] = asset;
       this.#byAddress[asset.address] = asset;
     });
