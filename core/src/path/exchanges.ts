@@ -8,6 +8,7 @@ import {
   IERC20,
   ISwapRouter,
   IUniswapV2Router02,
+  IParaswap,
   UniV3Pool,
   ZeroXERC20,
 } from "../interfaces";
@@ -99,6 +100,201 @@ export class Paraswap extends Exchange {
   nameKyber = "";
   contractName = "ParaswapBridge";
   dexInterface = "IParaswapBridge" as DEXInterface;
+
+  async buildSwapOutput({
+    chainId,
+    walletAddress,
+    provider,
+    path,
+    routerOperation,
+  }: BuildSwapOutputParams) {
+    // {
+    //   fraction: 1,
+    //   exchange: {
+    //     name: "Paraswap",
+    //     name0x: "",
+    //     nameParaswap: "",
+    //     nameKyber: "",
+    //     contractName: "ParaswapBridge",
+    //     dexInterface: "IParaswapBridge",
+    //   },
+    //   fromToken: "0x553d3D295e0f695B9228246232eDF400ed3560B5",
+    //   toToken: "0xa3Fa99A148fA48D14Ed51d610c367C61876997F1",
+    //   params: {
+    //     paraswapAddress: "0xDEF171Fe48CF0115B1d80b88dc8eAB59176FEe57",
+    //     approveAddress: "0x216b4b4ba9f3e719726886d34a177484278bfcae",
+    //     data: "0xa94e78ef0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000553d3d295e0f695b9228246232edf400ed3560b50000000000000000000000000000000000000000000000000de0b6b3a7640000000000000000000000000000000000000000000000000073a16aa46d6d203461000000000000000000000000000000000000000000000073a16aa46d6d20346100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000160000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000b40000000000000000000000000000000000000000000000000000000006513856698402793e9c2460dafebf2cbfd0a94e9000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000003200000000000000000000000002791bca1f2de4661ed88a30c99a7a9449aa841740000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000020000000000000000000000000e44769f42e1e9592f86b82f206407a8f7c84b4ed00000000000000000000000000000000000000000000000000000000000027100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000d000000000000000000000000e592427a0aece92de3edee1f18e0157c05861564000000000000000000000000000000000000000000000000000000000000271000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000651c6b86000000000000000000000000000000000000000000000000000000000000002b553d3d295e0f695b9228246232edf400ed3560b5000bb82791bca1f2de4661ed88a30c99a7a9449aa84174000000000000000000000000000000000000000000000000000000000000000000a3fa99a148fa48d14ed51d610c367c61876997f10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000020000000000000000000000000e44769f42e1e9592f86b82f206407a8f7c84b4ed0000000000000000000000000000000000000000000000000000000000002710000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000001c0000000000000000000000000000000000000000000000000000000000000000d000000000000000000000000e592427a0aece92de3edee1f18e0157c0586156400000000000000000000000000000000000000000000000000000000000024b800000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000651c6b86000000000000000000000000000000000000000000000000000000000000002b2791bca1f2de4661ed88a30c99a7a9449aa841740001f4a3fa99a148fa48d14ed51d610c367c61876997f10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000009000000000000000000000000ba12222222228d8ba445958a75a0704d566bf2c8000000000000000000000000000000000000000000000000000000000000025800000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002e0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000def171fe48cf0115b1d80b88dc8eab59176fee570000000000000000000000000000000000000000000000000000000000000000000000000000000000000000def171fe48cf0115b1d80b88dc8eab59176fee5700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000260ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000002006df3b2bbb68adc8b0e302443692037ed9f91b42000000000000000000000012000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000006cb96b300000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000020000000000000000000000002791bca1f2de4661ed88a30c99a7a9449aa84174000000000000000000000000a3fa99a148fa48d14ed51d610c367c61876997f100000000000000000000000000000000000000000000000000000000000000027fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0000000000000000000000000000000000000000000000000000000000000000",
+    //   },
+    // }
+    const output = routerOperation;
+
+    const storeNumberFrom = routerOperation.stores.findOrInitializeStoreIdx({
+      address: path.fromToken,
+    });
+    const storeNumberTo = routerOperation.stores.findOrInitializeStoreIdx({
+      address: path.toToken,
+    });
+
+    const { data: approveEncodedCall, offset: approveFromOffset } =
+      getMagicOffset({
+        data: IERC20.encodeFunctionData("approve", [
+          path.params.approveAddress,
+          MAGIC_REPLACER,
+        ]),
+        magicReplacer: MAGIC_REPLACER,
+      });
+
+    output.steps.push({
+      stepAddress: path.fromToken,
+      stepEncodedCall: approveEncodedCall,
+      storeOperations: [
+        {
+          storeOpType: StoreOpType.RetrieveStoreAssignCall,
+          storeNumber: storeNumberFrom,
+          offset: approveFromOffset,
+          fraction: path.fraction * FRACTION_MULTIPLIER,
+        },
+      ],
+    });
+
+    const decodedData = IParaswap.parseTransaction({
+      data: path.params.data as string,
+    });
+
+    let swapEncodedCall: string;
+    let swapFromOffset: number;
+    let swapToOffset: number;
+
+    const block = await provider.getBlock("latest");
+
+    if (block === null) {
+      throw new Error("Failed to fetch the latest block");
+    }
+
+    if (decodedData?.name === "megaSwap") {
+      const { data, offset: fromOffset } = getMagicOffset({
+        data: IParaswap.encodeFunctionData("megaSwap", [
+          [
+            path.fromToken, // fromToken
+            MAGIC_REPLACER, // fromAmount
+            decodedData.args[0].toAmount, // toAmount
+            decodedData.args[0].expectedAmount, // expectedAmount
+            walletAddress, // beneficiary
+            decodedData.args[0].path, // path
+            decodedData.args[0].partner, // partner
+            decodedData.args[0].feePercent, // feePercent
+            decodedData.args[0].permit, // permit
+            block.timestamp + 1000, // deadline
+            decodedData.args[0].uuid, // uuid
+          ],
+        ]),
+        magicReplacer: MAGIC_REPLACER,
+      });
+
+      console.log({
+        fromToken: path.fromToken, // fromToken
+        fromAmount: MAGIC_REPLACER, // fromAmount
+        toAmount: decodedData.args[0].toAmount, // toAmount
+        expectedAmount: decodedData.args[0].expectedAmount, // expectedAmount
+        beneficiary: walletAddress, // beneficiary
+        path: decodedData.args[0].path, // path
+        partner: decodedData.args[0].partner, // partner
+        feePercent: decodedData.args[0].feePercent, // feePercent
+        permit: decodedData.args[0].permit, // permit
+        deadline: block.timestamp + 1000, // deadline
+        uuid: decodedData.args[0].uuid, // uuid
+      });
+
+      swapEncodedCall = data;
+      swapFromOffset = fromOffset;
+
+      const { offset: toOffset } = getMagicOffset({
+        data: IParaswap.encodeFunctionResult("megaSwap", [MAGIC_REPLACER]),
+        magicReplacer: MAGIC_REPLACER,
+      });
+
+      swapToOffset = toOffset;
+    } else if (decodedData?.name === "multiSwap") {
+      console.log({
+        decodedDataArgs: decodedData.args,
+        decodedDataArgs0: decodedData.args[0],
+        decodedDataArgs00: decodedData.args[0][0],
+        decodedDataArgs0FromToken: decodedData.args[0].fromToken,
+        decodedDataArgs0ToAmount: decodedData.args[0].toAmount,
+      });
+      const { data, offset: fromOffset } = getMagicOffset({
+        data: IParaswap.encodeFunctionData("multiSwap", [
+          [
+            path.fromToken, // fromToken
+            MAGIC_REPLACER, // fromAmount
+            decodedData.args[0].toAmount, // toAmount --> o quanto vai reverter se ficar abaixo do toAmount (setar pra 1) (minAmountOut)
+            decodedData.args[0].expectedAmount, // expectedAmount --> (setar pra infinito)
+            walletAddress, // beneficiary
+            decodedData.args[0].path, // path
+            decodedData.args[0].partner, // partner
+            decodedData.args[0].feePercent, // feePercent
+            decodedData.args[0].permit, // permit
+            block.timestamp + 1000, // deadline
+            decodedData.args[0].uuid, // uuid
+          ],
+        ]),
+        magicReplacer: MAGIC_REPLACER,
+      });
+
+      console.log({
+        fromToken: path.fromToken, // fromToken
+        fromAmount: MAGIC_REPLACER, // fromAmount
+        toAmount: decodedData.args[0].toAmount, // toAmount
+        expectedAmount: decodedData.args[0].expectedAmount, // expectedAmount
+        beneficiary: walletAddress, // beneficiary
+        path: decodedData.args[0].path, // path
+        partner: decodedData.args[0].partner, // partner
+        feePercent: decodedData.args[0].feePercent, // feePercent
+        permit: decodedData.args[0].permit, // permit
+        deadline: block.timestamp + 1000, // deadline
+        uuid: decodedData.args[0].uuid, // uuid
+      });
+
+      swapEncodedCall = data;
+      swapFromOffset = fromOffset;
+
+      const { offset: toOffset } = getMagicOffset({
+        data: IParaswap.encodeFunctionResult("multiSwap", [MAGIC_REPLACER]),
+        magicReplacer: MAGIC_REPLACER,
+      });
+
+      swapToOffset = toOffset;
+    } else {
+      throw new Error(`Paraswap: unimplemented function ${decodedData?.name}`);
+    }
+
+    output.steps.push({
+      stepAddress: path.params.paraswapAddress as string,
+      stepEncodedCall: swapEncodedCall,
+      storeOperations: [
+        {
+          storeOpType: StoreOpType.RetrieveStoreAssignCallSubtract,
+          storeNumber: storeNumberFrom,
+          offset: swapFromOffset,
+          fraction: path.fraction * FRACTION_MULTIPLIER,
+        },
+        {
+          storeOpType: StoreOpType.RetrieveResultAssignStore,
+          storeNumber: storeNumberTo,
+          offset: swapToOffset,
+          fraction: 0,
+        },
+      ],
+    });
+
+    console.log("Paraswap buildSwapOutput", {
+      path,
+      output,
+      outputJ: JSON.stringify(output),
+    });
+
+    return output;
+  }
 }
 
 export class ZeroX extends Exchange {
