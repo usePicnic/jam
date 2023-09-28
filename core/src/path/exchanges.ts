@@ -2,36 +2,11 @@ import { RouterOperation, StoreOpType } from "../transaction/types";
 import { Route } from "./apis/api";
 import { IERC20, IParaswap, ZeroXERC20 } from "../interfaces";
 import { Provider } from "ethers";
-
-const MAGIC_REPLACER =
-  "0x22e876a8f23cf658879db6745b42ab3e944e526ad8e0eb1cad27a4cac1d0621f";
-const FRACTION_MULTIPLIER = 1000000;
-
-function getMagicOffset({
-  data,
-  magicReplacer,
-}: {
-  data: string;
-  magicReplacer: string;
-}): { data: string; offset: number } {
-  // Locate the magic replacer within the encoded function data
-  const magicReplacerWithout0x = magicReplacer.substring(2);
-  const indexOf = data.indexOf(magicReplacerWithout0x);
-
-  if (indexOf === -1) {
-    throw new Error("Magic replacer not found");
-  }
-
-  const before = data.substring(0, indexOf);
-  const after = data.substring(indexOf + 64);
-  const zeroReplacer = "0".repeat(64);
-  const updatedData = before + zeroReplacer + after;
-
-  return {
-    data: updatedData,
-    offset: indexOf / 2 - 1,
-  };
-}
+import {
+  FRACTION_MULTIPLIER,
+  MAGIC_REPLACER_0,
+  getMagicOffsets,
+} from "../utils/get-magic-offset";
 
 interface BuildSwapOutputParams {
   chainId: number;
@@ -88,13 +63,13 @@ export class Paraswap extends Exchange {
       address: path.toToken,
     });
 
-    const { data: approveEncodedCall, offset: approveFromOffset } =
-      getMagicOffset({
+    const { data: approveEncodedCall, offsets: approveFromOffsets } =
+      getMagicOffsets({
         data: IERC20.encodeFunctionData("approve", [
           path.params.approveAddress,
-          MAGIC_REPLACER,
+          MAGIC_REPLACER_0,
         ]),
-        magicReplacer: MAGIC_REPLACER,
+        magicReplacers: [MAGIC_REPLACER_0],
       });
 
     output.steps.push({
@@ -104,7 +79,7 @@ export class Paraswap extends Exchange {
         {
           storeOpType: StoreOpType.RetrieveStoreAssignCall,
           storeNumber: storeNumberFrom,
-          offset: approveFromOffset,
+          offset: approveFromOffsets[0],
           fraction: path.fraction * FRACTION_MULTIPLIER,
         },
       ],
@@ -125,11 +100,11 @@ export class Paraswap extends Exchange {
     }
 
     if (decodedData?.name === "megaSwap") {
-      const { data, offset: fromOffset } = getMagicOffset({
+      const { data, offsets: fromOffsets } = getMagicOffsets({
         data: IParaswap.encodeFunctionData("megaSwap", [
           [
             path.fromToken, // fromToken
-            MAGIC_REPLACER, // fromAmount
+            MAGIC_REPLACER_0, // fromAmount
             decodedData.args[0].toAmount, // toAmount
             decodedData.args[0].expectedAmount, // expectedAmount
             walletAddress, // beneficiary
@@ -141,24 +116,24 @@ export class Paraswap extends Exchange {
             decodedData.args[0].uuid, // uuid
           ],
         ]),
-        magicReplacer: MAGIC_REPLACER,
+        magicReplacers: [MAGIC_REPLACER_0],
       });
 
       swapEncodedCall = data;
-      swapFromOffset = fromOffset;
+      swapFromOffset = fromOffsets[0];
 
-      const { offset: toOffset } = getMagicOffset({
-        data: IParaswap.encodeFunctionResult("megaSwap", [MAGIC_REPLACER]),
-        magicReplacer: MAGIC_REPLACER,
+      const { offsets: toOffsets } = getMagicOffsets({
+        data: IParaswap.encodeFunctionResult("megaSwap", [MAGIC_REPLACER_0]),
+        magicReplacers: [MAGIC_REPLACER_0],
       });
 
-      swapToOffset = toOffset;
+      swapToOffset = toOffsets[0];
     } else if (decodedData?.name === "multiSwap") {
-      const { data, offset: fromOffset } = getMagicOffset({
+      const { data, offsets: fromOffsets } = getMagicOffsets({
         data: IParaswap.encodeFunctionData("multiSwap", [
           [
             path.fromToken, // fromToken
-            MAGIC_REPLACER, // fromAmount
+            MAGIC_REPLACER_0, // fromAmount
             decodedData.args[0].toAmount, // toAmount --> o quanto vai reverter se ficar abaixo do toAmount (setar pra 1) (minAmountOut)
             decodedData.args[0].expectedAmount, // expectedAmount --> (setar pra infinito)
             walletAddress, // beneficiary
@@ -170,18 +145,18 @@ export class Paraswap extends Exchange {
             decodedData.args[0].uuid, // uuid
           ],
         ]),
-        magicReplacer: MAGIC_REPLACER,
+        magicReplacers: [MAGIC_REPLACER_0],
       });
 
       swapEncodedCall = data;
-      swapFromOffset = fromOffset;
+      swapFromOffset = fromOffsets[0];
 
-      const { offset: toOffset } = getMagicOffset({
-        data: IParaswap.encodeFunctionResult("multiSwap", [MAGIC_REPLACER]),
-        magicReplacer: MAGIC_REPLACER,
+      const { offsets: toOffsets } = getMagicOffsets({
+        data: IParaswap.encodeFunctionResult("multiSwap", [MAGIC_REPLACER_0]),
+        magicReplacers: [MAGIC_REPLACER_0],
       });
 
-      swapToOffset = toOffset;
+      swapToOffset = toOffsets[0];
     } else {
       throw new Error(`Paraswap: unimplemented function ${decodedData?.name}`);
     }
@@ -253,13 +228,13 @@ export class ZeroX extends Exchange {
       address: path.toToken,
     });
 
-    const { data: approveEncodedCall, offset: approveFromOffset } =
-      getMagicOffset({
+    const { data: approveEncodedCall, offsets: approveFromOffsets } =
+      getMagicOffsets({
         data: IERC20.encodeFunctionData("approve", [
           path.params.approveAddress,
-          MAGIC_REPLACER,
+          MAGIC_REPLACER_0,
         ]),
-        magicReplacer: MAGIC_REPLACER,
+        magicReplacers: [MAGIC_REPLACER_0],
       });
 
     output.steps.push({
@@ -269,7 +244,7 @@ export class ZeroX extends Exchange {
         {
           storeOpType: StoreOpType.RetrieveStoreAssignCall,
           storeNumber: storeNumberFrom,
-          offset: approveFromOffset,
+          offset: approveFromOffsets[0],
           fraction: path.fraction * FRACTION_MULTIPLIER,
         },
       ],
@@ -280,20 +255,24 @@ export class ZeroX extends Exchange {
       path.params.data
     );
 
-    const { data: swapEncodedCall, offset: swapFromOffset } = getMagicOffset({
-      data: ZeroXERC20.encodeFunctionData("transformERC20", [
-        path.fromToken, // inputToken
-        path.toToken, // outputToken
-        MAGIC_REPLACER, // inputTokenAmount
-        1, // minOutputTokenAmount
-        decodedTransformERC20[4], // transformations
-      ]),
-      magicReplacer: MAGIC_REPLACER,
-    });
+    const { data: swapEncodedCall, offsets: swapFromOffsets } = getMagicOffsets(
+      {
+        data: ZeroXERC20.encodeFunctionData("transformERC20", [
+          path.fromToken, // inputToken
+          path.toToken, // outputToken
+          MAGIC_REPLACER_0, // inputTokenAmount
+          1, // minOutputTokenAmount
+          decodedTransformERC20[4], // transformations
+        ]),
+        magicReplacers: [MAGIC_REPLACER_0],
+      }
+    );
 
-    const { offset: swapToOffset } = getMagicOffset({
-      data: ZeroXERC20.encodeFunctionResult("transformERC20", [MAGIC_REPLACER]),
-      magicReplacer: MAGIC_REPLACER,
+    const { offsets: swapToOffsets } = getMagicOffsets({
+      data: ZeroXERC20.encodeFunctionResult("transformERC20", [
+        MAGIC_REPLACER_0,
+      ]),
+      magicReplacers: [MAGIC_REPLACER_0],
     });
 
     output.steps.push({
@@ -303,13 +282,13 @@ export class ZeroX extends Exchange {
         {
           storeOpType: StoreOpType.RetrieveStoreAssignCallSubtract,
           storeNumber: storeNumberFrom,
-          offset: swapFromOffset,
+          offset: swapFromOffsets[0],
           fraction: path.fraction * FRACTION_MULTIPLIER,
         },
         {
           storeOpType: StoreOpType.RetrieveResultAssignStore,
           storeNumber: storeNumberTo,
-          offset: swapToOffset,
+          offset: swapToOffsets[0],
           fraction: 0,
         },
       ],
