@@ -1447,5 +1447,2405 @@
     "visible": false,
     "allowSlot": 1,
     "balanceSlot": 0
+  },
+  {
+    "id": "256d3084-4250-4c93-98f9-3c26cfaf4b1e",
+    "name": "cbETH/WETH",
+    "chainId": 137,
+    "active": true,
+    "address": "0x0668331b4606bEb78A1c8314e08d8B07653fbD3C",
+    "color": "#6697ff",
+    "decimals": 18,
+    "symbol": "cbETH/WETH",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "879cfe80-daaf-4a2a-995c-7012a5899462"
+      },
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79"
+      }
+    ]
+  },
+  {
+    "id": "2c49e240-99fd-4117-b803-5fa8ad5d1397",
+    "name": "DAI/GNS",
+    "chainId": 137,
+    "active": true,
+    "address": "0x7aE7FB44c92B4d41abB6E28494f46a2EB3c2a690",
+    "color": "#fcb934",
+    "decimals": 18,
+    "symbol": "DAI/GNS",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "f9a0d8c9-7524-42ed-9188-968456afcd54",
+        "fraction": 0.6
+      },
+      {
+        "assetId": "170c2077-1b4a-45e4-9a18-8ce371c63db5",
+        "fraction": 0.4
+      }
+    ]
+  },
+  {
+    "id": "a2f6bbdf-68d9-4783-9c48-f2728c0880ef",
+    "name": "DAI/GNS",
+    "chainId": 137,
+    "active": true,
+    "address": "0xfd73CE19D3842aD7b551BB184Ac6c6256dC2c9AB",
+    "color": "#fcb934",
+    "decimals": 18,
+    "symbol": "DAI/GNS",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "f9a0d8c9-7524-42ed-9188-968456afcd54"
+      },
+      {
+        "assetId": "170c2077-1b4a-45e4-9a18-8ce371c63db5"
+      }
+    ]
+  },
+  {
+    "id": "dcc4e9c9-f110-4f66-8e3b-81b08838b636",
+    "name": "DAI/MAI",
+    "chainId": 137,
+    "active": true,
+    "address": "0x3273c153Ecc6891A68aF60ee0b67c16DD7B2C7E5",
+    "color": "#fcb934",
+    "decimals": 18,
+    "symbol": "DAI/MAI",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "f9a0d8c9-7524-42ed-9188-968456afcd54"
+      },
+      {
+        "assetId": "c5129108-4b4d-4aa2-b75b-9d4348bd1678"
+      }
+    ]
+  },
+  {
+    "id": "d7f3e6a3-e16c-43f6-ab1b-13df9057fa84",
+    "name": "DAI/USDT",
+    "chainId": 137,
+    "active": true,
+    "address": "0x45A3A657b834699f5cC902e796c547F826703b79",
+    "color": "#fcb934",
+    "decimals": 18,
+    "symbol": "DAI/USDT",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "f9a0d8c9-7524-42ed-9188-968456afcd54"
+      },
+      {
+        "assetId": "dfe40dda-5c96-4ff3-b773-386f1ca0868d"
+      }
+    ]
+  },
+  {
+    "id": "ad9538af-7dbe-433d-b0f4-d3bab83ec757",
+    "name": "GIDDY/WETH",
+    "chainId": 137,
+    "active": true,
+    "address": "0x2D08b4B4C74d0B2f4144aE7bd86eE40FB654acef",
+    "color": "#CCCCCC",
+    "decimals": 18,
+    "symbol": "GIDDY/WETH",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "74ec88cd-29bd-482a-9640-8d5926915d3c"
+      },
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79"
+      }
+    ]
+  },
+  {
+    "id": "7efc2882-3221-473e-b399-b2bbd1b288b3",
+    "name": "LINK/WETH",
+    "chainId": 137,
+    "active": true,
+    "address": "0x3dA7e0320C04D88b71e0ada960AaD3d21f10CAdf",
+    "color": "#2753d8",
+    "decimals": 18,
+    "symbol": "LINK/WETH",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "e4be18c2-c20b-4e17-9c17-947dc07cc053"
+      },
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79"
+      }
+    ]
+  },
+  {
+    "id": "db099d91-24ce-41a2-93c3-5b8a3781584b",
+    "name": "MAI/GNS",
+    "chainId": 137,
+    "active": true,
+    "address": "0x1C1b4cf2a40810C49A8b42a9DA857Cb0b76D06E3",
+    "color": "#da3334",
+    "decimals": 18,
+    "symbol": "MAI/GNS",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "c5129108-4b4d-4aa2-b75b-9d4348bd1678"
+      },
+      {
+        "assetId": "170c2077-1b4a-45e4-9a18-8ce371c63db5"
+      }
+    ]
+  },
+  {
+    "id": "611160a6-c2f6-47f7-908d-45149d1fbabb",
+    "name": "MAI/GNS",
+    "chainId": 137,
+    "active": true,
+    "address": "0x46840E073376178B1e669693C021329B17FB22Aa",
+    "color": "#da3334",
+    "decimals": 18,
+    "symbol": "MAI/GNS",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "c5129108-4b4d-4aa2-b75b-9d4348bd1678"
+      },
+      {
+        "assetId": "170c2077-1b4a-45e4-9a18-8ce371c63db5"
+      }
+    ]
+  },
+  {
+    "id": "d74e74cc-c8b8-4e79-9b05-253586cfb72e",
+    "name": "MAI/QUICK",
+    "chainId": 137,
+    "active": true,
+    "address": "0x0f7E4c66Cebb5F5CAbD435684946585a917B2F65",
+    "color": "#da3334",
+    "decimals": 18,
+    "symbol": "MAI/QUICK",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "c5129108-4b4d-4aa2-b75b-9d4348bd1678"
+      },
+      {
+        "assetId": "d35b7aaf-a2ff-44e0-a3df-cdc702ed71ba"
+      }
+    ]
+  },
+  {
+    "id": "695be1c2-95f5-4717-9784-40b3fbbd96e9",
+    "name": "MAI/QUICK",
+    "chainId": 137,
+    "active": true,
+    "address": "0x535206AAeca58C038EF28ce9924C7782bbB3d94D",
+    "color": "#da3334",
+    "decimals": 18,
+    "symbol": "MAI/QUICK",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "c5129108-4b4d-4aa2-b75b-9d4348bd1678"
+      },
+      {
+        "assetId": "d35b7aaf-a2ff-44e0-a3df-cdc702ed71ba"
+      }
+    ]
+  },
+  {
+    "id": "bead3ff0-19d2-4baf-988f-9c350672c60d",
+    "name": "MAI/USDT",
+    "chainId": 137,
+    "active": true,
+    "address": "0x1825c76cED3c1625250B8af6204Bf4fc4e5b9FCF",
+    "color": "#da3334",
+    "decimals": 18,
+    "symbol": "MAI/USDT",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "c5129108-4b4d-4aa2-b75b-9d4348bd1678"
+      },
+      {
+        "assetId": "dfe40dda-5c96-4ff3-b773-386f1ca0868d"
+      }
+    ]
+  },
+  {
+    "id": "d1fac62d-04ee-45b5-b918-6ed72f24aba4",
+    "name": "SD/USDC",
+    "chainId": 137,
+    "active": false,
+    "address": "0x002bA5f8Ad6dc69BB056cED3e6b5165aE1E1691b",
+    "color": "#CCCCCC",
+    "decimals": 18,
+    "symbol": "SD/USDC",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "35b57015-712d-499d-9bce-4f4dd3e29d3c"
+      },
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d"
+      }
+    ]
+  },
+  {
+    "id": "6127a423-9de0-4037-a84e-c7d4c28ddaf9",
+    "name": "SD/USDC",
+    "chainId": 137,
+    "active": false,
+    "address": "0xe5d2907164AeD433b63087b7969C5454F4a37ed7",
+    "color": "#CCCCCC",
+    "decimals": 18,
+    "symbol": "SD/USDC",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "35b57015-712d-499d-9bce-4f4dd3e29d3c"
+      },
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d"
+      }
+    ]
+  },
+  {
+    "id": "83217ca3-d5d6-4f1c-a4bc-ac7be09b8a6a",
+    "name": "stMATIC/MaticX",
+    "chainId": 137,
+    "active": true,
+    "address": "0xE503C1Dfd7012E72af4c415f4c5e8ABf5b45C25F",
+    "color": "#000000",
+    "decimals": 18,
+    "symbol": "stMATIC/MaticX",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d21331f3-3db3-40e9-b972-ffddc5a6a795"
+      },
+      {
+        "assetId": "8634b650-20fe-4f9e-8310-6672b38ea0ce"
+      }
+    ]
+  },
+  {
+    "id": "a08f4db4-90bb-40aa-9b49-9593a1f65893",
+    "name": "stMATIC/WETH",
+    "chainId": 137,
+    "active": true,
+    "address": "0x9dFdf32aE82c7E8eBC156eA28e6637b120e00D12",
+    "color": "#000000",
+    "decimals": 18,
+    "symbol": "stMATIC/WETH",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d21331f3-3db3-40e9-b972-ffddc5a6a795"
+      },
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79"
+      }
+    ]
+  },
+  {
+    "id": "46d5fea4-16d6-426d-bfd8-a1afb921b1a9",
+    "name": "USDC/AXL",
+    "chainId": 137,
+    "active": true,
+    "address": "0x550Fac19D0ff06725dcaf7721B2C97AbA268e11F",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/AXL",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d"
+      },
+      {
+        "assetId": "c2335d82-0634-4c34-ba27-6e8e0f4901b8"
+      }
+    ]
+  },
+  {
+    "id": "1f68b18c-ff4b-48f3-aa92-f0991ee86f44",
+    "name": "USDC/axlPEPE",
+    "chainId": 137,
+    "active": true,
+    "address": "0x11B1AD06C13f7dA1d3fE2A31E2fA4DDbB637938F",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/axlPEPE",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d"
+      },
+      {
+        "assetId": "8f4534be-391f-438b-a48e-7a637b87e9d2"
+      }
+    ]
+  },
+  {
+    "id": "148ab6d8-f998-43ee-b66b-bea92cada501",
+    "name": "USDC/axlPEPE",
+    "chainId": 137,
+    "active": true,
+    "address": "0x27Ffa4221a52b02ecc67c5b199007010b90E8660",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/axlPEPE",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d"
+      },
+      {
+        "assetId": "8f4534be-391f-438b-a48e-7a637b87e9d2"
+      }
+    ]
+  },
+  {
+    "id": "4df575e9-1b90-4180-a514-dc64738fc9e9",
+    "name": "USDC/axlUSDC",
+    "chainId": 137,
+    "active": true,
+    "address": "0x374C44443553d7EB86b5f77597cC67A507b19179",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/axlUSDC",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d"
+      },
+      {
+        "assetId": "4910e779-593e-41db-9c5a-bbf5c62f0066"
+      }
+    ]
+  },
+  {
+    "id": "0276c5e3-bc35-44bb-95db-bfa59400cec8",
+    "name": "USDC/BOB",
+    "chainId": 137,
+    "active": true,
+    "address": "0x33B0B883626C21Ce5b3aad202bC435f876aee2c4",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/BOB",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d"
+      },
+      {
+        "assetId": "184d8594-cc17-4557-9e2b-026793076858"
+      }
+    ]
+  },
+  {
+    "id": "bafcc03f-daef-47d3-9d14-6dc462b98273",
+    "name": "USDC/DAI",
+    "chainId": 137,
+    "active": true,
+    "address": "0x9E31214Db6931727B7d63a0D2b6236DB455c0965",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/DAI",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d"
+      },
+      {
+        "assetId": "f9a0d8c9-7524-42ed-9188-968456afcd54"
+      }
+    ]
+  },
+  {
+    "id": "e3b150c2-9330-448c-9a98-009274f948da",
+    "name": "USDC/DAI",
+    "chainId": 137,
+    "active": true,
+    "address": "0x2752e822283C8BAeC3Ad7aD18b09248a914930Ff",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/DAI",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d"
+      },
+      {
+        "assetId": "f9a0d8c9-7524-42ed-9188-968456afcd54"
+      }
+    ]
+  },
+  {
+    "id": "60110971-12e2-4677-a450-425d76d88998",
+    "name": "USDC/DUSD",
+    "chainId": 137,
+    "active": true,
+    "address": "0x2385cB5590413B2CD1fAe63e68886b9f2ce43a9a",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/DUSD",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d"
+      },
+      {
+        "assetId": "acf9105d-ed61-4845-92ae-c28ae4fb12c7"
+      }
+    ]
+  },
+  {
+    "id": "ad1ddce4-d63a-4b83-8128-1f3108e1b505",
+    "name": "USDC/GHST",
+    "chainId": 137,
+    "active": true,
+    "address": "0x3Fb73a554dEFA86B18F72e543AA2174a4D5F9621",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/GHST",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d"
+      },
+      {
+        "assetId": "babfc3f7-41ae-4ad5-954e-1cbf7198cc67"
+      }
+    ]
+  },
+  {
+    "id": "0dfe9135-f289-47cb-b48f-a0e4c56654a8",
+    "name": "USDC/GIDDY",
+    "chainId": 137,
+    "active": true,
+    "address": "0x1DDAe2e33C1d68211C5EAE05948FD298e72C541A",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/GIDDY",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d"
+      },
+      {
+        "assetId": "74ec88cd-29bd-482a-9640-8d5926915d3c"
+      }
+    ]
+  },
+  {
+    "id": "b52317b6-a6bc-4c83-872c-78350256023c",
+    "name": "USDC/MAI",
+    "chainId": 137,
+    "active": true,
+    "address": "0x15f2E223000d392a8449a53a4B930F3C54926987",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/MAI",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d"
+      },
+      {
+        "assetId": "c5129108-4b4d-4aa2-b75b-9d4348bd1678"
+      }
+    ]
+  },
+  {
+    "id": "e72ea956-7e48-41e2-84db-6d6b4307200a",
+    "name": "USDC/MAI",
+    "chainId": 137,
+    "active": true,
+    "address": "0x25B186eEd64ca5FDD1bc33fc4CFfd6d34069BAec",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/MAI",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d"
+      },
+      {
+        "assetId": "c5129108-4b4d-4aa2-b75b-9d4348bd1678"
+      }
+    ]
+  },
+  {
+    "id": "b37f7b2f-bfe9-4e9a-a226-6314af08ca0b",
+    "name": "USDC/MaticX",
+    "chainId": 137,
+    "active": true,
+    "address": "0x49DcC56354A5A4875fB5d8bD7e7073c4f8868618",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/MaticX",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d"
+      },
+      {
+        "assetId": "8634b650-20fe-4f9e-8310-6672b38ea0ce"
+      }
+    ]
+  },
+  {
+    "id": "f1d9d2af-c366-4aae-a1a8-c82712e295c3",
+    "name": "USDC/QUICK",
+    "chainId": 137,
+    "active": true,
+    "address": "0x4F7e090fe185aaC68fc58E7Fa1B9D4314d357327",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/QUICK",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d"
+      },
+      {
+        "assetId": "d35b7aaf-a2ff-44e0-a3df-cdc702ed71ba"
+      }
+    ]
+  },
+  {
+    "id": "cddc7249-dbe3-42a5-8d2e-13caa06f7782",
+    "name": "USDC/QUICK",
+    "chainId": 137,
+    "active": true,
+    "address": "0xa1C3E15B3307b04067E843d3BFAF3cEAD5B51CB7",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/QUICK",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d"
+      },
+      {
+        "assetId": "d35b7aaf-a2ff-44e0-a3df-cdc702ed71ba"
+      }
+    ]
+  },
+  {
+    "id": "eea38e59-f523-4da9-9aa4-a998e823089b",
+    "name": "USDC/stMATIC",
+    "chainId": 137,
+    "active": true,
+    "address": "0xFEa715aB7E1DE3640CD0662f6af0f9B25934E753",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/stMATIC",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d"
+      },
+      {
+        "assetId": "d21331f3-3db3-40e9-b972-ffddc5a6a795"
+      }
+    ]
+  },
+  {
+    "id": "fd6660bb-c1bf-46c6-b1fe-b585895626bb",
+    "name": "USDC/USDT",
+    "chainId": 137,
+    "active": true,
+    "address": "0x20103b6FcEcaA94dDBF3d18Ab9d99892003B1D80",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/USDT",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d"
+      },
+      {
+        "assetId": "dfe40dda-5c96-4ff3-b773-386f1ca0868d"
+      }
+    ]
+  },
+  {
+    "id": "59a47f33-bd8c-46cd-9804-3dbe7acbca5b",
+    "name": "USDC/USDT",
+    "chainId": 137,
+    "active": true,
+    "address": "0x795f8c9B0A0Da9Cd8dea65Fc10f9B57AbC532E58",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/USDT",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d"
+      },
+      {
+        "assetId": "dfe40dda-5c96-4ff3-b773-386f1ca0868d"
+      }
+    ]
+  },
+  {
+    "id": "d6975ce1-ee8e-4e11-ab1e-e4121f64bdd7",
+    "name": "USDC/VOXEL",
+    "chainId": 137,
+    "active": true,
+    "address": "0x2e9225276A8756f6983C6054d7a171dAdb24a7B8",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/VOXEL",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d"
+      },
+      {
+        "assetId": "6f4ff81c-bb37-4789-bc5f-df09af4da855"
+      }
+    ]
+  },
+  {
+    "id": "c069dcf3-fdd9-4baf-9eea-6795b2582886",
+    "name": "USDC/VOXEL",
+    "chainId": 137,
+    "active": true,
+    "address": "0xeE2A89071654333703b3d6c9Be9AB8f085f977de",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/VOXEL",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d"
+      },
+      {
+        "assetId": "6f4ff81c-bb37-4789-bc5f-df09af4da855"
+      }
+    ]
+  },
+  {
+    "id": "a2a83544-ba96-42c8-80a0-38e25ac5300c",
+    "name": "USDC/VOXEL",
+    "chainId": 137,
+    "active": true,
+    "address": "0xf6bE87Ae8976f50DCd231d42580e430CF6133400",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/VOXEL",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d"
+      },
+      {
+        "assetId": "6f4ff81c-bb37-4789-bc5f-df09af4da855"
+      }
+    ]
+  },
+  {
+    "id": "46cc9202-47f6-4b0e-81ab-c36452f79a76",
+    "name": "USDC/WEFI",
+    "chainId": 137,
+    "active": true,
+    "address": "0xC491C1b173E932E97d9F739ccD9AE5b6d5FcE4ce",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/WEFI",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d"
+      },
+      {
+        "assetId": "01bbcecb-0122-4e07-b47d-296ff88fce3b"
+      }
+    ]
+  },
+  {
+    "id": "8da84d12-9e9d-4c04-831d-7b93f1cd822f",
+    "name": "USDC/WETH",
+    "chainId": 137,
+    "active": true,
+    "address": "0x3Cc20A6795c4b57d9817399F68E83e71C8626580",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/WETH",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d"
+      },
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79"
+      }
+    ]
+  },
+  {
+    "id": "f6ad2f43-5605-44e2-af31-397f06256e2a",
+    "name": "USDC/WETH",
+    "chainId": 137,
+    "active": true,
+    "address": "0x5cA313118358E3F5EFe0c49F239B66C964F9AEf0",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/WETH",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d"
+      },
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79"
+      }
+    ]
+  },
+  {
+    "id": "cdd2ca82-9eeb-4be4-88aa-e3a05da83af6",
+    "name": "USDC/WETH",
+    "chainId": 137,
+    "active": true,
+    "address": "0x6077177d4c41E114780D9901C9b5c784841C523f",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/WETH",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d"
+      },
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79"
+      }
+    ]
+  },
+  {
+    "id": "a2f79311-f9c4-4771-8597-217b621af95b",
+    "name": "USDC/WETH",
+    "chainId": 137,
+    "active": true,
+    "address": "0x7AE5DEcE3903388281EFf3a3D115cA00d4fAfd4d",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/WETH",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d"
+      },
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79"
+      }
+    ]
+  },
+  {
+    "id": "263e5040-4d91-4227-a3f5-1ecdbc5c6e8b",
+    "name": "WBTC/GIDDY",
+    "chainId": 137,
+    "active": true,
+    "address": "0xCbb7FaE80e4F5c0CbFE1Af7bb1f19692f9532Cfa",
+    "color": "#342743",
+    "decimals": 18,
+    "symbol": "WBTC/GIDDY",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "7eecd38c-6ec4-4032-b1bd-bbd1bb82404f"
+      },
+      {
+        "assetId": "74ec88cd-29bd-482a-9640-8d5926915d3c"
+      }
+    ]
+  },
+  {
+    "id": "788c5391-54db-41bd-9f8d-1424689e154f",
+    "name": "WBTC/MAI",
+    "chainId": 137,
+    "active": true,
+    "address": "0x3E99B86B16F36dcf3B987eBc8b754c54030403b5",
+    "color": "#342743",
+    "decimals": 18,
+    "symbol": "WBTC/MAI",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "7eecd38c-6ec4-4032-b1bd-bbd1bb82404f"
+      },
+      {
+        "assetId": "c5129108-4b4d-4aa2-b75b-9d4348bd1678"
+      }
+    ]
+  },
+  {
+    "id": "cbd9bd2a-cbec-49b1-9326-18364d048437",
+    "name": "WBTC/MAI",
+    "chainId": 137,
+    "active": true,
+    "address": "0x5ec3511B49d4Fe7798015a26a83ABdc01261615B",
+    "color": "#342743",
+    "decimals": 18,
+    "symbol": "WBTC/MAI",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "7eecd38c-6ec4-4032-b1bd-bbd1bb82404f"
+      },
+      {
+        "assetId": "c5129108-4b4d-4aa2-b75b-9d4348bd1678"
+      }
+    ]
+  },
+  {
+    "id": "7fe638ae-0419-4293-9ed4-15ef0a5f27bb",
+    "name": "WBTC/USDC",
+    "chainId": 137,
+    "active": true,
+    "address": "0x3f35705479d9d77c619b2aAC9dd7a64e57151506",
+    "color": "#342743",
+    "decimals": 18,
+    "symbol": "WBTC/USDC",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "7eecd38c-6ec4-4032-b1bd-bbd1bb82404f"
+      },
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d"
+      }
+    ]
+  },
+  {
+    "id": "a3b30a13-e797-4344-bc4b-cb1073bad855",
+    "name": "WBTC/USDC",
+    "chainId": 137,
+    "active": true,
+    "address": "0x82927c36Ab62e504e24ab160afa5821b6C4A9265",
+    "color": "#342743",
+    "decimals": 18,
+    "symbol": "WBTC/USDC",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "7eecd38c-6ec4-4032-b1bd-bbd1bb82404f"
+      },
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d"
+      }
+    ]
+  },
+  {
+    "id": "e3331e12-93a0-4d53-97c3-d18eef368a6f",
+    "name": "WBTC/USDC",
+    "chainId": 137,
+    "active": true,
+    "address": "0xAC0f71f2492DAf020f459bD163052B9DAE28F159",
+    "color": "#342743",
+    "decimals": 18,
+    "symbol": "WBTC/USDC",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "7eecd38c-6ec4-4032-b1bd-bbd1bb82404f"
+      },
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d"
+      }
+    ]
+  },
+  {
+    "id": "3e158902-cc71-4d9f-9155-af57a0f02bb9",
+    "name": "WBTC/USDC",
+    "chainId": 137,
+    "active": true,
+    "address": "0xE40a5aa22CBCcc8165aedd86f6d03fC5F551c3C6",
+    "color": "#342743",
+    "decimals": 18,
+    "symbol": "WBTC/USDC",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "7eecd38c-6ec4-4032-b1bd-bbd1bb82404f"
+      },
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d"
+      }
+    ]
+  },
+  {
+    "id": "058a0538-71cd-4180-9b00-921b298009e7",
+    "name": "WBTC/WETH",
+    "chainId": 137,
+    "active": true,
+    "address": "0x242D1d8bD3e600dc04C56F7817327fd750B61736",
+    "color": "#342743",
+    "decimals": 18,
+    "symbol": "WBTC/WETH",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "7eecd38c-6ec4-4032-b1bd-bbd1bb82404f"
+      },
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79"
+      }
+    ]
+  },
+  {
+    "id": "289eb4a8-993f-4fd3-8bbc-b831d230735c",
+    "name": "WBTC/WETH",
+    "chainId": 137,
+    "active": true,
+    "address": "0x4B9e26a02121a1C541403a611b542965Bd4b68Ce",
+    "color": "#342743",
+    "decimals": 18,
+    "symbol": "WBTC/WETH",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "7eecd38c-6ec4-4032-b1bd-bbd1bb82404f"
+      },
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79"
+      }
+    ]
+  },
+  {
+    "id": "3dcf8a72-2ff8-4f48-a023-7fe6d6505e78",
+    "name": "WBTC/WETH",
+    "chainId": 137,
+    "active": true,
+    "address": "0xadc7B4096C3059Ec578585Df36E6E1286d345367",
+    "color": "#342743",
+    "decimals": 18,
+    "symbol": "WBTC/WETH",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "7eecd38c-6ec4-4032-b1bd-bbd1bb82404f"
+      },
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79"
+      }
+    ]
+  },
+  {
+    "id": "62e6818e-af74-4a49-ae49-421660223e32",
+    "name": "WBTC/WETH",
+    "chainId": 137,
+    "active": true,
+    "address": "0xb81686295822B639b647D3B421cD5e09Af700AdA",
+    "color": "#342743",
+    "decimals": 18,
+    "symbol": "WBTC/WETH",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "7eecd38c-6ec4-4032-b1bd-bbd1bb82404f"
+      },
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79"
+      }
+    ]
+  },
+  {
+    "id": "12314082-5fca-413b-9dcf-7fff081353bb",
+    "name": "WETH/BOB",
+    "chainId": 137,
+    "active": true,
+    "address": "0x2C53dFa65370b2D70975E40172b63210D477e470",
+    "color": "#737475",
+    "decimals": 18,
+    "symbol": "WETH/BOB",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79"
+      },
+      {
+        "assetId": "184d8594-cc17-4557-9e2b-026793076858"
+      }
+    ]
+  },
+  {
+    "id": "fcceb195-d9a2-432e-94e7-85dfcc59ee7b",
+    "name": "WETH/BOB",
+    "chainId": 137,
+    "active": true,
+    "address": "0xCFD4A6A885C4404a2A5720918a9B4880600876A8",
+    "color": "#737475",
+    "decimals": 18,
+    "symbol": "WETH/BOB",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79"
+      },
+      {
+        "assetId": "184d8594-cc17-4557-9e2b-026793076858"
+      }
+    ]
+  },
+  {
+    "id": "81b49191-75c7-420e-9734-7815bc999298",
+    "name": "WETH/DAI",
+    "chainId": 137,
+    "active": true,
+    "address": "0x3aE59BE14Da16183f0a36E23518506c386e63a96",
+    "color": "#737475",
+    "decimals": 18,
+    "symbol": "WETH/DAI",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79"
+      },
+      {
+        "assetId": "f9a0d8c9-7524-42ed-9188-968456afcd54"
+      }
+    ]
+  },
+  {
+    "id": "93482cbb-06a1-4834-8c0c-879c2b852ee0",
+    "name": "WETH/DAI",
+    "chainId": 137,
+    "active": true,
+    "address": "0x683292172E2175bd08e3927a5e72FC301b161300",
+    "color": "#737475",
+    "decimals": 18,
+    "symbol": "WETH/DAI",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79"
+      },
+      {
+        "assetId": "f9a0d8c9-7524-42ed-9188-968456afcd54"
+      }
+    ]
+  },
+  {
+    "id": "b6506fdd-af16-46af-a5cb-4702c5ead3d2",
+    "name": "WETH/FBX",
+    "chainId": 137,
+    "active": true,
+    "address": "0x9C3E0445559E6de1fe6391E8e018DcA02B480836",
+    "color": "#737475",
+    "decimals": 18,
+    "symbol": "WETH/FBX",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79"
+      },
+      {
+        "assetId": "e58d2fcf-fd1b-4a60-b54f-acf0a40faa29"
+      }
+    ]
+  },
+  {
+    "id": "7d1c15d3-0f60-413a-b502-fdc1bf637fd5",
+    "name": "WETH/HOP",
+    "chainId": 137,
+    "active": true,
+    "address": "0x706BAe8828C260d5E52CCFA96f1258A2d2f6fDda",
+    "color": "#737475",
+    "decimals": 18,
+    "symbol": "WETH/HOP",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79"
+      },
+      {
+        "assetId": "f2093acb-bbb1-417c-8b4b-9b1607fb0fd7"
+      }
+    ]
+  },
+  {
+    "id": "06312c28-17b8-4168-9eca-b858e36b3cd8",
+    "name": "WETH/MAI",
+    "chainId": 137,
+    "active": true,
+    "address": "0xaC15BaBA7Bcc532F8727C1A42B23501f59630115",
+    "color": "#737475",
+    "decimals": 18,
+    "symbol": "WETH/MAI",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79"
+      },
+      {
+        "assetId": "c5129108-4b4d-4aa2-b75b-9d4348bd1678"
+      }
+    ]
+  },
+  {
+    "id": "0d13e706-c70a-4c4d-bbc6-3883533dbf10",
+    "name": "WETH/MAI",
+    "chainId": 137,
+    "active": true,
+    "address": "0xccBbb572EB5edc973a90FDc57d07D7740BB027F5",
+    "color": "#737475",
+    "decimals": 18,
+    "symbol": "WETH/MAI",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79"
+      },
+      {
+        "assetId": "c5129108-4b4d-4aa2-b75b-9d4348bd1678"
+      }
+    ]
+  },
+  {
+    "id": "986d2175-6c1c-4e49-9d22-0882d2d01ff5",
+    "name": "WETH/MaticX",
+    "chainId": 137,
+    "active": true,
+    "address": "0xC6dd68B546d696D5A31837b05065a151d6b6f892",
+    "color": "#737475",
+    "decimals": 18,
+    "symbol": "WETH/MaticX",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79"
+      },
+      {
+        "assetId": "8634b650-20fe-4f9e-8310-6672b38ea0ce"
+      }
+    ]
+  },
+  {
+    "id": "3f975e2e-85b0-468e-be8e-6aea48667c70",
+    "name": "WETH/QUICK",
+    "chainId": 137,
+    "active": true,
+    "address": "0x454Ff7780A9A99Ecb3462ab61bA06fe4A886862E",
+    "color": "#737475",
+    "decimals": 18,
+    "symbol": "WETH/QUICK",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79"
+      },
+      {
+        "assetId": "d35b7aaf-a2ff-44e0-a3df-cdc702ed71ba"
+      }
+    ]
+  },
+  {
+    "id": "e947d166-33b1-42e9-b62f-3c686f1f0bc9",
+    "name": "WETH/QUICK",
+    "chainId": 137,
+    "active": true,
+    "address": "0xf86d6151D03007b1906465b63e36d6F48136bc39",
+    "color": "#737475",
+    "decimals": 18,
+    "symbol": "WETH/QUICK",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79"
+      },
+      {
+        "assetId": "d35b7aaf-a2ff-44e0-a3df-cdc702ed71ba"
+      }
+    ]
+  },
+  {
+    "id": "9fa6edd6-cdea-46f4-8424-0d66360b3e72",
+    "name": "WETH/USDT",
+    "chainId": 137,
+    "active": true,
+    "address": "0x3672d301778750C41a7864980A5ddbC2aF99476E",
+    "color": "#737475",
+    "decimals": 18,
+    "symbol": "WETH/USDT",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79"
+      },
+      {
+        "assetId": "dfe40dda-5c96-4ff3-b773-386f1ca0868d"
+      }
+    ]
+  },
+  {
+    "id": "e7610c5f-6f1c-40d6-a5e6-9a65483b727b",
+    "name": "WETH/USDT",
+    "chainId": 137,
+    "active": true,
+    "address": "0x5928f9f61902b139e1c40cBa59077516734ff09f",
+    "color": "#737475",
+    "decimals": 18,
+    "symbol": "WETH/USDT",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79"
+      },
+      {
+        "assetId": "dfe40dda-5c96-4ff3-b773-386f1ca0868d"
+      }
+    ]
+  },
+  {
+    "id": "dd5380de-897e-4d87-8692-36fa399527b6",
+    "name": "WMATIC/ankrMATIC",
+    "chainId": 137,
+    "active": true,
+    "address": "0x8557dAC2A7724712F12952DE3DaBEeF54459bd97",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/ankrMATIC",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab"
+      },
+      {
+        "assetId": "0fcb1b10-2c6a-43e9-a238-83f317d9eaed"
+      }
+    ]
+  },
+  {
+    "id": "153728b1-6e90-4a75-8f8d-f7fbdd57e8a5",
+    "name": "WMATIC/BOB",
+    "chainId": 137,
+    "active": true,
+    "address": "0x05c731F5F922835796C49412A30615c46cCA4D9E",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/BOB",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab"
+      },
+      {
+        "assetId": "184d8594-cc17-4557-9e2b-026793076858"
+      }
+    ]
+  },
+  {
+    "id": "eb71eff2-b7f8-4155-9834-642aa3b32b6e",
+    "name": "WMATIC/BOB",
+    "chainId": 137,
+    "active": true,
+    "address": "0x9A4b458a5aE5d96565455D1e1882301Fea5c076f",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/BOB",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab"
+      },
+      {
+        "assetId": "184d8594-cc17-4557-9e2b-026793076858"
+      }
+    ]
+  },
+  {
+    "id": "76befee7-1927-4c37-b543-feb4eb39eae3",
+    "name": "WMATIC/CRV",
+    "chainId": 137,
+    "active": true,
+    "address": "0x33EeaFa7ef22CD4468D65819B2fe30f170DB5B69",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/CRV",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab"
+      },
+      {
+        "assetId": "af62d010-5df9-4eae-919c-8d6dd63fe45e"
+      }
+    ]
+  },
+  {
+    "id": "3644a607-879e-48d6-9cb9-1a73ac016aca",
+    "name": "WMATIC/CRV",
+    "chainId": 137,
+    "active": true,
+    "address": "0xCD483D2Ba34d24CaDa71639BEb1215609860B911",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/CRV",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab"
+      },
+      {
+        "assetId": "af62d010-5df9-4eae-919c-8d6dd63fe45e"
+      }
+    ]
+  },
+  {
+    "id": "95de95ab-bcaf-4947-9b0c-2eaba998e355",
+    "name": "WMATIC/DAI",
+    "chainId": 137,
+    "active": true,
+    "address": "0x5F528Db1129488083434E1B96E9808E3c4C6ed83",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/DAI",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab"
+      },
+      {
+        "assetId": "f9a0d8c9-7524-42ed-9188-968456afcd54"
+      }
+    ]
+  },
+  {
+    "id": "4c1859a5-ec9e-4441-ba38-b803bbbb6cb1",
+    "name": "WMATIC/GHST",
+    "chainId": 137,
+    "active": true,
+    "address": "0x2EF46196d7d25B5111ca1FCbA206B248FEe32D8D",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/GHST",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab"
+      },
+      {
+        "assetId": "babfc3f7-41ae-4ad5-954e-1cbf7198cc67"
+      }
+    ]
+  },
+  {
+    "id": "971c97e1-758b-4ec2-9bc3-e86854bc3de2",
+    "name": "WMATIC/GNS",
+    "chainId": 137,
+    "active": true,
+    "address": "0x566452E9D621A1902f9Ccf2ADAF029Cf0F36eC67",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/GNS",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab"
+      },
+      {
+        "assetId": "170c2077-1b4a-45e4-9a18-8ce371c63db5"
+      }
+    ]
+  },
+  {
+    "id": "bb684cbb-3f3b-482d-afd8-10ccdc255035",
+    "name": "WMATIC/GNS",
+    "chainId": 137,
+    "active": true,
+    "address": "0x688cb9492bd2C72016f1765d813B2D713aa1F4C7",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/GNS",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab"
+      },
+      {
+        "assetId": "170c2077-1b4a-45e4-9a18-8ce371c63db5"
+      }
+    ]
+  },
+  {
+    "id": "b815de28-4c3b-4cdd-82b8-ee6ce45ca9d2",
+    "name": "WMATIC/LCD",
+    "chainId": 137,
+    "active": true,
+    "address": "0xc89004ce7becd2b39c44260327a603885da119B5",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/LCD",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab"
+      },
+      {
+        "assetId": "87e706fe-0900-4a69-94b6-2f3f9cad73ce"
+      }
+    ]
+  },
+  {
+    "id": "c1489392-c4e8-46f3-a1d7-c352c39676ac",
+    "name": "WMATIC/LINK",
+    "chainId": 137,
+    "active": true,
+    "address": "0xA8E2fD481342976a3259591FBc08999369a43C5A",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/LINK",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab"
+      },
+      {
+        "assetId": "e4be18c2-c20b-4e17-9c17-947dc07cc053"
+      }
+    ]
+  },
+  {
+    "id": "58b759ef-6c28-4dcd-bfa3-489dae3377e4",
+    "name": "WMATIC/MAI",
+    "chainId": 137,
+    "active": true,
+    "address": "0x14223bb48c8Cf3Ef49319Be44A6e718e4DBF9486",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/MAI",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab"
+      },
+      {
+        "assetId": "c5129108-4b4d-4aa2-b75b-9d4348bd1678"
+      }
+    ]
+  },
+  {
+    "id": "bd3181bf-f6d1-4c85-a92d-f3d7da4a34dd",
+    "name": "WMATIC/MAI",
+    "chainId": 137,
+    "active": true,
+    "address": "0x69b2aAaF08ac9b04cD5B64A1D23fFcB40224fdAf",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/MAI",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab"
+      },
+      {
+        "assetId": "c5129108-4b4d-4aa2-b75b-9d4348bd1678"
+      }
+    ]
+  },
+  {
+    "id": "5a5cd640-b972-43b6-9bb2-24e6711ab1db",
+    "name": "WMATIC/MaticX",
+    "chainId": 137,
+    "active": true,
+    "address": "0x8dd3BF71eF18dd88869d128BDE058C9d8c270176",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/MaticX",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab"
+      },
+      {
+        "assetId": "8634b650-20fe-4f9e-8310-6672b38ea0ce"
+      }
+    ]
+  },
+  {
+    "id": "55ceb475-d331-4354-9210-328385e2ea08",
+    "name": "WMATIC/MaticX",
+    "chainId": 137,
+    "active": true,
+    "address": "0xE389d95e2E8C799FDe5d37F245BDd7160bF50864",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/MaticX",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab"
+      },
+      {
+        "assetId": "8634b650-20fe-4f9e-8310-6672b38ea0ce"
+      }
+    ]
+  },
+  {
+    "id": "675a3f56-1e7e-4214-8776-9f5dced2b5ae",
+    "name": "WMATIC/QI",
+    "chainId": 137,
+    "active": true,
+    "address": "0xE0f0622f871D9597649062e9BbBE9BD65E918E34",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/QI",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab"
+      },
+      {
+        "assetId": "8bcdeda0-1a23-4cb4-83a1-0b4ccd8ad00c"
+      }
+    ]
+  },
+  {
+    "id": "ab2cf995-a715-4162-a6ec-319593ccdf07",
+    "name": "WMATIC/QUICK",
+    "chainId": 137,
+    "active": true,
+    "address": "0x543403307Bc9F9Ec46Fd9Bc1048b263C9692a26A",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/QUICK",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab"
+      },
+      {
+        "assetId": "d35b7aaf-a2ff-44e0-a3df-cdc702ed71ba"
+      }
+    ]
+  },
+  {
+    "id": "30c825b9-3aa7-4a3d-90c0-e82e45562382",
+    "name": "WMATIC/QUICK",
+    "chainId": 137,
+    "active": true,
+    "address": "0x5c1fa2C9999d4Fe0f6B13E95770Ca406f79879C4",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/QUICK",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab"
+      },
+      {
+        "assetId": "d35b7aaf-a2ff-44e0-a3df-cdc702ed71ba"
+      }
+    ]
+  },
+  {
+    "id": "210444c0-7ffa-4c57-a851-8a6aa3eca1a9",
+    "name": "WMATIC/QUICK",
+    "chainId": 137,
+    "active": true,
+    "address": "0x7f09bD2801A7b795dF29C273C4afbB0Ff15E2D63",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/QUICK",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab"
+      },
+      {
+        "assetId": "d35b7aaf-a2ff-44e0-a3df-cdc702ed71ba"
+      }
+    ]
+  },
+  {
+    "id": "a9e1e5e1-6a6f-4fc0-8c9e-20c64b461e37",
+    "name": "WMATIC/QUICK",
+    "chainId": 137,
+    "active": true,
+    "address": "0xD3BD62439C599739775df75Cb33b888D437e23FE",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/QUICK",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab"
+      },
+      {
+        "assetId": "d35b7aaf-a2ff-44e0-a3df-cdc702ed71ba"
+      }
+    ]
+  },
+  {
+    "id": "79515c75-11e6-4b0b-8af6-02952091b0d8",
+    "name": "WMATIC/rMATIC",
+    "chainId": 137,
+    "active": true,
+    "address": "0x8089f11dadBabf175Aea2415194A6a3a0575539d",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/rMATIC",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab"
+      },
+      {
+        "assetId": "0dcb8f08-485e-46e9-bdb7-3ae52e5244e6"
+      }
+    ]
+  },
+  {
+    "id": "22b73519-19ef-4d31-9a69-0e9d90c6d841",
+    "name": "WMATIC/SAND",
+    "chainId": 137,
+    "active": true,
+    "address": "0x62F88FB208Df717B035325D065C6919D7913B937",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/SAND",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab"
+      },
+      {
+        "assetId": "c1dd5c79-bd77-486c-afa4-a161c90d5464"
+      }
+    ]
+  },
+  {
+    "id": "4a4bf228-af0d-4322-89b4-d51742bd3a35",
+    "name": "WMATIC/SAND",
+    "chainId": 137,
+    "active": true,
+    "address": "0xEf4F95d8c252D64308c04F711FB31892Cc4c9965",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/SAND",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab"
+      },
+      {
+        "assetId": "c1dd5c79-bd77-486c-afa4-a161c90d5464"
+      }
+    ]
+  },
+  {
+    "id": "f98f9023-bca5-44f7-af06-429bbe1b0061",
+    "name": "WMATIC/stMATIC",
+    "chainId": 137,
+    "active": true,
+    "address": "0xccBcaf47E87F50A338FaC9bF58e567eD1C87be2b",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/stMATIC",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab"
+      },
+      {
+        "assetId": "d21331f3-3db3-40e9-b972-ffddc5a6a795"
+      }
+    ]
+  },
+  {
+    "id": "494dbe0c-36b1-4afc-bf46-1d5d012f035e",
+    "name": "WMATIC/stMATIC",
+    "chainId": 137,
+    "active": true,
+    "address": "0xEB7d263db66aAb4d5eE903a949a5a54C287beC87",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/stMATIC",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab"
+      },
+      {
+        "assetId": "d21331f3-3db3-40e9-b972-ffddc5a6a795"
+      }
+    ]
+  },
+  {
+    "id": "b3334ffb-0715-4ba5-8b67-9e8e88f3eda8",
+    "name": "WMATIC/USDC",
+    "chainId": 137,
+    "active": true,
+    "address": "0x04d521E2c414E6d898c6F2599FdD863Edf49e247",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/USDC",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab"
+      },
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d"
+      }
+    ]
+  },
+  {
+    "id": "b59b8eaa-2d15-4fa0-a1bd-f2ea9ecf2ca1",
+    "name": "WMATIC/USDC",
+    "chainId": 137,
+    "active": true,
+    "address": "0x4A83253e88e77E8d518638974530d0cBbbF3b675",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/USDC",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab"
+      },
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d"
+      }
+    ]
+  },
+  {
+    "id": "c7043f37-d18d-41ac-871f-1373352984a1",
+    "name": "WMATIC/USDC",
+    "chainId": 137,
+    "active": true,
+    "address": "0x6CcF63ac74b5533c456C3a68786629e7670293c0",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/USDC",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab"
+      },
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d"
+      }
+    ]
+  },
+  {
+    "id": "60285f15-ef9a-4ffa-aa41-c562203b0b7d",
+    "name": "WMATIC/USDC",
+    "chainId": 137,
+    "active": true,
+    "address": "0x7922591f6F9b047eBda320a12B6e3CA4d0f1435F",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/USDC",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab"
+      },
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d"
+      }
+    ]
+  },
+  {
+    "id": "21204563-d2b0-4cce-b09d-8209172eb85d",
+    "name": "WMATIC/USDT",
+    "chainId": 137,
+    "active": true,
+    "address": "0x598cA33b7F5FAB560ddC8E76D94A4b4AA52566d7",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/USDT",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab"
+      },
+      {
+        "assetId": "dfe40dda-5c96-4ff3-b773-386f1ca0868d"
+      }
+    ]
+  },
+  {
+    "id": "d6349dbb-f1cb-4b2f-bfbb-225c6e9ea0c3",
+    "name": "WMATIC/USDT",
+    "chainId": 137,
+    "active": true,
+    "address": "0x9134f456D33d1288de26271730047AE0c5CB6F71",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/USDT",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab"
+      },
+      {
+        "assetId": "dfe40dda-5c96-4ff3-b773-386f1ca0868d"
+      }
+    ]
+  },
+  {
+    "id": "de879dfb-4b2c-410c-920d-d51ae8d4ff2e",
+    "name": "WMATIC/VOXEL",
+    "chainId": 137,
+    "active": true,
+    "address": "0x2E18B825b049c4994370b0DB6C35d0100295b96C",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/VOXEL",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab"
+      },
+      {
+        "assetId": "6f4ff81c-bb37-4789-bc5f-df09af4da855"
+      }
+    ]
+  },
+  {
+    "id": "e3d1a064-68e9-4c89-bcfd-a15d421ad743",
+    "name": "WMATIC/VOXEL",
+    "chainId": 137,
+    "active": true,
+    "address": "0xFE4BB996926aCa85c9747BbEC886ec2a3f510c66",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/VOXEL",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab"
+      },
+      {
+        "assetId": "6f4ff81c-bb37-4789-bc5f-df09af4da855"
+      }
+    ]
+  },
+  {
+    "id": "1c2a8de5-2199-4d5c-8ea4-5f955a9e3e08",
+    "name": "WMATIC/WETH",
+    "chainId": 137,
+    "active": true,
+    "address": "0x02203f2351E7aC6aB5051205172D3f772db7D814",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/WETH",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab"
+      },
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79"
+      }
+    ]
+  },
+  {
+    "id": "e83bea92-15bb-4721-b17f-878356e352fa",
+    "name": "WMATIC/WETH",
+    "chainId": 137,
+    "active": true,
+    "address": "0x056e8299B082D5F1016C846D93E71EadF4137851",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/WETH",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab"
+      },
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79"
+      }
+    ]
+  },
+  {
+    "id": "17292fd2-6421-41cb-8a61-5090a3ea7d9d",
+    "name": "WMATIC/WETH",
+    "chainId": 137,
+    "active": true,
+    "address": "0x718A554d9740AC9BF4092ec1692961f1c9d96f46",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/WETH",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab"
+      },
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79"
+      }
+    ]
+  },
+  {
+    "id": "3c42b7d3-555b-41a4-96b6-ce4fadd62f83",
+    "name": "WMATIC/WETH",
+    "chainId": 137,
+    "active": true,
+    "address": "0x81Cec323BF8C4164c66ec066F53cc053A535f03D",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/WETH",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab"
+      },
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79"
+      }
+    ]
+  },
+  {
+    "id": "8f06d99a-6181-40f2-92ec-ddf1f1d83507",
+    "name": "WOMBAT/USDC",
+    "chainId": 137,
+    "active": true,
+    "address": "0x829432679F69DBd8b2575f006EC0129894a39D86",
+    "color": "#CCCCCC",
+    "decimals": 18,
+    "symbol": "WOMBAT/USDC",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "1872923c-808d-4299-a38c-9fd59da69274"
+      },
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d"
+      }
+    ]
+  },
+  {
+    "id": "404db4cb-c388-4366-8980-29d983a83606",
+    "name": "WOMBAT/USDC",
+    "chainId": 137,
+    "active": true,
+    "address": "0x8Bb9247c8eFf487F7A13AB7E704F50904e91430D",
+    "color": "#CCCCCC",
+    "decimals": 18,
+    "symbol": "WOMBAT/USDC",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "1872923c-808d-4299-a38c-9fd59da69274"
+      },
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d"
+      }
+    ]
+  },
+  {
+    "id": "d2f8725d-94d0-4030-8979-1c8515d6f047",
+    "name": "wstETH/stMATIC",
+    "chainId": 137,
+    "active": true,
+    "address": "0x972a53E2EE68D5c2b1614f65061815E06b1cce68",
+    "color": "#1cbc94",
+    "decimals": 18,
+    "symbol": "wstETH/stMATIC",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "79c1ac81-f9b8-45d2-bf2e-5496d0c75814"
+      },
+      {
+        "assetId": "d21331f3-3db3-40e9-b972-ffddc5a6a795"
+      }
+    ]
+  },
+  {
+    "id": "7d6ac60a-4bce-4b24-bc26-443ce04bc2f8",
+    "name": "wstETH/USDC",
+    "chainId": 137,
+    "active": true,
+    "address": "0x34Ffbd9Db6B9bD8b095A0d156de69a2AD2944666",
+    "color": "#1cbc94",
+    "decimals": 18,
+    "symbol": "wstETH/USDC",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "79c1ac81-f9b8-45d2-bf2e-5496d0c75814"
+      },
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d"
+      }
+    ]
+  },
+  {
+    "id": "6fc58c21-42e4-4182-8762-6460884b7073",
+    "name": "wstETH/WETH",
+    "chainId": 137,
+    "active": true,
+    "address": "0x6A6d4d17c2E38D076264081676FfCDDDF32C9715",
+    "color": "#1cbc94",
+    "decimals": 18,
+    "symbol": "wstETH/WETH",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "79c1ac81-f9b8-45d2-bf2e-5496d0c75814"
+      },
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79"
+      }
+    ]
+  },
+  {
+    "id": "9336851d-ed66-4f24-9dd3-22817d2ac8bb",
+    "name": "wstETH/WMATIC",
+    "chainId": 137,
+    "active": true,
+    "address": "0x9F19aD14cD941E29b0E7Ed8F5a1003FAE4993DCD",
+    "color": "#1cbc94",
+    "decimals": 18,
+    "symbol": "wstETH/WMATIC",
+    "type": "gammaDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "79c1ac81-f9b8-45d2-bf2e-5496d0c75814"
+      },
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab"
+      }
+    ]
   }
 ]
