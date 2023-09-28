@@ -176,7 +176,7 @@ export async function simulateAndChooseRoute({
   aggregators = [
     "zeroXFull",
     "paraswapFull",
-    "kyber",
+    // "kyber",
     // "oneinch",
   ],
 }: {
