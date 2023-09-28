@@ -16,7 +16,7 @@ jobs:
 
       - name: Install packages
         run: npm install
-        working-directory: ./api
+        working-directory: ./core
 
       - name: Run core tests
         run: |

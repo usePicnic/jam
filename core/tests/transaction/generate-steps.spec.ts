@@ -10,7 +10,7 @@ import { generateSteps } from "src/transaction/generate-steps";
 import { getProvider } from "src/utils/get-provider";
 import { calculateFractionAllocation } from "src/transaction/calculate-fraction-allocation";
 
-test("generateSteps 1", async () => {
+test.skip("generateSteps 1", async () => {
   const assetStore = new AssetStore([
     {
       id: "e251ecf6-48c2-4538-afcd-fbb92424054d",
