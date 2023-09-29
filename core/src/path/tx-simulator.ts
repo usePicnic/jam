@@ -9,20 +9,18 @@ import { generateTokenApprovalStateDiff } from "../simulation/generate-token-app
 export async function simulateAssetSwapTransaction({
   chainId,
   routes,
+  provider,
   sellAsset,
   amountIn,
-  buyToken,
+  buyAsset,
 }: {
   chainId: number;
   routes: Route[];
+  provider: Provider;
   sellAsset: Asset;
   amountIn: string;
-  buyToken: string;
+  buyAsset: Asset;
 }): Promise<BigNumberish | null> {
-  const provider = new JsonRpcProvider(
-    `https://polygon-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_KEY}`
-  );
-
   const config = await loadConfig();
   const routerOperation = await getParams({
     chainId,
@@ -53,7 +51,7 @@ export async function simulateAssetSwapTransaction({
     config.networks[chainId].routerAddress,
     sellAsset.address,
     amountIn,
-    buyToken,
+    buyAsset.address,
     routerTransactionData.steps,
     routerTransactionData.stores
   );
@@ -96,43 +94,117 @@ export async function simulateAssetSwapTransaction({
   // }
 }
 
-export async function simulateTxFromAggResults({
+export async function simulateRouterOperation({
   chainId,
+  routerOperation,
+  provider,
+  sellAsset,
+  amountIn,
+  buyAsset,
+}: {
+  chainId: number;
+  routerOperation: RouterOperation;
+  provider: Provider;
+  sellAsset: Asset;
+  amountIn: string;
+  buyAsset: Asset;
+}): Promise<BigNumberish | null> {
+  const config = await loadConfig();
+
+  // const txSimulator = getTxSimulatorContract(provider) as Contract;
+  // const txSimulatorData =
+  //   await txSimulator.populateTransaction.simulatePicnicTx(
+  //     [[sellAsset.address], [amountIn]],
+  //     bridgeAddresses,
+  //     encodedCalls,
+  //     buyToken
+  //   );
+
+  const routerSimulator = new Contract(
+    config.networks[chainId].routerSimulatorAddress,
+    RouterSimulator,
+    provider
+  );
+  const routerTransactionData = routerOperation.getTransactionData();
+
+  const populatedTx = await routerSimulator.simulateJamTx.populateTransaction(
+    config.networks[chainId].routerAddress,
+    sellAsset.address,
+    amountIn,
+    buyAsset.address,
+    routerTransactionData.steps,
+    routerTransactionData.stores
+  );
+
+  const from = "0x6D763ee17cEA70cB1026Fa0F272dd620546A9B9F";
+
+  const stateOverrides = generateTokenApprovalStateDiff(
+    sellAsset,
+    from,
+    config.networks[chainId].routerSimulatorAddress
+  );
+
+  const callData = {
+    from: from,
+    to: config.networks[chainId].routerSimulatorAddress,
+    data: populatedTx.data,
+  };
+
+  try {
+    const ret = await provider.send("eth_call", [
+      callData,
+      "latest",
+      stateOverrides,
+    ]);
+    return BigInt(ret);
+  } catch (e) {
+    console.error("Failed to simulate transaction", {
+      callData,
+      stateOverrides: JSON.stringify(stateOverrides),
+    });
+    return null;
+  }
+
+  // try {
+  // } catch (e) {
+  //   const provider = new ethers.providers.JsonRpcProvider(
+  //     `https://matic.getblock.io/${process.env.GETBLOCK_KEY}/mainnet/`
+  //   );
+  //   return await simulateTransaction(provider, callData, stateOverrides);
+  // }
+}
+
+async function simulateTxFromAggResults({
+  chainId,
+  provider,
   aggResults,
   sellAsset,
-  buyToken,
+  buyAsset,
   sellAmount,
 }: {
   chainId: number;
+  provider: Provider;
   aggResults: RouteAggregator;
   sellAsset: Asset;
-  buyToken: string;
+  buyAsset: Asset;
   sellAmount: string;
 }): Promise<(BigNumberish | null)[]> {
   const txPromises = Object.keys(aggResults).map(async (key) => {
-    try {
-      const result = await simulateAssetSwapTransaction({
-        chainId,
-        routes: aggResults[key],
-        sellAsset,
-        amountIn: sellAmount,
-        buyToken,
-      });
-      return result;
-    } catch (e) {
-      if (e.message.includes("Asset allowSlot or balanceSlot are undefined")) {
-        throw Error(e.message);
-      }
-
-      console.error("Error during transaction simulation", { error: e });
-      return null;
-    }
+    const result = await simulateAssetSwapTransaction({
+      chainId,
+      provider,
+      routes: aggResults[key],
+      sellAsset,
+      amountIn: sellAmount,
+      buyAsset,
+    });
+    return result;
   });
 
   return await Promise.all(txPromises);
 }
 
-export function pickWinnerRoute(
+function pickWinnerRoute(
   aggResults: RouteAggregator,
   simulatedTxs: (BigNumberish | null)[]
 ): Route[] {
@@ -169,6 +241,7 @@ export function pickWinnerRoute(
 
 export async function simulateAndChooseRoute({
   chainId,
+  provider,
   sellToken,
   buyToken,
   sellAmount,
@@ -181,6 +254,7 @@ export async function simulateAndChooseRoute({
   ],
 }: {
   chainId: number;
+  provider: Provider;
   sellToken: Asset;
   buyToken: Asset;
   sellAmount: string;
@@ -199,7 +273,7 @@ export async function simulateAndChooseRoute({
     aggregators,
   });
 
-  console.log({ aggResults: JSON.stringify(aggResults) });
+  console.log(`aggResults: ${JSON.stringify(aggResults)}`);
 
   if (Object.keys(aggResults).length == 0) {
     throw Error("simulateAndChooseRoute: aggResults is empty");
@@ -207,9 +281,10 @@ export async function simulateAndChooseRoute({
 
   const simulatedTxs = await simulateTxFromAggResults({
     chainId,
+    provider,
     aggResults,
     sellAsset: sellToken,
-    buyToken: buyToken.address,
+    buyAsset: buyToken,
     sellAmount,
   });
 

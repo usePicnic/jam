@@ -1,15 +1,17 @@
-import { parseUnits } from "ethers";
+import { Provider, parseUnits } from "ethers";
 import { simulateAndChooseRoute } from "./tx-simulator";
 import { AssetWithPrice } from "../transaction/types";
 import { Route } from "./apis/api";
 
 export async function calculatePath({
   chainId,
+  provider,
   sellToken,
   buyToken,
   swapValue,
 }: {
   chainId: number;
+  provider: Provider;
   sellToken: AssetWithPrice;
   buyToken: AssetWithPrice;
   swapValue: number;
@@ -23,6 +25,7 @@ export async function calculatePath({
 
   const winnerRoute = await simulateAndChooseRoute({
     chainId,
+    provider,
     sellToken,
     buyToken,
     sellAmount: amountStr,

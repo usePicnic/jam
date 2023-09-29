@@ -16,6 +16,7 @@ import _ from "lodash";
 async function processBridges({
   chainId,
   walletAddress,
+  provider,
   assetStore,
   totalValue,
   currentLayer,
@@ -25,6 +26,7 @@ async function processBridges({
 }: {
   chainId: number;
   walletAddress: string;
+  provider: Provider;
   assetStore: AssetStore;
   totalValue: number;
   currentLayer: AssetLayer;
@@ -64,6 +66,9 @@ async function processBridges({
 
       // TODO: remove hardcoded chainId
       output = await assetTypeStrategies[chainId][asset.type].generateStep({
+        chainId,
+        provider,
+        walletAddress,
         assetAllocation,
         assetStore,
         value,
@@ -289,6 +294,7 @@ async function swapsToRouterOperation({
     promises.push(
       calculatePath({
         chainId,
+        provider,
         sellToken: fromAsset,
         buyToken: toAsset,
         swapValue,
@@ -366,6 +372,7 @@ export async function generateSteps({
     output = await processBridges({
       chainId,
       walletAddress,
+      provider,
       assetStore,
       totalValue,
       currentLayer: diff[i],
@@ -405,6 +412,7 @@ export async function generateSteps({
     output = await processBridges({
       chainId,
       walletAddress,
+      provider,
       assetStore,
       totalValue,
       currentLayer: diff[i],
@@ -413,8 +421,6 @@ export async function generateSteps({
       routerOperation: output,
     });
   }
-
-  console.log("Post positive processBridges", { output });
 
   return output;
 }
