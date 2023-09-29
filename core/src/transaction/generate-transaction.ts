@@ -3,6 +3,7 @@ import {
   AssetStore,
   CurrentAllocation,
   FractionAllocation,
+  RouterOperation,
 } from "./types";
 import { generateAssetLayers } from "./generate-asset-layers";
 import { calculateFractionAllocation } from "./calculate-fraction-allocation";
@@ -22,7 +23,7 @@ export async function generateTransaction({
   assetStore: AssetStore;
   inputAllocation: AbsoluteAllocation;
   outputAllocation: FractionAllocation;
-}) {
+}): Promise<RouterOperation> {
   if (inputAllocation.length === 0 || outputAllocation.length === 0) {
     throw new Error("Input or output allocation is empty");
   }
@@ -55,19 +56,19 @@ export async function generateTransaction({
     assetStore,
     allocation: inputFractionAllocation,
   });
-  console.log("currentAssetLayers", { currentAssetLayers });
+  console.dir({ currentAssetLayers }, { depth: null });
 
   const futureAssetLayers = generateAssetLayers({
     assetStore,
     allocation: outputAllocation,
   });
-  console.log("futureAssetLayers", { futureAssetLayers });
+  console.dir({ futureAssetLayers }, { depth: null });
 
   const diff = calculateAssetLayersDelta({
     currentAssetLayers,
     futureAssetLayers,
   });
-  console.log("diff", { diff });
+  console.dir({ diff }, { depth: null });
 
   const currentAllocation = new CurrentAllocation({
     fractionAllocation: inputFractionAllocation,
@@ -85,5 +86,5 @@ export async function generateTransaction({
     currentAllocation,
   });
 
-  // return output;
+  return received;
 }

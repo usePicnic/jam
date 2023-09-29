@@ -20,7 +20,7 @@ async function processBridges({
   assetStore,
   totalValue,
   currentLayer,
-  // currentAllocation,
+  currentAllocation,
   isPositive,
   routerOperation,
 }: {
@@ -30,7 +30,7 @@ async function processBridges({
   assetStore: AssetStore;
   totalValue: number;
   currentLayer: AssetLayer;
-  // currentAllocation: FractionAllocation;
+  currentAllocation: CurrentAllocation;
   isPositive: boolean;
   routerOperation: RouterOperation;
 }): Promise<RouterOperation> {
@@ -64,7 +64,6 @@ async function processBridges({
 
       const assetAllocation = currentLayer[assetId];
 
-      // TODO: remove hardcoded chainId
       output = await assetTypeStrategies[chainId][asset.type].generateStep({
         chainId,
         provider,
@@ -72,7 +71,7 @@ async function processBridges({
         assetAllocation,
         assetStore,
         value,
-        // currentAllocation,
+        currentAllocation,
         routerOperation: output,
       });
 
@@ -368,6 +367,17 @@ export async function generateSteps({
     });
   }
 
+  for (const assetLayer of diff) {
+    for (const key in assetLayer) {
+      const asset = assetStore.getAssetById(assetLayer[key].assetId);
+      output.stores.findOrInitializeStoreIdx({
+        assetId: assetLayer[key].assetId,
+        address: asset.address,
+      });
+      currentAllocation.getAssetById({ assetId: asset.id });
+    }
+  }
+
   for (let i = diff.length - 1; i > 0; i -= 1) {
     output = await processBridges({
       chainId,
@@ -376,7 +386,7 @@ export async function generateSteps({
       assetStore,
       totalValue,
       currentLayer: diff[i],
-      // currentAllocation,
+      currentAllocation,
       isPositive: false,
       routerOperation: output,
     });
@@ -389,7 +399,7 @@ export async function generateSteps({
 
   const { swaps, updatedSwapLayer } = calculateSwaps({ swapLayer: diff[0] });
 
-  console.log("Swaps", { swaps });
+  console.dir({ swaps }, { depth: null });
 
   output = await swapsToRouterOperation({
     chainId,
@@ -403,10 +413,13 @@ export async function generateSteps({
     routerOperation: output,
   });
 
-  console.log("Post swaps output", {
-    stores: output.stores.stores,
-    steps: output.steps,
-  });
+  console.dir(
+    {
+      postSwapStores: output.stores.stores,
+      postSwapSteps: output.steps,
+    },
+    { depth: null }
+  );
 
   for (let i = diff.length - 1; i > 0; i -= 1) {
     output = await processBridges({
@@ -416,11 +429,19 @@ export async function generateSteps({
       assetStore,
       totalValue,
       currentLayer: diff[i],
-      // currentAllocation,
+      currentAllocation,
       isPositive: true,
       routerOperation: output,
     });
   }
+
+  console.dir(
+    {
+      postBridgesStores: output.stores.stores,
+      postBridgesSteps: output.steps,
+    },
+    { depth: null }
+  );
 
   return output;
 }

@@ -1,5 +1,6 @@
 import { BigNumberish, Provider, getAddress } from "ethers";
 import { getPrices } from "./get-prices";
+import { Router } from "src/interfaces";
 
 export interface Asset {
   id: string;
@@ -139,6 +140,7 @@ interface CurrentAllocationItem {
 }
 
 export class CurrentAllocation {
+  private assetStore: AssetStore;
   private allocations: CurrentAllocationItem[] = [];
   private assetIdMap: Map<string, CurrentAllocationItem> = new Map();
   private addressMap: Map<string, CurrentAllocationItem> = new Map();
@@ -150,6 +152,7 @@ export class CurrentAllocation {
     fractionAllocation: FractionAllocation;
     assetStore: AssetStore;
   }) {
+    this.assetStore = assetStore;
     fractionAllocation.forEach((item) => {
       const asset = assetStore.getAssetById(item.assetId);
       this.addAsset({
@@ -176,16 +179,10 @@ export class CurrentAllocation {
     }
   }
 
-  getAssetById({
-    assetId,
-    assetStore,
-  }: {
-    assetId: string;
-    assetStore: AssetStore;
-  }): CurrentAllocationItem {
+  getAssetById({ assetId }: { assetId: string }): CurrentAllocationItem {
     let currentAsset = this.assetIdMap.get(assetId);
     if (!currentAsset) {
-      const asset = assetStore.getAssetById(assetId);
+      const asset = this.assetStore.getAssetById(assetId);
       currentAsset = {
         assetId,
         address: getAddress(asset.address),
@@ -210,22 +207,17 @@ export class CurrentAllocation {
 
   updateFraction({
     assetId,
-    assetStore,
     address,
     delta,
   }: {
     assetId?: string;
-    assetStore?: AssetStore;
     address?: string;
     delta: number;
   }): boolean {
     let asset: CurrentAllocationItem | undefined;
 
     if (assetId) {
-      if (!assetStore) {
-        throw new Error("assetStore must be defined if assetId is defined");
-      }
-      asset = this.getAssetById({ assetId, assetStore });
+      asset = this.getAssetById({ assetId });
     } else if (address) {
       asset = this.getAssetByAddress({ address });
     }
@@ -416,5 +408,14 @@ export class RouterOperation {
       })),
       stores: this.stores.stores.map((store) => store.value),
     };
+  }
+
+  getEncodedTransactionData(): string {
+    const transactionData = this.getTransactionData();
+
+    return Router.encodeFunctionData("runSteps", [
+      transactionData.steps,
+      transactionData.stores,
+    ]);
   }
 }

@@ -1,7 +1,6 @@
-import { expect, test } from "vitest";
+import { test } from "vitest";
 import { generateTransaction } from "src/transaction/generate-transaction";
 import { AssetStore } from "src/transaction/types";
-import { getProvider } from "src/utils/get-provider";
 
 test("generateTransaction: WMATIC and USDC to USDC", async () => {
   const assetStore = new AssetStore();

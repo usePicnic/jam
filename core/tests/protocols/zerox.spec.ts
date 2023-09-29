@@ -20,6 +20,7 @@ test("ZeroX: PAX Gold to MAI", async () => {
 
   const swappedValue = await simulateAssetSwapTransaction({
     chainId: 137,
+    provider,
     routes: [
       {
         fraction: 1,
@@ -35,7 +36,7 @@ test("ZeroX: PAX Gold to MAI", async () => {
     ],
     sellAsset: assetStore.getAssetById("24baf9c9-953e-4f2d-8859-b6c5b3c06217"),
     amountIn: "1000000000000000000",
-    buyToken: "0xa3Fa99A148fA48D14Ed51d610c367C61876997F1",
+    buyAsset: assetStore.getAssetById("c5129108-4b4d-4aa2-b75b-9d4348bd1678"),
   });
 
   console.log({ swappedValue });

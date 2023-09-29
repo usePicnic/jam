@@ -9,13 +9,18 @@ import {
   FractionAllocation,
   FractionAllocationItem,
   LinkedAsset,
+  StoreOpType,
+  CurrentAllocation,
 } from "./types";
-import {
-  getAmount,
-  getGammaPair,
-  getGammaTVLs,
-} from "./asset-type-strategies-helpers";
+import { getAmount } from "./asset-type-strategies-helpers";
 import { Contract, Provider } from "ethers";
+import { getMagicOffsets } from "src/utils/get-magic-offset";
+import { IERC20, IHypervisor, IHypervisorRouter } from "src/interfaces";
+import {
+  FRACTION_MULTIPLIER,
+  MAGIC_REPLACER_0,
+  MAGIC_REPLACER_1,
+} from "src/utils/get-magic-offset";
 
 const USDC_ADDRESS = "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174";
 const SELL_AMOUNT = "25000000"; // 25 USD
@@ -75,10 +80,13 @@ export function fetchPriceData({
 }
 
 interface GenerateStepParams {
+  chainId: number;
+  provider: Provider;
+  walletAddress: string;
   assetAllocation: FractionAllocationItem;
   assetStore: AssetStore;
   value: number;
-  // currentAllocation: FractionAllocation;
+  currentAllocation: CurrentAllocation;
   routerOperation: RouterOperation;
 }
 
@@ -97,7 +105,13 @@ interface GetPriceParams {
 
 export abstract class InterfaceStrategy {
   abstract generateStep({
+    chainId,
+    provider,
+    walletAddress,
+    assetAllocation,
     assetStore,
+    value,
+    currentAllocation,
     routerOperation,
   }: GenerateStepParams): Promise<RouterOperation>;
   abstract fetchPriceData({
@@ -174,12 +188,11 @@ class GammaDepositStrategy extends InterfaceStrategy {
     const linkedAssets = asset.linkedAssets.map((linkedAsset) =>
       assetStore.getAssetById(linkedAsset.assetId)
     );
-    const pair = getGammaPair({ provider, address: asset.address });
+    const pair = this.getGammaPair({ provider, address: asset.address });
 
     let requestTree: RequestTree = {};
     requestTree[asset.address] = {};
 
-    console.log({ pair, getFunction: pair.getFunction("getTotalAmounts") });
     requestTree[asset.address].totalAmount = () =>
       pair.getFunction("getTotalAmounts").call(null);
 

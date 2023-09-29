@@ -105,8 +105,10 @@ export class Paraswap extends Exchange {
           [
             path.fromToken, // fromToken
             MAGIC_REPLACER_0, // fromAmount
-            decodedData.args[0].toAmount, // toAmount
-            decodedData.args[0].expectedAmount, // expectedAmount
+            1, // toAmount (originally decodedData.args[0].toAmount) (minAmountOut)
+            BigInt(
+              "115792089237316195423570985008687907853269984665640564039457584007913129639935"
+            ), // expectedAmount (originally decodedData.args[0].expectedAmount))
             walletAddress, // beneficiary
             decodedData.args[0].path, // path
             decodedData.args[0].partner, // partner
@@ -134,8 +136,10 @@ export class Paraswap extends Exchange {
           [
             path.fromToken, // fromToken
             MAGIC_REPLACER_0, // fromAmount
-            decodedData.args[0].toAmount, // toAmount --> o quanto vai reverter se ficar abaixo do toAmount (setar pra 1) (minAmountOut)
-            decodedData.args[0].expectedAmount, // expectedAmount --> (setar pra infinito)
+            1, // toAmount (originally decodedData.args[0].toAmount) (minAmountOut)
+            BigInt(
+              "115792089237316195423570985008687907853269984665640564039457584007913129639935"
+            ), // expectedAmount (originally decodedData.args[0].expectedAmount))
             walletAddress, // beneficiary
             decodedData.args[0].path, // path
             decodedData.args[0].partner, // partner
@@ -180,11 +184,13 @@ export class Paraswap extends Exchange {
       ],
     });
 
-    console.log("Paraswap buildSwapOutput", {
-      path,
-      output,
-      outputJ: JSON.stringify(output),
-    });
+    console.dir(
+      {
+        paraswapPath: path,
+        paraswapOutput: output,
+      },
+      { depth: null }
+    );
 
     return output;
   }
@@ -294,11 +300,13 @@ export class ZeroX extends Exchange {
       ],
     });
 
-    console.log("ZeroX buildSwapOutput", {
-      path,
-      output,
-      outputJ: JSON.stringify(output),
-    });
+    console.dir(
+      {
+        zeroXPath: path,
+        zeroXOutput: output,
+      },
+      { depth: null }
+    );
 
     return output;
   }
