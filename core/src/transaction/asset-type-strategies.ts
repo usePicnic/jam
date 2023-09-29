@@ -216,7 +216,7 @@ class GammaDepositStrategy extends InterfaceStrategy {
   }
 
   getPrice({ assetStore, asset, requestTree }: GetPriceParams) {
-    const tvls = getGammaTVLs({ asset, assetStore, requestTree });
+    const tvls = this.getGammaTVLs({ asset, assetStore, requestTree });
     const tvl = tvls.reduce((a, b) => a + b, 0);
 
     const supply = getAmount({
@@ -224,19 +224,191 @@ class GammaDepositStrategy extends InterfaceStrategy {
       decimals: asset.decimals,
     });
 
-    console.log({ tvls, tvl, supply, supplyRaw: requestTree[asset.address].supply, decimals: asset.decimals })
+    console.log("Gamma getPrice", {
+      tvls,
+      tvl,
+      supply,
+      supplyRaw: requestTree[asset.address].supply,
+      decimals: asset.decimals,
+    });
 
     return tvl / supply;
   }
 
   async generateStep({
+    chainId,
+    provider,
+    walletAddress,
     assetAllocation,
     assetStore,
     value,
     currentAllocation,
     routerOperation,
   }: GenerateStepParams) {
+    const asset = assetStore.getAssetById(assetAllocation.assetId);
+    const storeNumberFrom0 = routerOperation.stores.findOrInitializeStoreIdx({
+      assetId: asset.linkedAssets[0].assetId,
+    });
+    const storeNumberFrom1 = routerOperation.stores.findOrInitializeStoreIdx({
+      assetId: asset.linkedAssets[1].assetId,
+    });
+    const storeNumberTo = routerOperation.stores.findOrInitializeStoreIdx({
+      assetId: asset.id,
+    });
+
+    const linkedAssetFractions = [];
+
+    for (const [i, la] of asset.linkedAssets.entries()) {
+      const linkedAsset = assetStore.getAssetById(la.assetId);
+
+      const currentFraction = currentAllocation.getAssetById({
+        assetId: la.assetId,
+      }).fraction;
+      const newFraction = la.fraction / currentFraction;
+      const variation = currentFraction * newFraction;
+
+      currentAllocation.updateFraction({
+        assetId: la.assetId,
+        delta: -variation,
+      });
+      currentAllocation.updateFraction({
+        assetId: asset.id,
+        delta: variation,
+      });
+
+      linkedAssetFractions.push(newFraction);
+
+      const storeNumber = routerOperation.stores.findOrInitializeStoreIdx({
+        assetId: linkedAsset.id,
+      });
+
+      const { data: approveEncodedCall, offsets: approveFromOffsets } =
+        getMagicOffsets({
+          data: IERC20.encodeFunctionData("approve", [
+            asset.address,
+            MAGIC_REPLACER_0,
+          ]),
+          magicReplacers: [MAGIC_REPLACER_0],
+        });
+
+      routerOperation.steps.push({
+        stepAddress: linkedAsset.address,
+        stepEncodedCall: approveEncodedCall,
+        storeOperations: [
+          {
+            storeOpType: StoreOpType.RetrieveStoreAssignCall,
+            storeNumber: storeNumber,
+            offset: approveFromOffsets[0],
+            fraction: newFraction * FRACTION_MULTIPLIER,
+          },
+        ],
+      });
+    }
+
+    const hypervisor = new Contract(asset.address, IHypervisor, provider);
+    const hypervisorRouterAddress = await hypervisor.whitelistedAddress();
+
+    const { data: swapEncodedCall, offsets: swapFromOffsets } = getMagicOffsets(
+      {
+        data: IHypervisorRouter.encodeFunctionData("deposit", [
+          MAGIC_REPLACER_0, // deposit0
+          MAGIC_REPLACER_1, // deposit1
+          walletAddress, // to
+          asset.address, // pos
+          [1, 1, 1, 1], // minIn
+        ]),
+        magicReplacers: [MAGIC_REPLACER_0, MAGIC_REPLACER_1],
+      }
+    );
+
+    const { offsets: swapToOffsets } = getMagicOffsets({
+      data: IHypervisorRouter.encodeFunctionResult("deposit", [
+        MAGIC_REPLACER_0,
+      ]),
+      magicReplacers: [MAGIC_REPLACER_0],
+    });
+
+    routerOperation.steps.push({
+      stepAddress: hypervisorRouterAddress,
+      stepEncodedCall: swapEncodedCall,
+      storeOperations: [
+        {
+          storeOpType: StoreOpType.RetrieveStoreAssignCallSubtract,
+          storeNumber: storeNumberFrom0,
+          offset: swapFromOffsets[0],
+          fraction: linkedAssetFractions[0] * FRACTION_MULTIPLIER,
+        },
+        {
+          storeOpType: StoreOpType.RetrieveStoreAssignCallSubtract,
+          storeNumber: storeNumberFrom1,
+          offset: swapFromOffsets[1],
+          fraction: linkedAssetFractions[1] * FRACTION_MULTIPLIER,
+        },
+        {
+          storeOpType: StoreOpType.RetrieveResultAssignStore,
+          storeNumber: storeNumberTo,
+          offset: swapToOffsets[0],
+          fraction: 0,
+        },
+      ],
+    });
+
     return routerOperation;
+  }
+
+  // async getLinkedAssetRatios({
+  //   assetStore,
+  //   assetId,
+  // }: GetLinkedAssetRatiosParams) {
+  //   return null;
+  // }
+
+  getGammaPair({
+    provider,
+    address,
+  }: {
+    provider: Provider;
+    address: string;
+  }): Contract {
+    const abi = [
+      // Read-Only Functions
+      "function totalSupply() view returns (uint256)",
+      "function getBasePosition() view returns (uint128, uint256, uint256)",
+      "function getLimitPosition() view returns (uint128, uint256, uint256)",
+      "function getTotalAmounts() view returns (uint128, uint256)",
+    ];
+
+    return new Contract(address, abi, provider);
+  }
+
+  getGammaTVLs({
+    asset,
+    assetStore,
+    requestTree,
+  }: {
+    asset: Asset;
+    assetStore: AssetStore;
+    requestTree: RequestTree;
+  }) {
+    const linkedAssets = asset.linkedAssets.map((linkedAsset) =>
+      assetStore.getAssetById(linkedAsset.assetId)
+    );
+
+    return linkedAssets.map((linkedAsset, i) => {
+      const amount = requestTree[asset.address].totalAmount[i];
+      console.log({ "getGammaTVLs amount123": amount });
+      console.log({
+        "getGammaTVLs price123": getPrice({
+          assetStore,
+          asset: linkedAsset,
+          requestTree,
+        }),
+      });
+      return (
+        getPrice({ assetStore, asset: linkedAsset, requestTree }) *
+        getAmount({ amount, decimals: linkedAsset.decimals })
+      );
+    });
   }
 }
 
