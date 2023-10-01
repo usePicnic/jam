@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
-import { getPricesAndLinkedAssets } from "src/transaction/get-prices-and-linked-assets";
-import { Asset, AssetStore } from "src/transaction/types";
-import { getProvider } from "src/utils/get-provider";
+import { getPricesAndLinkedAssets } from "core/src/transaction/get-prices-and-linked-assets";
+import { Asset, AssetStore } from "core/src/transaction/types";
+import { getProvider } from "core/src/utils/get-provider";
 
 test("network token", async () => {
   const assetStore = new AssetStore([

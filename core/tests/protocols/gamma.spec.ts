@@ -1,9 +1,9 @@
 import { test } from "vitest";
-import { generateTransaction } from "src/transaction/generate-transaction";
-import { AssetStore } from "src/transaction/types";
-import { loadConfig } from "src/config/load-config";
-import { simulateRouterOperation } from "src/path/tx-simulator";
-import { getProvider } from "src/utils/get-provider";
+import { generateTransaction } from "core/src/transaction/generate-transaction";
+import { AssetStore } from "core/src/transaction/types";
+import { loadConfig } from "core/src/config/load-config";
+import { simulateRouterOperation } from "core/src/path/tx-simulator";
+import { getProvider } from "core/src/utils/get-provider";
 
 test("generateTransaction: USDC to DAI/GNS (gammaDeposit)", async () => {
   const assetStore = new AssetStore();

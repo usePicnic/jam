@@ -1,11 +1,6 @@
 import fetch from "node-fetch";
 import { Exchange, ExchangeParams, exchanges } from "../exchanges";
-import { getIlliquidAssetsData } from "./illiquid-assets";
-import { getKyberData } from "./kyber";
-import { getOneInchData } from "./one-inch";
-import { getParaswapData } from "./paraswap";
 import { getParaswapFullData } from "./paraswap-full";
-import { get0xData } from "./zerox";
 import { getZeroXFullData } from "./zerox-full";
 import { Asset } from "../../transaction/types";
 
@@ -33,11 +28,6 @@ export interface ParamsAPI {
 }
 
 const aggToFunctionMap = {
-  oneinch: getOneInchData,
-  zeroX: get0xData,
-  paraswap: getParaswapData,
-  kyber: getKyberData,
-  illiquid: getIlliquidAssetsData,
   paraswapFull: getParaswapFullData,
   zeroXFull: getZeroXFullData,
 };

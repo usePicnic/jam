@@ -1,8 +1,8 @@
 import { expect, test } from "vitest";
-import { AssetStore } from "src/transaction/types";
-import { getProvider } from "src/utils/get-provider";
-import { simulateAssetSwapTransaction } from "src/path/tx-simulator";
-import { ZeroX } from "src/path/exchanges";
+import { AssetStore } from "core/src/transaction/types";
+import { getProvider } from "core/src/utils/get-provider";
+import { simulateAssetSwapTransaction } from "core/src/path/tx-simulator";
+import { ZeroX } from "core/src/path/exchanges";
 
 test("ZeroX: PAX Gold to MAI", async () => {
   const assetStore = new AssetStore();

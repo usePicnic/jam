@@ -1,6 +1,6 @@
 import { test } from "vitest";
-import { generateTransaction } from "src/transaction/generate-transaction";
-import { AssetStore } from "src/transaction/types";
+import { generateTransaction } from "core/src/transaction/generate-transaction";
+import { AssetStore } from "core/src/transaction/types";
 
 test("generateTransaction: WMATIC and USDC to USDC", async () => {
   const assetStore = new AssetStore();

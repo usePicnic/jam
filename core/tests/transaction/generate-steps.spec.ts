@@ -5,10 +5,10 @@ import {
   AssetStore,
   CurrentAllocation,
   RouterOperation,
-} from "src/transaction/types";
-import { generateSteps } from "src/transaction/generate-steps";
-import { getProvider } from "src/utils/get-provider";
-import { calculateFractionAllocation } from "src/transaction/calculate-fraction-allocation";
+} from "core/src/transaction/types";
+import { generateSteps } from "core/src/transaction/generate-steps";
+import { getProvider } from "core/src/utils/get-provider";
+import { calculateFractionAllocation } from "core/src/transaction/calculate-fraction-allocation";
 
 test.skip("generateSteps 1", async () => {
   const assetStore = new AssetStore([

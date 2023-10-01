@@ -4,5 +4,4 @@ export interface ParamsAPI {
   buyToken: Asset;
   sellToken: Asset;
   sellAmount: string;
-  exchangeNames: string;
 }

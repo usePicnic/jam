@@ -1,4 +1,3 @@
-import { zeroxNames } from "../path/exchanges";
 import { Asset } from "../transaction/types";
 import { ParamsAPI } from "./params-api";
 import fetch from "node-fetch";
@@ -42,11 +41,10 @@ export type Order0X = {
   estimatedPriceImpact: number;
 };
 
-export async function call0XAPIUnfiltered({
+async function call0XAPIUnfiltered({
   buyToken,
   sellToken,
   sellAmount,
-  exchangeNames,
 }: ParamsAPI): Promise<any> {
   const url = `https://polygon.api.0x.org/swap/v1/quote?buyToken=${buyToken.address}&sellToken=${sellToken.address}&sellAmount=${sellAmount}`;
   const req = await fetch(url);
@@ -62,12 +60,10 @@ export async function get0xPrice({
   sellToken,
   buyToken,
   sellAmount,
-  exchangeNames = zeroxNames,
 }: {
   sellToken: Asset;
   buyToken: Asset;
   sellAmount: string;
-  exchangeNames?: string;
 }): Promise<number> {
   if (buyToken == sellToken) {
     return 1;
@@ -76,7 +72,6 @@ export async function get0xPrice({
     sellToken,
     buyToken,
     sellAmount,
-    exchangeNames,
   });
 
   // Hack to deal with illiquid swaps

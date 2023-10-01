@@ -2,7 +2,7 @@ import { expect, test } from "vitest";
 import { AssetStore } from "../../src/transaction/types";
 import { getProvider } from "../../src/utils/get-provider";
 import { simulateAssetSwapTransaction } from "../../src/path/tx-simulator";
-import { Paraswap } from "src/path/exchanges";
+import { Paraswap } from "core/src/path/exchanges";
 
 test("Paraswap (using multiSwap): PAX Gold to MAI", async () => {
   const assetStore = new AssetStore();

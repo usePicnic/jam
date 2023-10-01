@@ -34,7 +34,7 @@ async function callParaswapFullAPI({
   }
 
   console.debug(
-    `API response - Paraswap - sellToken: ${sellToken} buyToken asset ID: ${buyToken?._id}`,
+    `API response - Paraswap - sellToken: ${sellToken} buyToken asset ID: ${buyToken?.id}`,
     { url, data }
   );
   return data;

@@ -1,6 +1,6 @@
 import { BigNumberish, Provider, getAddress } from "ethers";
 import { getPricesAndLinkedAssets } from "./get-prices-and-linked-assets";
-import { Router } from "src/interfaces";
+import { Router } from "core/src/interfaces";
 
 export interface Asset {
   id: string;
@@ -126,7 +126,7 @@ export class AssetStore {
 
         assetIds.push(asset.id);
 
-        if (asset.rewards !== undefined) {
+        if ("rewards" in item && item.rewards !== undefined) {
           addAssetIds(item.rewards);
         }
 
@@ -265,11 +265,7 @@ export type FractionAllocation = FractionAllocationItem[];
 export type AssetLayer = { [key: string]: FractionAllocationItem };
 export type AssetLayers = AssetLayer[];
 
-export type AssetType =
-  | "token"
-  | "networkToken"
-  | "beefyDeposit"
-  | "gammaDeposit";
+export type AssetType = "token" | "networkToken" | "gammaDeposit";
 
 export enum StoreOpType {
   RetrieveStoreAssignValue, // 0

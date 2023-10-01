@@ -14,13 +14,13 @@ import {
 } from "./types";
 import { getAmount } from "./asset-type-strategies-helpers";
 import { Contract, Provider } from "ethers";
-import { getMagicOffsets } from "src/utils/get-magic-offset";
-import { IERC20, IHypervisor, IHypervisorRouter } from "src/interfaces";
+import { getMagicOffsets } from "core/src/utils/get-magic-offset";
+import { IERC20, IHypervisor, IHypervisorRouter } from "core/src/interfaces";
 import {
   FRACTION_MULTIPLIER,
   MAGIC_REPLACER_0,
   MAGIC_REPLACER_1,
-} from "src/utils/get-magic-offset";
+} from "core/src/utils/get-magic-offset";
 
 const USDC_ADDRESS = "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174";
 const SELL_AMOUNT = "25000000"; // 25 USD

@@ -3,7 +3,7 @@ import {
   AbsoluteAllocation,
   AssetStore,
   FractionAllocation,
-} from "transaction/types";
+} from "core/src/transaction/types";
 
 export function calculateFractionAllocation({
   absoluteAllocation,
