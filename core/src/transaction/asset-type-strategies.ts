@@ -1,6 +1,6 @@
 import { getParaswapPrice } from "../external-apis/paraswap";
 import { getCoingeckoPrice } from "../external-apis/coingecko";
-import { RequestTree } from "./get-prices";
+import { RequestTree } from "./get-prices-and-linked-assets";
 import {
   Asset,
   AssetStore,
@@ -54,6 +54,39 @@ export function getPrice({
   }
 }
 
+export function getLinkedAssets({
+  assetStore,
+  asset,
+  requestTree,
+}: {
+  assetStore: AssetStore;
+  asset: Asset;
+  requestTree: RequestTree;
+}): LinkedAsset[] {
+  const strategy = assetTypeStrategies[asset.chainId][asset.type];
+
+  if (strategy === null || strategy === undefined) {
+    throw new Error(
+      `unimplemented interface strategy for ${asset.chainId} ${asset.type}`
+    );
+  } else {
+    try {
+      const linkedAssets = strategy.getLinkedAssets({
+        assetStore,
+        asset,
+        requestTree,
+      });
+
+      return linkedAssets;
+    } catch (e) {
+      console.error(`Failed to getLinkedAssets for asset ${asset.id}`, {
+        e,
+      });
+      throw e;
+    }
+  }
+}
+
 export function fetchPriceData({
   provider,
   assetStore,
@@ -90,7 +123,6 @@ interface GenerateStepParams {
   routerOperation: RouterOperation;
 }
 
-
 interface FetchPriceDataParams {
   provider: Provider;
   assetStore: AssetStore;
@@ -98,6 +130,12 @@ interface FetchPriceDataParams {
 }
 
 interface GetPriceParams {
+  assetStore: AssetStore;
+  asset: Asset;
+  requestTree: RequestTree;
+}
+
+interface GetLinkedAssetsParams {
   assetStore: AssetStore;
   asset: Asset;
   requestTree: RequestTree;
@@ -114,6 +152,7 @@ export abstract class InterfaceStrategy {
     currentAllocation,
     routerOperation,
   }: GenerateStepParams): Promise<RouterOperation>;
+
   abstract fetchPriceData({
     provider,
     assetStore,
@@ -121,6 +160,14 @@ export abstract class InterfaceStrategy {
   }: FetchPriceDataParams): RequestTree;
 
   abstract getPrice({ assetStore, asset, requestTree }: GetPriceParams): number;
+
+  getLinkedAssets({
+    assetStore,
+    asset,
+    requestTree,
+  }: GetLinkedAssetsParams): LinkedAsset[] | null {
+    return asset.linkedAssets ? asset.linkedAssets : null;
+  }
 }
 
 class NetworkTokenStrategy extends InterfaceStrategy {
@@ -188,16 +235,16 @@ class GammaDepositStrategy extends InterfaceStrategy {
     const linkedAssets = asset.linkedAssets.map((linkedAsset) =>
       assetStore.getAssetById(linkedAsset.assetId)
     );
-    const pair = this.getGammaPair({ provider, address: asset.address });
+    const hypervisor = new Contract(asset.address, IHypervisor, provider);
 
     let requestTree: RequestTree = {};
     requestTree[asset.address] = {};
 
     requestTree[asset.address].totalAmount = () =>
-      pair.getFunction("getTotalAmounts").call(null);
+      hypervisor.getFunction("getTotalAmounts").call(null);
 
     requestTree[asset.address].supply = () =>
-      pair.getFunction("totalSupply").call(null);
+      hypervisor.getFunction("totalSupply").call(null);
 
     // Underlying Prices
     linkedAssets.map((linkedAsset) => {
@@ -233,6 +280,46 @@ class GammaDepositStrategy extends InterfaceStrategy {
     });
 
     return tvl / supply;
+  }
+
+  getLinkedAssets({
+    assetStore,
+    asset,
+    requestTree,
+  }: GetLinkedAssetsParams): LinkedAsset[] | null {
+    const tvls = this.getGammaTVLs({ asset, assetStore, requestTree });
+
+    const totalTvl = tvls.reduce((a, b) => a + b, 0);
+    // fraction is to be rounded up to 0.00001 precision, sum of fractions needs to be 1
+    const fractions = tvls.map(
+      (tvl) => Math.round((tvl / totalTvl) * 100_000) / 100_000
+    );
+    console.log("gamma tvls", {
+      tvls,
+      totalTvl,
+      fractions,
+      linkedAssets: asset.linkedAssets,
+    });
+
+    // guarantee that fractions sum == 1, if not adjust it to be
+    fractions[0] += 1 - fractions.reduce((a, b) => a + b, 0);
+
+    return asset.linkedAssets.map((linkedAsset, i) => ({
+      assetId: linkedAsset.assetId,
+      fraction: fractions[i],
+    }));
+    // asset.linkedAssets[0].fraction = fractions[0];
+    // asset.linkedAssets[1].fraction = fractions[1];
+
+    // if (asset.linkedAssets[0].fraction == 0) {
+    //   asset.linkedAssets[0].fraction = 0.00001;
+    //   asset.linkedAssets[1].fraction -= 0.00001;
+    // }
+
+    // if (asset.linkedAssets[1].fraction == 0) {
+    //   asset.linkedAssets[1].fraction = 0.00001;
+    //   asset.linkedAssets[0].fraction -= 0.00001;
+    // }
   }
 
   async generateStep({
@@ -354,31 +441,6 @@ class GammaDepositStrategy extends InterfaceStrategy {
     });
 
     return routerOperation;
-  }
-
-  // async getLinkedAssetRatios({
-  //   assetStore,
-  //   assetId,
-  // }: GetLinkedAssetRatiosParams) {
-  //   return null;
-  // }
-
-  getGammaPair({
-    provider,
-    address,
-  }: {
-    provider: Provider;
-    address: string;
-  }): Contract {
-    const abi = [
-      // Read-Only Functions
-      "function totalSupply() view returns (uint256)",
-      "function getBasePosition() view returns (uint128, uint256, uint256)",
-      "function getLimitPosition() view returns (uint128, uint256, uint256)",
-      "function getTotalAmounts() view returns (uint128, uint256)",
-    ];
-
-    return new Contract(address, abi, provider);
   }
 
   getGammaTVLs({

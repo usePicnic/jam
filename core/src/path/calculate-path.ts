@@ -1,6 +1,6 @@
 import { Provider, parseUnits } from "ethers";
 import { simulateAndChooseRoute } from "./tx-simulator";
-import { AssetWithPrice } from "../transaction/types";
+import { Asset } from "../transaction/types";
 import { Route } from "./apis/api";
 
 export async function calculatePath({
@@ -12,8 +12,8 @@ export async function calculatePath({
 }: {
   chainId: number;
   provider: Provider;
-  sellToken: AssetWithPrice;
-  buyToken: AssetWithPrice;
+  sellToken: Asset;
+  buyToken: Asset;
   swapValue: number;
 }): Promise<Route[]> {
   const amount = swapValue / sellToken.price;

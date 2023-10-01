@@ -187,7 +187,7 @@ test.skip("generateSteps 1", async () => {
 
   const chainId = 137;
   const provider = await getProvider({ chainId });
-  await assetStore.cachePrices({
+  await assetStore.cachePricesAndLinkedAssets({
     allocation: [
       ...inputAllocation,
       { assetId: "eebcd7b6-3af1-41b2-b547-b0f5b226664e", fraction: 1 },

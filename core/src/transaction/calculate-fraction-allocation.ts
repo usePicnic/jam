@@ -13,7 +13,7 @@ export function calculateFractionAllocation({
   assetStore: AssetStore;
 }): { totalValue: number; fractionAllocation: FractionAllocation } {
   const totalValue = absoluteAllocation.reduce((acc, allocation) => {
-    const asset = assetStore.getFullAssetById(allocation.assetId);
+    const asset = assetStore.getAssetById(allocation.assetId);
     const value =
       Number(formatUnits(allocation.amountStr, asset.decimals)) * asset.price;
     return acc + value;
@@ -21,7 +21,7 @@ export function calculateFractionAllocation({
 
   const fractionAllocation: FractionAllocation = absoluteAllocation.map(
     (allocation) => {
-      const asset = assetStore.getFullAssetById(allocation.assetId);
+      const asset = assetStore.getAssetById(allocation.assetId);
       const value =
         Number(formatUnits(allocation.amountStr, asset.decimals)) * asset.price;
 

@@ -1,5 +1,5 @@
 import { BigNumberish, Provider, getAddress } from "ethers";
-import { getPrices } from "./get-prices";
+import { getPricesAndLinkedAssets } from "./get-prices-and-linked-assets";
 import { Router } from "src/interfaces";
 
 export interface Asset {
@@ -18,6 +18,7 @@ export interface Asset {
   allowSlot?: number;
   balanceSlot?: number;
   callParams?: any;
+  price?: number;
   // rawLogoUri?: string;
   // logos?: {
   //   logoUri: string;
@@ -26,8 +27,6 @@ export interface Asset {
   //   color: string;
   // }[];
 }
-
-export type AssetWithPrice = Asset & { price: number };
 
 export interface LinkedAsset {
   assetId: string;
@@ -38,11 +37,13 @@ export class AssetStore {
   #byId: { [key: string]: Asset };
   #byAddress: { [key: string]: Asset };
   #prices: { [key: string]: number };
+  #linkedAssets: { [key: string]: LinkedAsset[] };
 
   constructor(assets?: Asset[]) {
     this.#byId = {};
     this.#byAddress = {};
     this.#prices = {};
+    this.#linkedAssets = {};
 
     const definiteAssets: Asset[] =
       assets ?? require("../../../data/assets.json");
@@ -59,33 +60,45 @@ export class AssetStore {
     if (asset === undefined) {
       throw new Error(`Asset with id ${assetId} not found`);
     }
-    return asset;
+
+    const price = this.getPrice(asset.id);
+    const linkedAssets = this.getLinkedAssets(asset.id);
+
+    return { ...asset, price, linkedAssets };
   }
 
   // Function that gets asset by address, if not found throws an error
   getAssetByAddress(address: string): Asset {
     const asset = this.#byAddress[address];
+
     if (asset === undefined) {
       throw new Error(`Asset with address ${address} not found`);
     }
-    return asset;
+
+    const price = this.getPrice(asset.id);
+    const linkedAssets = this.getLinkedAssets(asset.id);
+
+    return { ...asset, price, linkedAssets };
   }
 
-  getPrice(assetId: string): number {
+  getPrice(assetId: string): number | undefined {
     const price = this.#prices[assetId];
-    if (price === undefined) {
-      throw new Error(`Price for asset with id ${assetId} not found`);
-    }
-    return price;
+
+    return price ? price : undefined;
   }
 
-  getFullAssetById(assetId: string): AssetWithPrice {
-    const asset = this.getAssetById(assetId);
-    const price = this.getPrice(assetId);
-    return { ...asset, price };
+  getLinkedAssets(assetId: string): LinkedAsset[] | undefined {
+    const asset = this.#byId[assetId];
+    const linkedAssets = this.#linkedAssets[assetId];
+
+    return linkedAssets
+      ? linkedAssets
+      : asset.linkedAssets
+      ? asset.linkedAssets
+      : undefined;
   }
 
-  async cachePrices({
+  async cachePricesAndLinkedAssets({
     allocation,
     assetStore,
     provider,
@@ -120,13 +133,16 @@ export class AssetStore {
     };
     addAssetIds(allocation);
 
-    const ret = await getPrices({ assetStore, provider, assetIds });
+    const { prices, linkedAssets } = await getPricesAndLinkedAssets({
+      assetStore,
+      provider,
+      assetIds,
+    });
 
-    this.#prices = ret;
+    this.#prices = prices;
+    this.#linkedAssets = linkedAssets;
   }
 }
-
-export type AssetPrices = { [key: string]: number };
 
 export interface AbsoluteAllocationItem {
   assetId: string;

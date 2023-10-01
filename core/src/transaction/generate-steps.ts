@@ -266,8 +266,8 @@ async function swapsToRouterOperation({
   for (let i = 0; i < swaps.length; i += 1) {
     console.log("swap %d", i);
 
-    const fromAsset = assetStore.getFullAssetById(swaps[i].from);
-    const toAsset = assetStore.getFullAssetById(swaps[i].to);
+    const fromAsset = assetStore.getAssetById(swaps[i].from);
+    const toAsset = assetStore.getAssetById(swaps[i].to);
 
     console.log(`fromAsset name: ${fromAsset.name}, type: ${fromAsset.type}`, {
       fromAsset,

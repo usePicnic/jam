@@ -38,13 +38,11 @@ export async function generateTransaction({
   //   );
   // }
 
-  await assetStore.cachePrices({
+  await assetStore.cachePricesAndLinkedAssets({
     allocation: [...inputAllocation, ...outputAllocation],
     provider,
     assetStore,
   });
-
-  console.log("after cachePrices");
 
   const { totalValue, fractionAllocation: inputFractionAllocation } =
     calculateFractionAllocation({

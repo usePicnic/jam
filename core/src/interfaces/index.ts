@@ -11,7 +11,7 @@ import RouterSimulatorABI from "./abi/RouterSimulator.json";
 export const IERC20 = new Interface(IERC20ABI.abi);
 export const IParaswap = new Interface(IParaswapABI);
 export const ZeroXERC20 = new Interface(ZeroXERC20ABI.abi);
-export const IHypervisor = new Interface(IHypervisorABI.abi);
+export const IHypervisor = new Interface(IHypervisorABI);
 export const IHypervisorRouter = new Interface(IHypervisorRouterABI.abi);
 export const Router = new Interface(RouterABI.abi);
 export const RouterSimulator = new Interface(RouterSimulatorABI.abi);

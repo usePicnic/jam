@@ -1,7 +1,11 @@
 import { Provider } from "ethers";
 import { retry } from "../utils/retry";
-import { fetchPriceData, getPrice } from "./asset-type-strategies";
-import { AssetPrices, AssetStore } from "./types";
+import {
+  fetchPriceData,
+  getLinkedAssets,
+  getPrice,
+} from "./asset-type-strategies";
+import { AssetStore, LinkedAsset } from "./types";
 export interface CallRequest {
   // TODO: this should not be any, but something similar to PriceInfo above
   [key: string]: any;
@@ -40,7 +44,7 @@ export async function fetchUnderlyingPromises(
   return fetchObject;
 }
 
-export async function getPrices({
+export async function getPricesAndLinkedAssets({
   assetStore,
   provider,
   assetIds,
@@ -48,8 +52,12 @@ export async function getPrices({
   assetStore: AssetStore;
   provider: Provider;
   assetIds: string[];
-}): Promise<AssetPrices> {
-  const assetPrices: AssetPrices = {};
+}): Promise<{
+  prices: { [key: string]: number };
+  linkedAssets: { [key: string]: LinkedAsset[] };
+}> {
+  const prices: { [key: string]: number } = {};
+  const linkedAssets: { [key: string]: LinkedAsset[] } = {};
   let fetchRequestTree: RequestTree = {};
 
   assetIds.map((assetId) => {
@@ -67,8 +75,9 @@ export async function getPrices({
 
   assetIds.map((assetId) => {
     const asset = assetStore.getAssetById(assetId);
-    assetPrices[assetId] = getPrice({ assetStore, asset, requestTree });
+    prices[assetId] = getPrice({ assetStore, asset, requestTree });
+    linkedAssets[assetId] = getLinkedAssets({ assetStore, asset, requestTree });
   });
 
-  return assetPrices;
+  return { prices, linkedAssets };
 }

@@ -9,7 +9,7 @@ test("ZeroX: PAX Gold to MAI", async () => {
 
   const provider = await getProvider({ chainId: 137 });
 
-  await assetStore.cachePrices({
+  await assetStore.cachePricesAndLinkedAssets({
     allocation: [
       { assetId: "24baf9c9-953e-4f2d-8859-b6c5b3c06217", fraction: 1 },
       { assetId: "c5129108-4b4d-4aa2-b75b-9d4348bd1678", fraction: 1 },
