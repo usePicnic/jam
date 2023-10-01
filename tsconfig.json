@@ -1,13 +1,15 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
-    "moduleResolution": "node",
+    "target": "ESNext",
+    "moduleResolution": "NodeNext",
     "module": "NodeNext",
-    "baseUrl": "src",
+    "baseUrl": ".",
     "outDir": "build",
     "sourceMap": true,
-    "strict": true
+    "strict": false,
+    "resolveJsonModule": true
   },
-  "include": ["src/**/*"],
+  "include": ["core/src/**/*", "core/tests/**/*"],
   "exclude": ["build", "node_modules"]
 }

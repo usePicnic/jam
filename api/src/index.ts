@@ -4,7 +4,6 @@ import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import compression from "compression";
 import cors from "cors";
-import mongoose from "mongoose";
 import dotenv from "dotenv";
 import path from "path";
 
@@ -30,11 +29,6 @@ const MONGODB_URI = process.env.MONGODB_URI;
 const server = http.createServer(app);
 server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}.`);
-});
-mongoose.Promise = Promise;
-mongoose.connect(MONGODB_URI);
-mongoose.connection.on("error", (err: Error) => {
-  console.log(err);
 });
 
 app.use("/", router());

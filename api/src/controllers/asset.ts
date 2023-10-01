@@ -1,4 +1,4 @@
-import { getAssets } from "../db/asset";
+import { AssetStore } from "core/src/transaction/types";
 import express from "express";
 
 export const listAssets = async (
@@ -6,7 +6,8 @@ export const listAssets = async (
   res: express.Response
 ) => {
   try {
-    const assets = await getAssets();
+    const assetStore = new AssetStore();
+    const assets = await assetStore.getAssets();
     return res.status(200).json({ assets }).end();
   } catch (error) {
     console.error(error);
