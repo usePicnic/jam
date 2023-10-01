@@ -78,10 +78,14 @@ export async function simulateAssetSwapTransaction({
     ]);
     return BigInt(ret);
   } catch (e) {
-    console.error("Failed to simulate transaction", {
-      callData,
-      stateOverrides: JSON.stringify(stateOverrides),
-    });
+    console.error("Failed to simulate transaction");
+    console.dir(
+      {
+        callData,
+        stateOverrides,
+      },
+      { depth: null }
+    );
     return null;
   }
 
@@ -158,10 +162,14 @@ export async function simulateRouterOperation({
     ]);
     return BigInt(ret);
   } catch (e) {
-    console.error("Failed to simulate transaction", {
-      callData,
-      stateOverrides: JSON.stringify(stateOverrides),
-    });
+    console.error("Failed to simulate transaction");
+    console.dir(
+      {
+        callData,
+        stateOverrides,
+      },
+      { depth: null, maxStringLength: null }
+    );
     return null;
   }
 
