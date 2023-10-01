@@ -98,6 +98,10 @@ export class AssetStore {
       : undefined;
   }
 
+  getAssets(): Asset[] {
+    return Object.values(this.#byId);
+  }
+
   async cachePricesAndLinkedAssets({
     allocation,
     assetStore,
@@ -142,11 +146,6 @@ export class AssetStore {
     this.#prices = prices;
     this.#linkedAssets = linkedAssets;
   }
-}
-
-export interface AbsoluteAllocationItem {
-  assetId: string;
-  amountStr: BigNumberish;
 }
 
 interface CurrentAllocationItem {
@@ -252,6 +251,12 @@ export interface FractionAllocationItem {
   assetId: string;
   fraction: number;
   rewards?: FractionAllocationItem[];
+}
+
+export interface AbsoluteAllocationItem {
+  assetId: string;
+  amountStr: BigNumberish;
+  rewards?: AbsoluteAllocationItem[];
 }
 
 export type AbsoluteAllocation = AbsoluteAllocationItem[];
