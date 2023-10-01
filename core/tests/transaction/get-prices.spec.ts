@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { getPrices } from "src/transaction/get-prices";
+import { getPricesAndLinkedAssets } from "src/transaction/get-prices-and-linked-assets";
 import { Asset, AssetStore } from "src/transaction/types";
 import { getProvider } from "src/utils/get-provider";
 
@@ -12,7 +12,7 @@ test("network token", async () => {
     } as unknown as Asset,
   ]);
   const provider = await getProvider({ chainId: 137 });
-  const prices = await getPrices({
+  const { prices } = await getPricesAndLinkedAssets({
     assetStore,
     provider,
     assetIds: ["48f0325c-e5cc-4dac-9873-793f6c12fe08"],
@@ -43,7 +43,7 @@ test("token", async () => {
     } as unknown as Asset,
   ]);
   const provider = await getProvider({ chainId: 137 });
-  const prices = await getPrices({
+  const { prices } = await getPricesAndLinkedAssets({
     assetStore,
     provider,
     assetIds: [
@@ -98,7 +98,7 @@ test("gamma", async () => {
     } as unknown as Asset,
   ]);
   const provider = await getProvider({ chainId: 137 });
-  const prices = await getPrices({
+  const { prices } = await getPricesAndLinkedAssets({
     assetStore,
     provider,
     assetIds: ["b21413ac-e549-4406-9ee7-d15799046968"],
