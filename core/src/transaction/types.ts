@@ -414,7 +414,7 @@ export class RouterOperation {
     this.stores = new DetailedStores();
   }
 
-  getTransactionData(): {
+  getTransactionDetails(): {
     steps: {
       stepAddress: string;
       stepEncodedCall: string;
@@ -443,7 +443,7 @@ export class RouterOperation {
   }
 
   getEncodedTransactionData(): string {
-    const transactionData = this.getTransactionData();
+    const transactionData = this.getTransactionDetails();
 
     return Router.encodeFunctionData("runSteps", [
       transactionData.steps,

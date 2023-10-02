@@ -45,7 +45,7 @@ export async function simulateAssetSwapTransaction({
     RouterSimulator,
     provider
   );
-  const routerTransactionData = routerOperation.getTransactionData();
+  const routerTransactionData = routerOperation.getTransactionDetails();
 
   const populatedTx = await routerSimulator.simulateJamTx.populateTransaction(
     config.networks[chainId].routerAddress,
@@ -129,7 +129,7 @@ export async function simulateRouterOperation({
     RouterSimulator,
     provider
   );
-  const routerTransactionData = routerOperation.getTransactionData();
+  const routerTransactionData = routerOperation.getTransactionDetails();
 
   const populatedTx = await routerSimulator.simulateJamTx.populateTransaction(
     config.networks[chainId].routerAddress,

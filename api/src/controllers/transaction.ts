@@ -27,6 +27,7 @@ export const generateTransactionController = async (
       .json({
         address: config.networks[chainId].routerAddress,
         transactionData: transaction.getEncodedTransactionData(),
+        transactionDetails: transaction.getTransactionDetails(),
       })
       .end();
   } catch (error) {
