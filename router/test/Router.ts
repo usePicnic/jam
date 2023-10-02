@@ -12,6 +12,7 @@ enum StoreOpType {
   RetrieveResultAssignStore, // 2
   RetrieveStoreAssignValueSubtract, // 3
   RetrieveStoreAssignCallSubtract, // 4
+  SubtractStoreFromStore, // 5
 }
 
 describe("Router", function () {

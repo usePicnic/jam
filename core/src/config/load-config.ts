@@ -5,6 +5,7 @@ export interface ConfigType {
     [key: number]: {
       routerAddress: string;
       routerSimulatorAddress: string;
+      gammaRatiosCalculator: string;
     };
   };
 }

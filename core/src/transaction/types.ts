@@ -273,6 +273,7 @@ export enum StoreOpType {
   RetrieveResultAssignStore, // 2
   RetrieveStoreAssignValueSubtract, // 3
   RetrieveStoreAssignCallSubtract, // 4
+  SubtractStoreFromStore, // 5
 }
 
 export type StoreOperations = {
@@ -289,20 +290,24 @@ export type DetailedStep = {
 export class DetailedStore {
   assetId?: string;
   address?: string;
+  tmpStoreName?: string;
   value: BigNumberish;
 
   constructor({
     assetId,
     address,
     value,
+    tmpStoreName,
   }: {
     assetId?: string;
     address?: string;
+    tmpStoreName?: string;
     value: BigNumberish;
   }) {
     this.assetId = assetId;
     this.address = address;
     this.value = value;
+    this.tmpStoreName = tmpStoreName;
   }
 }
 export class DetailedStores {
@@ -320,13 +325,21 @@ export class DetailedStores {
     assetId,
     address,
     value,
+    tmpStoreName,
   }: {
     assetId?: string;
     address?: string;
+    tmpStoreName?: string;
     value?: BigNumberish;
   }): number {
-    if (assetId === undefined && address === undefined) {
-      throw new Error("Either assetId or address must be defined");
+    if (
+      assetId === undefined &&
+      address === undefined &&
+      tmpStoreName === undefined
+    ) {
+      throw new Error(
+        "Either assetId, address or tmpStoreName must be defined"
+      );
     }
 
     const checksummedAddress = address ? getAddress(address) : undefined;
@@ -349,6 +362,7 @@ export class DetailedStores {
       const newStore = new DetailedStore({
         assetId,
         address: checksummedAddress,
+        tmpStoreName,
         value: newValue,
       });
       const newIndex = this.stores.length;
@@ -380,7 +394,8 @@ export class DetailedStores {
       const otherStore = other.stores[i];
       if (
         thisStore.assetId !== otherStore.assetId ||
-        thisStore.value !== otherStore.value
+        thisStore.value !== otherStore.value ||
+        thisStore.tmpStoreName !== otherStore.tmpStoreName
       ) {
         return false;
       }

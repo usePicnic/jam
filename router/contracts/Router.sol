@@ -25,7 +25,10 @@ contract Router {
         // 4: Retrieve store, assign to encodedCall at offset and subtract calculated value from store
         // - retrieve store value at "storeNumber", multiply by "fraction" and set "offset" at "stepEncodedCall"
         // - subtracts calculated value from store
-        RetrieveStoreAssignCallSubtract
+        RetrieveStoreAssignCallSubtract,
+        // 5: Subtracts store value from another store
+        // - subtracts store value at store "storeNumber" from store at "offset"
+        SubtractStoreFromStore
     }
 
     // This function takes the original ABI-encoded calldata `encodedCall`,
@@ -163,6 +166,13 @@ contract Router {
                         result,
                         steps[i].storeOperations[j].offset
                     );
+                } else if (
+                    steps[i].storeOperations[j].storeOpType ==
+                    StoreOpType.SubtractStoreFromStore
+                ) {
+                    stores[steps[i].storeOperations[j].offset] -= stores[
+                        steps[i].storeOperations[j].storeNumber
+                    ];
                 }
             }
         }

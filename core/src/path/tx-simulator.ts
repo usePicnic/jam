@@ -154,6 +154,14 @@ export async function simulateRouterOperation({
     data: populatedTx.data,
   };
 
+  console.dir(
+    {
+      callData,
+      stateOverrides,
+    },
+    { depth: null, maxStringLength: null }
+  );
+
   try {
     const ret = await provider.send("eth_call", [
       callData,
@@ -163,14 +171,7 @@ export async function simulateRouterOperation({
     return BigInt(ret);
   } catch (e) {
     console.error("Failed to simulate transaction");
-    console.dir(
-      {
-        callData,
-        stateOverrides,
-      },
-      { depth: null, maxStringLength: null }
-    );
-    return null;
+    throw e;
   }
 
   // try {
