@@ -1,4 +1,4 @@
-let config;
+import * as defaultConfig from "./config.default";
 
 export interface ConfigType {
   networks: {
@@ -11,7 +11,7 @@ export interface ConfigType {
 }
 
 export const loadConfig = async (): Promise<ConfigType> => {
-  config = (await import("./config.default")).default;
+  let config = defaultConfig.default;
 
   return config;
 };

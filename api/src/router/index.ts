@@ -1,11 +1,11 @@
 import express from "express";
-import assets from "./asset";
-import transaction from "./transaction";
+import { listAssetsController } from "../controllers/asset";
+import { generateTransactionController } from "../controllers/transaction";
 
 const router = express.Router();
 
 export default (): express.Router => {
-  assets(router);
-  transaction(router);
+  router.get("/assets/list", listAssetsController);
+  router.post("/transaction/generate", generateTransactionController);
   return router;
 };

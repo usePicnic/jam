@@ -1,7 +1,7 @@
-import { AssetStore } from "core/src/transaction/types";
+import { AssetStore } from "core";
 import express from "express";
 
-export const listAssets = async (
+export const listAssetsController = async (
   req: express.Request,
   res: express.Response
 ) => {

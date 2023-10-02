@@ -71,7 +71,7 @@ export async function simulateAssetSwapTransaction({
   };
 
   try {
-    const ret = await provider.send("eth_call", [
+    const ret = await (provider as any).send("eth_call", [
       callData,
       "latest",
       stateOverrides,
@@ -163,7 +163,7 @@ export async function simulateRouterOperation({
   );
 
   try {
-    const ret = await provider.send("eth_call", [
+    const ret = await (provider as any).send("eth_call", [
       callData,
       "latest",
       stateOverrides,
