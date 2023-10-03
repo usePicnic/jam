@@ -469,7 +469,7 @@ class GammaDepositStrategy extends InterfaceStrategy {
           MAGIC_REPLACER_1, // deposit1
           walletAddress, // to
           asset.address, // pos
-          [1, 1, 1, 1], // minIn
+          [0, 0, 0, 0], // minIn
         ]),
         magicReplacers: [MAGIC_REPLACER_0, MAGIC_REPLACER_1],
       });

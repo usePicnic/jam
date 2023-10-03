@@ -1,7 +1,7 @@
 name: run-core-tests
 on: [push]
 jobs:
-  run-api-tests:
+  run-core-tests:
     env:
       ALCHEMY_KEY: ${{ secrets.ALCHEMY_KEY }}
       ZEROX_API_KEY: ${{ secrets.ZEROX_API_KEY }}
