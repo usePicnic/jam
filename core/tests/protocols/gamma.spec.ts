@@ -250,3 +250,44 @@ test("generateTransaction: USDC/WETH (gammaDeposit) to USDC", async () => {
     { depth: null, maxStringLength: null }
   );
 });
+
+test("generateTransaction: USDC/WETH (gammaDeposit) to WMATIC/MaticX (gammaDeposit)", async () => {
+  const assetStore = new AssetStore();
+  const config = await loadConfig();
+  const provider = await getProvider({ chainId: 137 });
+
+  const routerOperation = await generateTransaction({
+    inputAllocation: [
+      {
+        assetId: "8da84d12-9e9d-4c04-831d-7b93f1cd822f",
+        amountStr: "1000000000000000000",
+      },
+    ],
+    outputAllocation: [
+      {
+        assetId: "5a5cd640-b972-43b6-9bb2-24e6711ab1db",
+        fraction: 1.0,
+      },
+    ],
+    assetStore,
+    chainId: 137,
+    walletAddress: config.networks[137].routerSimulatorAddress,
+  });
+
+  const result = await simulateRouterOperation({
+    chainId: 137,
+    routerOperation,
+    provider,
+    sellAsset: assetStore.getAssetById("8da84d12-9e9d-4c04-831d-7b93f1cd822f"),
+    amountIn: "1000000000000000000",
+    buyAsset: assetStore.getAssetById("5a5cd640-b972-43b6-9bb2-24e6711ab1db"),
+  });
+
+  console.dir(
+    {
+      encodedTransactionData: routerOperation.getEncodedTransactionData(),
+      result,
+    },
+    { depth: null, maxStringLength: null }
+  );
+});
