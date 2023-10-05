@@ -339,186 +339,261 @@ class GammaDepositStrategy extends InterfaceStrategy {
     routerOperation,
   }: GenerateStepParams) {
     const asset = assetStore.getAssetById(assetAllocation.assetId);
-    const storeNumberFrom0 = routerOperation.stores.findOrInitializeStoreIdx({
-      assetId: asset.linkedAssets[0].assetId,
-    });
-    const storeNumberFrom1 = routerOperation.stores.findOrInitializeStoreIdx({
-      assetId: asset.linkedAssets[1].assetId,
-    });
-    const storeNumberTo = routerOperation.stores.findOrInitializeStoreIdx({
-      assetId: asset.id,
-    });
-
-    const linkedAssetFractions = asset.linkedAssets.map((la, i) => {
-      const currentFraction = currentAllocation.getAssetById({
-        assetId: la.assetId,
-      }).fraction;
-      const newFraction = la.fraction / currentFraction;
-      const variation = currentFraction * newFraction;
-
-      currentAllocation.updateFraction({
-        assetId: la.assetId,
-        delta: -variation,
+    if (assetAllocation.fraction > 0) {
+      const storeNumberFrom0 = routerOperation.stores.findOrInitializeStoreIdx({
+        assetId: asset.linkedAssets[0].assetId,
       });
-      currentAllocation.updateFraction({
+      const storeNumberFrom1 = routerOperation.stores.findOrInitializeStoreIdx({
+        assetId: asset.linkedAssets[1].assetId,
+      });
+      const storeNumberTo = routerOperation.stores.findOrInitializeStoreIdx({
         assetId: asset.id,
-        delta: variation,
       });
 
-      return newFraction;
-    });
+      const linkedAssetFractions = asset.linkedAssets.map((la, i) => {
+        const currentFraction = currentAllocation.getAssetById({
+          assetId: la.assetId,
+        }).fraction;
+        const newFraction = la.fraction / currentFraction;
+        const variation = currentFraction * newFraction;
 
-    const linkedAssetAddresses = asset.linkedAssets.map(
-      (la) => assetStore.getAssetById(la.assetId).address
-    );
-
-    const storeNumberTmp = [
-      routerOperation.stores.findOrInitializeStoreIdx({
-        tmpStoreName: `${asset.id} tmp store 0`,
-      }),
-      routerOperation.stores.findOrInitializeStoreIdx({
-        tmpStoreName: `${asset.id} tmp store 1`,
-      }),
-    ];
-
-    const hypervisor = new Contract(asset.address, IHypervisor, provider);
-    const hypervisorRouterAddress = await hypervisor.whitelistedAddress();
-
-    const config = await loadConfig();
-    const {
-      data: calculateRatiosEncodedCall,
-      offsets: calculateRatiosFromOffsets,
-    } = getMagicOffsets({
-      data: GammaRatiosCalculator.encodeFunctionData("calculateRatios", [
-        [linkedAssetAddresses[0], linkedAssetAddresses[1]], // tokens
-        [MAGIC_REPLACER_0, MAGIC_REPLACER_1], // amounts
-        asset.address, // hypervisorAddress
-        hypervisorRouterAddress, // hypervisorRouterAddress
-      ]),
-      magicReplacers: [MAGIC_REPLACER_0, MAGIC_REPLACER_1],
-    });
-    const { offsets: calculateRatiosToOffsets } = getMagicOffsets({
-      data: GammaRatiosCalculator.encodeFunctionResult("calculateRatios", [
-        MAGIC_REPLACER_0,
-        MAGIC_REPLACER_1,
-      ]),
-      magicReplacers: [MAGIC_REPLACER_0, MAGIC_REPLACER_1],
-    });
-
-    routerOperation.steps.push({
-      stepAddress: config.networks[chainId].gammaRatiosCalculator,
-      stepEncodedCall: calculateRatiosEncodedCall,
-      storeOperations: [
-        {
-          storeOpType: StoreOpType.RetrieveStoreAssignCall,
-          storeNumber: storeNumberFrom0,
-          offset: calculateRatiosFromOffsets[0],
-          fraction: Math.round(linkedAssetFractions[0] * FRACTION_MULTIPLIER),
-        },
-        {
-          storeOpType: StoreOpType.RetrieveStoreAssignCall,
-          storeNumber: storeNumberFrom1,
-          offset: calculateRatiosFromOffsets[1],
-          fraction: Math.round(linkedAssetFractions[1] * FRACTION_MULTIPLIER),
-        },
-        {
-          storeOpType: StoreOpType.RetrieveResultAssignStore,
-          storeNumber: storeNumberTmp[0],
-          offset: calculateRatiosToOffsets[0],
-          fraction: FRACTION_MULTIPLIER,
-        },
-        {
-          storeOpType: StoreOpType.RetrieveResultAssignStore,
-          storeNumber: storeNumberTmp[1],
-          offset: calculateRatiosToOffsets[1],
-          fraction: FRACTION_MULTIPLIER,
-        },
-      ],
-    });
-
-    for (const [i, la] of asset.linkedAssets.entries()) {
-      const linkedAsset = assetStore.getAssetById(la.assetId);
-
-      const { data: approveEncodedCall, offsets: approveFromOffsets } =
-        getMagicOffsets({
-          data: IERC20.encodeFunctionData("approve", [
-            asset.address,
-            MAGIC_REPLACER_0,
-          ]),
-          magicReplacers: [MAGIC_REPLACER_0],
+        currentAllocation.updateFraction({
+          assetId: la.assetId,
+          delta: -variation,
+        });
+        currentAllocation.updateFraction({
+          assetId: asset.id,
+          delta: variation,
         });
 
-      routerOperation.steps.push({
-        stepAddress: linkedAsset.address,
-        stepEncodedCall: approveEncodedCall,
-        storeOperations: [
-          {
-            storeOpType: StoreOpType.RetrieveStoreAssignCall,
-            storeNumber: storeNumberTmp[i],
-            offset: approveFromOffsets[0],
-            fraction: FRACTION_MULTIPLIER,
-          },
-        ],
+        return newFraction;
       });
-    }
 
-    const { data: depositEncodedCall, offsets: depositFromOffsets } =
-      getMagicOffsets({
-        data: IHypervisorRouter.encodeFunctionData("deposit", [
-          MAGIC_REPLACER_0, // deposit0
-          MAGIC_REPLACER_1, // deposit1
-          walletAddress, // to
-          asset.address, // pos
-          [0, 0, 0, 0], // minIn
+      const linkedAssetAddresses = asset.linkedAssets.map(
+        (la) => assetStore.getAssetById(la.assetId).address
+      );
+
+      const storeNumberTmp = [
+        routerOperation.stores.findOrInitializeStoreIdx({
+          tmpStoreName: `${asset.id} tmp store 0`,
+        }),
+        routerOperation.stores.findOrInitializeStoreIdx({
+          tmpStoreName: `${asset.id} tmp store 1`,
+        }),
+      ];
+
+      const hypervisor = new Contract(asset.address, IHypervisor, provider);
+      const hypervisorRouterAddress = await hypervisor.whitelistedAddress();
+
+      const config = await loadConfig();
+      const {
+        data: calculateRatiosEncodedCall,
+        offsets: calculateRatiosFromOffsets,
+      } = getMagicOffsets({
+        data: GammaRatiosCalculator.encodeFunctionData("calculateRatios", [
+          [linkedAssetAddresses[0], linkedAssetAddresses[1]], // tokens
+          [MAGIC_REPLACER_0, MAGIC_REPLACER_1], // amounts
+          asset.address, // hypervisorAddress
+          hypervisorRouterAddress, // hypervisorRouterAddress
+        ]),
+        magicReplacers: [MAGIC_REPLACER_0, MAGIC_REPLACER_1],
+      });
+      const { offsets: calculateRatiosToOffsets } = getMagicOffsets({
+        data: GammaRatiosCalculator.encodeFunctionResult("calculateRatios", [
+          MAGIC_REPLACER_0,
+          MAGIC_REPLACER_1,
         ]),
         magicReplacers: [MAGIC_REPLACER_0, MAGIC_REPLACER_1],
       });
 
-    const { offsets: depositToOffsets } = getMagicOffsets({
-      data: IHypervisorRouter.encodeFunctionResult("deposit", [
-        MAGIC_REPLACER_0,
-      ]),
-      magicReplacers: [MAGIC_REPLACER_0],
-    });
+      routerOperation.steps.push({
+        stepAddress: config.networks[chainId].gammaRatiosCalculator,
+        stepEncodedCall: calculateRatiosEncodedCall,
+        storeOperations: [
+          {
+            storeOpType: StoreOpType.RetrieveStoreAssignCall,
+            storeNumber: storeNumberFrom0,
+            offset: calculateRatiosFromOffsets[0],
+            fraction: Math.round(linkedAssetFractions[0] * FRACTION_MULTIPLIER),
+          },
+          {
+            storeOpType: StoreOpType.RetrieveStoreAssignCall,
+            storeNumber: storeNumberFrom1,
+            offset: calculateRatiosFromOffsets[1],
+            fraction: Math.round(linkedAssetFractions[1] * FRACTION_MULTIPLIER),
+          },
+          {
+            storeOpType: StoreOpType.RetrieveResultAssignStore,
+            storeNumber: storeNumberTmp[0],
+            offset: calculateRatiosToOffsets[0],
+            fraction: FRACTION_MULTIPLIER,
+          },
+          {
+            storeOpType: StoreOpType.RetrieveResultAssignStore,
+            storeNumber: storeNumberTmp[1],
+            offset: calculateRatiosToOffsets[1],
+            fraction: FRACTION_MULTIPLIER,
+          },
+        ],
+      });
 
-    routerOperation.steps.push({
-      stepAddress: hypervisorRouterAddress,
-      stepEncodedCall: depositEncodedCall,
-      storeOperations: [
-        {
-          storeOpType: StoreOpType.RetrieveStoreAssignCall,
-          storeNumber: storeNumberTmp[0],
-          offset: depositFromOffsets[0],
-          fraction: FRACTION_MULTIPLIER,
-        },
-        {
-          storeOpType: StoreOpType.RetrieveStoreAssignCall,
-          storeNumber: storeNumberTmp[1],
-          offset: depositFromOffsets[1],
-          fraction: FRACTION_MULTIPLIER,
-        },
-        {
-          storeOpType: StoreOpType.SubtractStoreFromStore,
-          storeNumber: storeNumberTmp[0],
-          offset: storeNumberFrom0,
-          fraction: FRACTION_MULTIPLIER,
-        },
-        {
-          storeOpType: StoreOpType.SubtractStoreFromStore,
-          storeNumber: storeNumberTmp[1],
-          offset: storeNumberFrom1,
-          fraction: FRACTION_MULTIPLIER,
-        },
-        {
-          storeOpType: StoreOpType.RetrieveResultAssignStore,
-          storeNumber: storeNumberTo,
-          offset: depositToOffsets[0],
-          fraction: FRACTION_MULTIPLIER,
-        },
-      ],
-    });
+      for (const [i, la] of asset.linkedAssets.entries()) {
+        const linkedAsset = assetStore.getAssetById(la.assetId);
 
-    return routerOperation;
+        const { data: approveEncodedCall, offsets: approveFromOffsets } =
+          getMagicOffsets({
+            data: IERC20.encodeFunctionData("approve", [
+              asset.address,
+              MAGIC_REPLACER_0,
+            ]),
+            magicReplacers: [MAGIC_REPLACER_0],
+          });
+
+        routerOperation.steps.push({
+          stepAddress: linkedAsset.address,
+          stepEncodedCall: approveEncodedCall,
+          storeOperations: [
+            {
+              storeOpType: StoreOpType.RetrieveStoreAssignCall,
+              storeNumber: storeNumberTmp[i],
+              offset: approveFromOffsets[0],
+              fraction: FRACTION_MULTIPLIER,
+            },
+          ],
+        });
+      }
+
+      const { data: depositEncodedCall, offsets: depositFromOffsets } =
+        getMagicOffsets({
+          data: IHypervisorRouter.encodeFunctionData("deposit", [
+            MAGIC_REPLACER_0, // deposit0
+            MAGIC_REPLACER_1, // deposit1
+            walletAddress, // to
+            asset.address, // pos
+            [0, 0, 0, 0], // minIn
+          ]),
+          magicReplacers: [MAGIC_REPLACER_0, MAGIC_REPLACER_1],
+        });
+
+      const { offsets: depositToOffsets } = getMagicOffsets({
+        data: IHypervisorRouter.encodeFunctionResult("deposit", [
+          MAGIC_REPLACER_0,
+        ]),
+        magicReplacers: [MAGIC_REPLACER_0],
+      });
+
+      routerOperation.steps.push({
+        stepAddress: hypervisorRouterAddress,
+        stepEncodedCall: depositEncodedCall,
+        storeOperations: [
+          {
+            storeOpType: StoreOpType.RetrieveStoreAssignCall,
+            storeNumber: storeNumberTmp[0],
+            offset: depositFromOffsets[0],
+            fraction: FRACTION_MULTIPLIER,
+          },
+          {
+            storeOpType: StoreOpType.RetrieveStoreAssignCall,
+            storeNumber: storeNumberTmp[1],
+            offset: depositFromOffsets[1],
+            fraction: FRACTION_MULTIPLIER,
+          },
+          {
+            storeOpType: StoreOpType.SubtractStoreFromStore,
+            storeNumber: storeNumberTmp[0],
+            offset: storeNumberFrom0,
+            fraction: FRACTION_MULTIPLIER,
+          },
+          {
+            storeOpType: StoreOpType.SubtractStoreFromStore,
+            storeNumber: storeNumberTmp[1],
+            offset: storeNumberFrom1,
+            fraction: FRACTION_MULTIPLIER,
+          },
+          {
+            storeOpType: StoreOpType.RetrieveResultAssignStore,
+            storeNumber: storeNumberTo,
+            offset: depositToOffsets[0],
+            fraction: FRACTION_MULTIPLIER,
+          },
+        ],
+      });
+
+      return routerOperation;
+    } else if (assetAllocation.fraction < 0) {
+      const storeNumberFrom = routerOperation.stores.findOrInitializeStoreIdx({
+        assetId: asset.id,
+      });
+      const storeNumberTo0 = routerOperation.stores.findOrInitializeStoreIdx({
+        assetId: asset.linkedAssets[0].assetId,
+      });
+      const storeNumberTo1 = routerOperation.stores.findOrInitializeStoreIdx({
+        assetId: asset.linkedAssets[1].assetId,
+      });
+
+      const currentFraction = currentAllocation.getAssetById({
+        assetId: asset.id,
+      }).fraction;
+      const newFraction = -assetAllocation.fraction / currentFraction;
+      const variation = newFraction * currentFraction;
+
+      asset.linkedAssets.map((la, i) => {
+        currentAllocation.updateFraction({
+          assetId: la.assetId,
+          delta: variation * la.fraction,
+        });
+        currentAllocation.updateFraction({
+          assetId: asset.id,
+          delta: -variation * la.fraction,
+        });
+      });
+
+      const { data: withdrawEncodedCall, offsets: withdrawFromOffsets } =
+        getMagicOffsets({
+          data: IHypervisor.encodeFunctionData("withdraw", [
+            MAGIC_REPLACER_0, // shares
+            walletAddress, // to
+            walletAddress, // from
+            [0, 0, 0, 0], // minAmounts
+          ]),
+          magicReplacers: [MAGIC_REPLACER_0],
+        });
+
+      const { offsets: withdrawToOffsets } = getMagicOffsets({
+        data: IHypervisor.encodeFunctionResult("withdraw", [
+          MAGIC_REPLACER_0,
+          MAGIC_REPLACER_1,
+        ]),
+        magicReplacers: [MAGIC_REPLACER_0, MAGIC_REPLACER_1],
+      });
+
+      routerOperation.steps.push({
+        stepAddress: asset.address,
+        stepEncodedCall: withdrawEncodedCall,
+        storeOperations: [
+          {
+            storeOpType: StoreOpType.RetrieveStoreAssignCall,
+            storeNumber: storeNumberFrom,
+            offset: withdrawFromOffsets[0],
+            fraction: newFraction * FRACTION_MULTIPLIER,
+          },
+          {
+            storeOpType: StoreOpType.RetrieveResultAssignStore,
+            storeNumber: storeNumberTo0,
+            offset: withdrawToOffsets[0],
+            fraction: FRACTION_MULTIPLIER,
+          },
+          {
+            storeOpType: StoreOpType.RetrieveResultAssignStore,
+            storeNumber: storeNumberTo1,
+            offset: withdrawToOffsets[1],
+            fraction: FRACTION_MULTIPLIER,
+          },
+        ],
+      });
+
+      return routerOperation;
+    }
   }
 
   getGammaTVLs({

@@ -10,6 +10,6 @@
     "strict": false,
     "resolveJsonModule": true
   },
-  "include": ["core/src/**/*", "core/tests/**/*"],
+  "include": ["api/src/**/*", "core/src/**/*", "core/tests/**/*"],
   "exclude": ["build", "node_modules"]
 }
