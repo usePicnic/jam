@@ -18,15 +18,18 @@ contract Router {
         // 2: Retrieve result and adds to store
         // - retrieve result value at "offset" of "result" and add to "storeNumber"
         RetrieveResultAssignStore,
-        // 3: Retrieve store, assign to value and subtract calculated value from store
+        // 3: Retrieve result and subtracts from store
+        // - retrieve result value at "offset" of "result" and subtracts from "storeNumber"
+        RetrieveResultSubtractStore,
+        // 4: Retrieve store, assign to value and subtract calculated value from store
         // - retrieve store value at "storeNumber", multiply by "fraction" and set "value"
         // - subtracts calculated value from store
         RetrieveStoreAssignValueSubtract,
-        // 4: Retrieve store, assign to encodedCall at offset and subtract calculated value from store
+        // 5: Retrieve store, assign to encodedCall at offset and subtract calculated value from store
         // - retrieve store value at "storeNumber", multiply by "fraction" and set "offset" at "stepEncodedCall"
         // - subtracts calculated value from store
         RetrieveStoreAssignCallSubtract,
-        // 5: Subtracts store value from another store
+        // 6: Subtracts store value from another store
         // - subtracts store value at store "storeNumber" from store at "offset"
         SubtractStoreFromStore
     }
@@ -163,6 +166,16 @@ contract Router {
                     stores[
                         steps[i].storeOperations[j].storeNumber
                     ] += getResultOffset(
+                        result,
+                        steps[i].storeOperations[j].offset
+                    );
+                } else if (
+                    steps[i].storeOperations[j].storeOpType ==
+                    StoreOpType.RetrieveResultSubtractStore
+                ) {
+                    stores[
+                        steps[i].storeOperations[j].storeNumber
+                    ] -= getResultOffset(
                         result,
                         steps[i].storeOperations[j].offset
                     );

@@ -84,7 +84,7 @@ export async function simulateAssetSwapTransaction({
         callData,
         stateOverrides,
       },
-      { depth: null }
+      { depth: null, maxStringLength: null }
     );
     return null;
   }

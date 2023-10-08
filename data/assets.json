@@ -1449,6 +1449,129 @@
     "balanceSlot": 0
   },
   {
+    "id": "fecfd33d-e6a7-476b-89cb-910a0058fa48",
+    "name": "beefy.finance",
+    "chainId": 137,
+    "active": true,
+    "address": "0xfEcf784F48125ccb7d8855cdda7C5ED6b5024Cb3",
+    "color": "#c5bcb0",
+    "decimals": 18,
+    "symbol": "BIFI",
+    "type": "beefyDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "27f50305-72b0-4910-87f7-4b052054e377",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "09fde044-c13d-4f43-9c6d-ab1cec97cfb9",
+    "name": "beQI",
+    "chainId": 137,
+    "active": true,
+    "address": "0x97bfa4b212A153E15dCafb799e733bc7d1b70E72",
+    "color": "#737475",
+    "decimals": 18,
+    "symbol": "beQI",
+    "type": "beefyDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "8bcdeda0-1a23-4cb4-83a1-0b4ccd8ad00c",
+        "fraction": 1
+      }
+    ],
+    "callParams": {
+      "isVe": true
+    }
+  },
+  {
+    "id": "4acb3ac2-afca-4611-ac79-57ad1af64042",
+    "name": "beQI",
+    "chainId": 137,
+    "active": true,
+    "address": "0xDBFf95e99FccC8fbd90648B9E42C0F152518b9B8",
+    "color": "#737475",
+    "decimals": 18,
+    "symbol": "beQI",
+    "type": "beefyDeposit",
+    "visible": true,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "09fde044-c13d-4f43-9c6d-ab1cec97cfb9",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "7aef4761-daff-4a50-8d56-c3e4393b1c25",
+    "name": "Gains Network",
+    "chainId": 137,
+    "active": true,
+    "address": "0xf2d0557101bEA0Eb2879151DC08d7a2603588BDe",
+    "color": "#00D1A8",
+    "decimals": 18,
+    "symbol": "GNS",
+    "type": "beefyDeposit",
+    "visible": true,
+    "allowSlot": 52,
+    "balanceSlot": 51,
+    "linkedAssets": [
+      {
+        "assetId": "170c2077-1b4a-45e4-9a18-8ce371c63db5",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "e7a63d19-c2c4-491c-b154-4063fe0fb479",
+    "name": "Quickswap",
+    "chainId": 137,
+    "active": true,
+    "address": "0x659418cc3cf755F5367a51aDb586a7F770Da6d29",
+    "color": "#408ac9",
+    "decimals": 18,
+    "symbol": "QUICK",
+    "type": "beefyDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "85d42621-43a2-4189-930f-9b1ff0cf74f4",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "37819023-9c6a-4848-8cf5-24a95350f001",
+    "name": "Quickswap",
+    "chainId": 137,
+    "active": true,
+    "address": "0x1A723371f9dc30653dafd826B60d9335bf867E35",
+    "color": "#408ac9",
+    "decimals": 18,
+    "symbol": "QUICK",
+    "type": "beefyDeposit",
+    "visible": true,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d35b7aaf-a2ff-44e0-a3df-cdc702ed71ba",
+        "fraction": 1
+      }
+    ]
+  },
+  {
     "id": "256d3084-4250-4c93-98f9-3c26cfaf4b1e",
     "name": "cbETH/WETH",
     "chainId": 137,
@@ -1485,12 +1608,10 @@
     "balanceSlot": 0,
     "linkedAssets": [
       {
-        "assetId": "f9a0d8c9-7524-42ed-9188-968456afcd54",
-        "fraction": 0.6
+        "assetId": "f9a0d8c9-7524-42ed-9188-968456afcd54"
       },
       {
-        "assetId": "170c2077-1b4a-45e4-9a18-8ce371c63db5",
-        "fraction": 0.4
+        "assetId": "170c2077-1b4a-45e4-9a18-8ce371c63db5"
       }
     ]
   },

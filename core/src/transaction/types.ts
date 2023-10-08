@@ -265,15 +265,20 @@ export type FractionAllocation = FractionAllocationItem[];
 export type AssetLayer = { [key: string]: FractionAllocationItem };
 export type AssetLayers = AssetLayer[];
 
-export type AssetType = "token" | "networkToken" | "gammaDeposit";
+export type AssetType =
+  | "token"
+  | "networkToken"
+  | "gammaDeposit"
+  | "beefyDeposit";
 
 export enum StoreOpType {
   RetrieveStoreAssignValue, // 0
   RetrieveStoreAssignCall, // 1
   RetrieveResultAssignStore, // 2
-  RetrieveStoreAssignValueSubtract, // 3
-  RetrieveStoreAssignCallSubtract, // 4
-  SubtractStoreFromStore, // 5
+  RetrieveResultSubtractStore, // 3
+  RetrieveStoreAssignValueSubtract, // 4
+  RetrieveStoreAssignCallSubtract, // 5
+  SubtractStoreFromStore, // 6
 }
 
 export type StoreOperations = {

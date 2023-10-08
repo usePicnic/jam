@@ -1,8 +1,8 @@
 export default {
   networks: {
     137: {
-      routerAddress: "0xaf00c2E63839Bb9fFA3E6780c4DfF3e817494ecc",
-      routerSimulatorAddress: "0xd9A352860419C1066d547b3b0833Fe323b5fEEBf",
+      routerAddress: "0x9cD5c60284654b99540Bc5839Ab0edBFDaa6cA20",
+      routerSimulatorAddress: "0xa33C0B0Be63BaDf55054Feaa1f3B5B382E19A52D",
       gammaRatiosCalculator: "0x0F306e004258dc4c9Ecc0373b6E3dC59A3f0dB58",
     },
   },
