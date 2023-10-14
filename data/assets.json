@@ -1469,49 +1469,6 @@
     ]
   },
   {
-    "id": "09fde044-c13d-4f43-9c6d-ab1cec97cfb9",
-    "name": "beQI",
-    "chainId": 137,
-    "active": true,
-    "address": "0x97bfa4b212A153E15dCafb799e733bc7d1b70E72",
-    "color": "#737475",
-    "decimals": 18,
-    "symbol": "beQI",
-    "type": "beefyDeposit",
-    "visible": false,
-    "allowSlot": 1,
-    "balanceSlot": 0,
-    "linkedAssets": [
-      {
-        "assetId": "8bcdeda0-1a23-4cb4-83a1-0b4ccd8ad00c",
-        "fraction": 1
-      }
-    ],
-    "callParams": {
-      "isVe": true
-    }
-  },
-  {
-    "id": "4acb3ac2-afca-4611-ac79-57ad1af64042",
-    "name": "beQI",
-    "chainId": 137,
-    "active": true,
-    "address": "0xDBFf95e99FccC8fbd90648B9E42C0F152518b9B8",
-    "color": "#737475",
-    "decimals": 18,
-    "symbol": "beQI",
-    "type": "beefyDeposit",
-    "visible": true,
-    "allowSlot": 1,
-    "balanceSlot": 0,
-    "linkedAssets": [
-      {
-        "assetId": "09fde044-c13d-4f43-9c6d-ab1cec97cfb9",
-        "fraction": 1
-      }
-    ]
-  },
-  {
     "id": "7aef4761-daff-4a50-8d56-c3e4393b1c25",
     "name": "Gains Network",
     "chainId": 137,

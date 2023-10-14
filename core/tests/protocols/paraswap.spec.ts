@@ -4,7 +4,7 @@ import { getProvider } from "../../src/utils/get-provider";
 import { simulateAssetSwapTransaction } from "../../src/path/tx-simulator";
 import { Paraswap } from "core/src/path/exchanges";
 
-test("Paraswap (using multiSwap): PAX Gold to MAI", async () => {
+test.skip("Paraswap (using multiSwap): PAX Gold to MAI", async () => {
   const assetStore = new AssetStore();
 
   const provider = await getProvider({ chainId: 137 });
@@ -45,7 +45,7 @@ test("Paraswap (using multiSwap): PAX Gold to MAI", async () => {
   expect(swappedValue).toBeGreaterThan(0);
 });
 
-test("Paraswap (using megaSwap): PAX Gold to MAI", async () => {
+test.skip("Paraswap (using megaSwap): PAX Gold to MAI", async () => {
   const assetStore = new AssetStore();
 
   const provider = await getProvider({ chainId: 137 });

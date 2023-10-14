@@ -674,6 +674,7 @@ class BeefyDepositStrategy extends InterfaceStrategy {
   async generateStep({
     assetAllocation,
     assetStore,
+    walletAddress,
     value,
     currentAllocation,
     routerOperation,
@@ -757,7 +758,7 @@ class BeefyDepositStrategy extends InterfaceStrategy {
       const { data: depositEncodedCall, offsets: depositFromOffsets } =
         getMagicOffsets({
           data: IBeefyVaultV6.encodeFunctionData("deposit", [
-            MAGIC_REPLACER_0, // deposit0
+            MAGIC_REPLACER_0, // _amount
           ]),
           magicReplacers: [MAGIC_REPLACER_0],
         });
@@ -796,6 +797,94 @@ class BeefyDepositStrategy extends InterfaceStrategy {
         ],
       });
     } else if (assetAllocation.fraction < 0) {
+      const storeNumberFrom = routerOperation.stores.findOrInitializeStoreIdx({
+        assetId: asset.id,
+      });
+      const storeNumberTo = routerOperation.stores.findOrInitializeStoreIdx({
+        assetId: linkedAsset.id,
+      });
+      const storeNumberTmp = routerOperation.stores.findOrInitializeStoreIdx({
+        tmpStoreName: `${asset.id} tmp store 0`,
+      });
+
+      const currentFraction = currentAllocation.getAssetById({
+        assetId: asset.id,
+      }).fraction;
+      const newFraction = -assetAllocation.fraction / currentFraction;
+      const variation = newFraction * currentFraction;
+
+      asset.linkedAssets.map((la, i) => {
+        currentAllocation.updateFraction({
+          assetId: la.assetId,
+          delta: variation * la.fraction,
+        });
+        currentAllocation.updateFraction({
+          assetId: asset.id,
+          delta: -variation * la.fraction,
+        });
+      });
+
+      const { offsets: balanceOfToOffsets } = getMagicOffsets({
+        data: IERC20.encodeFunctionResult("balanceOf", [MAGIC_REPLACER_0]),
+        magicReplacers: [MAGIC_REPLACER_0],
+      });
+
+      routerOperation.steps.push({
+        stepAddress: asset.address,
+        stepEncodedCall: IERC20.encodeFunctionData("balanceOf", [
+          walletAddress,
+        ]),
+        storeOperations: [
+          {
+            storeOpType: StoreOpType.RetrieveResultAssignStore,
+            storeNumber: storeNumberTmp,
+            offset: balanceOfToOffsets[0],
+            fraction: FRACTION_MULTIPLIER,
+          },
+        ],
+      });
+
+      const { data: withdrawEncodedCall, offsets: withdrawFromOffsets } =
+        getMagicOffsets({
+          data: IBeefyVaultV6.encodeFunctionData("withdraw", [
+            MAGIC_REPLACER_0, // _shares
+          ]),
+          magicReplacers: [MAGIC_REPLACER_0],
+        });
+
+      routerOperation.steps.push({
+        stepAddress: asset.address,
+        stepEncodedCall: withdrawEncodedCall,
+        storeOperations: [
+          {
+            storeOpType: StoreOpType.RetrieveStoreAssignCallSubtract,
+            storeNumber: storeNumberFrom,
+            offset: withdrawFromOffsets[0],
+            fraction: newFraction * FRACTION_MULTIPLIER,
+          },
+        ],
+      });
+
+      routerOperation.steps.push({
+        stepAddress: asset.address,
+        stepEncodedCall: IERC20.encodeFunctionData("balanceOf", [
+          walletAddress,
+        ]),
+        storeOperations: [
+          {
+            storeOpType: StoreOpType.RetrieveResultSubtractStore,
+            storeNumber: storeNumberTmp,
+            offset: balanceOfToOffsets[0],
+            fraction: FRACTION_MULTIPLIER,
+          },
+          {
+            storeOpType: StoreOpType.SubtractStoreFromStore,
+            storeNumber: storeNumberTmp,
+            offset: storeNumberTo,
+            fraction: FRACTION_MULTIPLIER,
+          },
+        ],
+      });
     }
 
     return routerOperation;

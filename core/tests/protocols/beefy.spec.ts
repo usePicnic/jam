@@ -45,3 +45,44 @@ test("generateTransaction: USDC to QUICK (beefyDeposit)", async () => {
     { depth: null, maxStringLength: null }
   );
 });
+
+test.skip("generateTransaction: beefy.finance (beefyDeposit) to USDC", async () => {
+  const assetStore = new AssetStore();
+  const config = await loadConfig();
+  const provider = await getProvider({ chainId: 137 });
+
+  const routerOperation = await generateTransaction({
+    inputAllocation: [
+      {
+        assetId: "fecfd33d-e6a7-476b-89cb-910a0058fa48",
+        amountStr: "1000000",
+      },
+    ],
+    outputAllocation: [
+      {
+        assetId: "e251ecf6-48c2-4538-afcd-fbb92424054d",
+        fraction: 1.0,
+      },
+    ],
+    assetStore,
+    chainId: 137,
+    walletAddress: config.networks[137].routerSimulatorAddress,
+  });
+
+  const result = await simulateRouterOperation({
+    chainId: 137,
+    routerOperation,
+    provider,
+    sellAsset: assetStore.getAssetById("fecfd33d-e6a7-476b-89cb-910a0058fa48"),
+    amountIn: "1000000",
+    buyAsset: assetStore.getAssetById("e251ecf6-48c2-4538-afcd-fbb92424054d"),
+  });
+
+  console.dir(
+    {
+      encodedTransactionData: routerOperation.getEncodedTransactionData(),
+      result,
+    },
+    { depth: null, maxStringLength: null }
+  );
+});
