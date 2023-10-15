@@ -1,6 +1,6 @@
 import express from "express";
-import { listAssetsController } from "../controllers/asset";
-import { generateTransactionController } from "../controllers/transaction";
+import { listAssetsController } from "./controllers/asset";
+import { generateTransactionController } from "./controllers/transaction";
 
 const router = express.Router();
 

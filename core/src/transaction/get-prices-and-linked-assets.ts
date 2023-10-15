@@ -4,7 +4,7 @@ import {
   fetchPriceData,
   getLinkedAssets,
   getPrice,
-} from "./asset-type-strategies";
+} from "./asset-type-strategies-helpers";
 import { AssetStore, LinkedAsset } from "./types";
 export interface CallRequest {
   // TODO: this should not be any, but something similar to PriceInfo above

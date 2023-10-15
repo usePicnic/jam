@@ -1,7 +1,7 @@
 import { Provider } from "ethers";
 import { Route } from "../path/apis/api";
 import { calculatePath } from "../path/calculate-path";
-import { assetTypeStrategies } from "./asset-type-strategies";
+import { assetTypeStrategies } from "../asset-strategies/asset-type-strategies";
 import {
   AbsoluteAllocation,
   AssetLayer,

@@ -2,7 +2,7 @@ import { BigNumberish, Contract, JsonRpcProvider, Provider } from "ethers";
 import { Exchange, exchanges } from "./exchanges";
 import { Asset, RouterOperation } from "../transaction/types";
 import { Route, RouteAggregator, getAggregatorResults } from "./apis/api";
-import { RouterSimulator } from "../interfaces";
+import { RouterSimulator } from "../abis";
 import { loadConfig } from "../config/load-config";
 import { generateTokenApprovalStateDiff } from "../simulation/generate-token-approval-state-diff";
 

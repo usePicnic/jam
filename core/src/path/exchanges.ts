@@ -1,6 +1,6 @@
 import { RouterOperation, StoreOpType } from "../transaction/types";
 import { Route } from "./apis/api";
-import { IERC20, IParaswap, ZeroXERC20 } from "../interfaces";
+import { IERC20, IParaswap, ZeroXERC20 } from "../abis";
 import { Provider } from "ethers";
 import {
   FRACTION_MULTIPLIER,

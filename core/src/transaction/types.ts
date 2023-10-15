@@ -1,6 +1,6 @@
 import { BigNumberish, Provider, getAddress } from "ethers";
 import { getPricesAndLinkedAssets } from "./get-prices-and-linked-assets";
-import { Router } from "core/src/interfaces";
+import { Router } from "core/src/abis";
 
 export interface Asset {
   id: string;
