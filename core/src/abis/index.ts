@@ -1,6 +1,7 @@
 import { Interface } from "ethers";
 
 import IERC20ABI from "./IERC20.json";
+import IPoolABI from "./Aave/IPool.json";
 import IBeefyVaultV6ABI from "./Beefy/IBeefyVaultV6.json";
 import IHypervisorABI from "./Gamma/IHypervisor.json";
 import IHypervisorRouterABI from "./Gamma/IHypervisorRouter.json";
@@ -11,6 +12,7 @@ import RouterABI from "./Router.json";
 import RouterSimulatorABI from "./RouterSimulator.json";
 
 export const IERC20 = new Interface(IERC20ABI.abi);
+export const IPool = new Interface(IPoolABI);
 export const IBeefyVaultV6 = new Interface(IBeefyVaultV6ABI);
 export const IHypervisor = new Interface(IHypervisorABI);
 export const IHypervisorRouter = new Interface(IHypervisorRouterABI.abi);

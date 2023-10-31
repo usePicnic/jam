@@ -176,7 +176,7 @@ export class Paraswap extends Exchange {
           fraction: Math.round(path.fraction * FRACTION_MULTIPLIER),
         },
         {
-          storeOpType: StoreOpType.RetrieveResultAssignStore,
+          storeOpType: StoreOpType.RetrieveResultAddStore,
           storeNumber: storeNumberTo,
           offset: swapToOffset,
           fraction: 0,
@@ -292,7 +292,7 @@ export class ZeroX extends Exchange {
           fraction: Math.round(path.fraction * FRACTION_MULTIPLIER),
         },
         {
-          storeOpType: StoreOpType.RetrieveResultAssignStore,
+          storeOpType: StoreOpType.RetrieveResultAddStore,
           storeNumber: storeNumberTo,
           offset: swapToOffsets[0],
           fraction: 0,

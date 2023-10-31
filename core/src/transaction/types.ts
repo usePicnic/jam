@@ -269,12 +269,13 @@ export type AssetType =
   | "token"
   | "networkToken"
   | "gammaDeposit"
-  | "beefyDeposit";
+  | "beefyDeposit"
+  | "aaveV3Deposit";
 
 export enum StoreOpType {
   RetrieveStoreAssignValue, // 0
   RetrieveStoreAssignCall, // 1
-  RetrieveResultAssignStore, // 2
+  RetrieveResultAddStore, // 2
   RetrieveResultSubtractStore, // 3
   RetrieveStoreAssignValueSubtract, // 4
   RetrieveStoreAssignCallSubtract, // 5

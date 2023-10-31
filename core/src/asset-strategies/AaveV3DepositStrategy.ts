@@ -1,13 +1,11 @@
 import { RequestTree } from "../transaction/get-prices-and-linked-assets";
 import { StoreOpType } from "../transaction/types";
 import {
-  getAmount,
   fetchPriceData,
   getPrice,
 } from "../transaction/asset-type-strategies-helpers";
-import { Contract } from "ethers";
 import { getMagicOffsets } from "core/src/utils/get-magic-offset";
-import { IBeefyVaultV6, IERC20 } from "core/src/abis";
+import { IERC20, IPool } from "core/src/abis";
 import {
   FRACTION_MULTIPLIER,
   MAGIC_REPLACER_0,
@@ -19,18 +17,15 @@ import {
 } from "./InterfaceStrategy";
 import { InterfaceStrategy } from "./InterfaceStrategy";
 
-export class BeefyDepositStrategy extends InterfaceStrategy {
+const poolAddress = "0x794a61358D6845594F94dc1DB02A252b5b4814aD";
+
+export class AaveV3DepositStrategy extends InterfaceStrategy {
   fetchPriceData({ provider, assetStore, asset }: FetchPriceDataParams) {
     const linkedAsset = assetStore.getAssetById(asset.linkedAssets[0].assetId);
-
-    const pool = new Contract(asset.address, IBeefyVaultV6, provider);
 
     let requestTree: RequestTree = {};
 
     requestTree[asset.address] = {};
-    requestTree[asset.address].underlyingAmount = () => pool.balance();
-
-    requestTree[asset.address].supply = () => pool.totalSupply();
 
     const fetchedData = fetchPriceData({
       provider,
@@ -47,19 +42,7 @@ export class BeefyDepositStrategy extends InterfaceStrategy {
   getPrice({ assetStore, asset, requestTree }: GetPriceParams) {
     const linkedAsset = assetStore.getAssetById(asset.linkedAssets[0].assetId);
 
-    const amount = getAmount({
-      amount: requestTree[asset.address].underlyingAmount,
-      decimals: linkedAsset.decimals,
-    });
-    const supply = getAmount({
-      amount: requestTree[asset.address].supply,
-      decimals: asset.decimals,
-    });
-
-    return (
-      (amount * getPrice({ assetStore, asset: linkedAsset, requestTree })) /
-      supply
-    );
+    return getPrice({ assetStore, asset: linkedAsset, requestTree });
   }
 
   async generateStep({
@@ -73,7 +56,7 @@ export class BeefyDepositStrategy extends InterfaceStrategy {
     const asset = assetStore.getAssetById(assetAllocation.assetId);
     if (asset.linkedAssets.length != 1) {
       throw new Error(
-        `BeefyDepositStrategy: asset ${asset.id} should have exactly one linked asset`
+        `AaveV3DepositStrategy: asset ${asset.id} should have exactly one linked asset`
       );
     }
     const linkedAsset = assetStore.getAssetById(asset.linkedAssets[0].assetId);
@@ -107,7 +90,7 @@ export class BeefyDepositStrategy extends InterfaceStrategy {
       const { data: approveEncodedCall, offsets: approveFromOffsets } =
         getMagicOffsets({
           data: IERC20.encodeFunctionData("approve", [
-            asset.address,
+            poolAddress,
             MAGIC_REPLACER_0,
           ]),
           magicReplacers: [MAGIC_REPLACER_0],
@@ -146,23 +129,26 @@ export class BeefyDepositStrategy extends InterfaceStrategy {
         ],
       });
 
-      const { data: depositEncodedCall, offsets: depositFromOffsets } =
+      const { data: supplyEncodedCall, offsets: supplyFromOffsets } =
         getMagicOffsets({
-          data: IBeefyVaultV6.encodeFunctionData("deposit", [
-            MAGIC_REPLACER_0, // _amount
+          data: IPool.encodeFunctionData("supply", [
+            linkedAsset.address, // asset
+            MAGIC_REPLACER_0, // amount
+            walletAddress, // onBehalfOf
+            0, // referralCode
           ]),
           magicReplacers: [MAGIC_REPLACER_0],
         });
 
       routerOperation.steps.push({
-        stepAddress: asset.address,
-        stepEncodedCall: depositEncodedCall,
+        stepAddress: poolAddress,
+        stepEncodedCall: supplyEncodedCall,
         storeOperations: [
           {
             storeOpType: StoreOpType.RetrieveStoreAssignCallSubtract,
             storeNumber: storeNumberFrom,
-            offset: depositFromOffsets[0],
-            fraction: FRACTION_MULTIPLIER,
+            offset: supplyFromOffsets[0],
+            fraction: newFraction * FRACTION_MULTIPLIER,
           },
         ],
       });
@@ -174,10 +160,10 @@ export class BeefyDepositStrategy extends InterfaceStrategy {
         ]),
         storeOperations: [
           {
-            storeOpType: StoreOpType.RetrieveResultSubtractStore,
-            storeNumber: storeNumberTmp,
+            storeOpType: StoreOpType.RetrieveResultAddStore,
+            storeNumber: storeNumberTo,
             offset: balanceOfToOffsets[0],
-            fraction: FRACTION_MULTIPLIER,
+            fraction: newFraction * FRACTION_MULTIPLIER,
           },
           {
             storeOpType: StoreOpType.SubtractStoreFromStore,
@@ -193,9 +179,6 @@ export class BeefyDepositStrategy extends InterfaceStrategy {
       });
       const storeNumberTo = routerOperation.stores.findOrInitializeStoreIdx({
         assetId: linkedAsset.id,
-      });
-      const storeNumberTmp = routerOperation.stores.findOrInitializeStoreIdx({
-        tmpStoreName: `${asset.id} tmp store 0`,
       });
 
       const currentFraction = currentAllocation.getAssetById({
@@ -215,36 +198,23 @@ export class BeefyDepositStrategy extends InterfaceStrategy {
         });
       });
 
-      const { offsets: balanceOfToOffsets } = getMagicOffsets({
-        data: IERC20.encodeFunctionResult("balanceOf", [MAGIC_REPLACER_0]),
-        magicReplacers: [MAGIC_REPLACER_0],
-      });
-
-      routerOperation.steps.push({
-        stepAddress: asset.address,
-        stepEncodedCall: IERC20.encodeFunctionData("balanceOf", [
-          walletAddress,
-        ]),
-        storeOperations: [
-          {
-            storeOpType: StoreOpType.RetrieveResultAddStore,
-            storeNumber: storeNumberTmp,
-            offset: balanceOfToOffsets[0],
-            fraction: FRACTION_MULTIPLIER,
-          },
-        ],
-      });
-
       const { data: withdrawEncodedCall, offsets: withdrawFromOffsets } =
         getMagicOffsets({
-          data: IBeefyVaultV6.encodeFunctionData("withdraw", [
+          data: IPool.encodeFunctionData("withdraw", [
+            linkedAsset.address, // asset
             MAGIC_REPLACER_0, // _shares
+            walletAddress, // to
           ]),
           magicReplacers: [MAGIC_REPLACER_0],
         });
 
+      const { offsets: withdrawToOffsets } = getMagicOffsets({
+        data: IPool.encodeFunctionResult("withdraw", [MAGIC_REPLACER_0]),
+        magicReplacers: [MAGIC_REPLACER_0],
+      });
+
       routerOperation.steps.push({
-        stepAddress: asset.address,
+        stepAddress: poolAddress,
         stepEncodedCall: withdrawEncodedCall,
         storeOperations: [
           {
@@ -253,25 +223,10 @@ export class BeefyDepositStrategy extends InterfaceStrategy {
             offset: withdrawFromOffsets[0],
             fraction: newFraction * FRACTION_MULTIPLIER,
           },
-        ],
-      });
-
-      routerOperation.steps.push({
-        stepAddress: asset.address,
-        stepEncodedCall: IERC20.encodeFunctionData("balanceOf", [
-          walletAddress,
-        ]),
-        storeOperations: [
           {
-            storeOpType: StoreOpType.RetrieveResultSubtractStore,
-            storeNumber: storeNumberTmp,
-            offset: balanceOfToOffsets[0],
-            fraction: FRACTION_MULTIPLIER,
-          },
-          {
-            storeOpType: StoreOpType.SubtractStoreFromStore,
-            storeNumber: storeNumberTmp,
-            offset: storeNumberTo,
+            storeOpType: StoreOpType.RetrieveResultAddStore,
+            storeNumber: storeNumberTo,
+            offset: withdrawToOffsets[0],
             fraction: FRACTION_MULTIPLIER,
           },
         ],

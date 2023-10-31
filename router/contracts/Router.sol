@@ -17,7 +17,7 @@ contract Router {
         RetrieveStoreAssignCall,
         // 2: Retrieve result and adds to store
         // - retrieve result value at "offset" of "result" and add to "storeNumber"
-        RetrieveResultAssignStore,
+        RetrieveResultAddStore,
         // 3: Retrieve result and subtracts from store
         // - retrieve result value at "offset" of "result" and subtracts from "storeNumber"
         RetrieveResultSubtractStore,
@@ -161,7 +161,7 @@ contract Router {
             for (uint16 j = 0; j < steps[i].storeOperations.length; j++) {
                 if (
                     steps[i].storeOperations[j].storeOpType ==
-                    StoreOpType.RetrieveResultAssignStore
+                    StoreOpType.RetrieveResultAddStore
                 ) {
                     stores[
                         steps[i].storeOperations[j].storeNumber

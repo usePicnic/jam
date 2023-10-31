@@ -3,6 +3,7 @@ import { NetworkTokenStrategy } from "./NetworkTokenStrategy";
 import { TokenStrategy } from "./TokenStrategy";
 import { GammaDepositStrategy } from "./GammaDepositStrategy";
 import { BeefyDepositStrategy } from "./BeefyDepositStrategy";
+import { AaveV3DepositStrategy } from "./AaveV3DepositStrategy";
 import { InterfaceStrategy } from "./InterfaceStrategy";
 
 export const assetTypeStrategies: {
@@ -15,5 +16,6 @@ export const assetTypeStrategies: {
     networkToken: new NetworkTokenStrategy(),
     beefyDeposit: new BeefyDepositStrategy(),
     gammaDeposit: new GammaDepositStrategy(),
+    aaveV3Deposit: new AaveV3DepositStrategy(),
   },
 };

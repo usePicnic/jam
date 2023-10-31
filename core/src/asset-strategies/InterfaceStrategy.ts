@@ -1,8 +1,5 @@
 import { Provider } from "ethers";
-import {
-  RequestTree,
-  RequestTree,
-} from "../transaction/get-prices-and-linked-assets";
+import { RequestTree } from "../transaction/get-prices-and-linked-assets";
 import {
   RouterOperation,
   LinkedAsset,
@@ -10,14 +7,7 @@ import {
   AssetStore,
   CurrentAllocation,
   FractionAllocationItem,
-  RouterOperation,
 } from "../transaction/types";
-import {
-  GenerateStepParams,
-  FetchPriceDataParams,
-  GetPriceParams,
-  GetLinkedAssetsParams,
-} from "./InterfaceStrategy";
 
 export abstract class InterfaceStrategy {
   abstract generateStep({

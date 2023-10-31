@@ -217,13 +217,13 @@ export class GammaDepositStrategy extends InterfaceStrategy {
             fraction: Math.round(linkedAssetFractions[1] * FRACTION_MULTIPLIER),
           },
           {
-            storeOpType: StoreOpType.RetrieveResultAssignStore,
+            storeOpType: StoreOpType.RetrieveResultAddStore,
             storeNumber: storeNumberTmp[0],
             offset: calculateRatiosToOffsets[0],
             fraction: FRACTION_MULTIPLIER,
           },
           {
-            storeOpType: StoreOpType.RetrieveResultAssignStore,
+            storeOpType: StoreOpType.RetrieveResultAddStore,
             storeNumber: storeNumberTmp[1],
             offset: calculateRatiosToOffsets[1],
             fraction: FRACTION_MULTIPLIER,
@@ -305,7 +305,7 @@ export class GammaDepositStrategy extends InterfaceStrategy {
             fraction: FRACTION_MULTIPLIER,
           },
           {
-            storeOpType: StoreOpType.RetrieveResultAssignStore,
+            storeOpType: StoreOpType.RetrieveResultAddStore,
             storeNumber: storeNumberTo,
             offset: depositToOffsets[0],
             fraction: FRACTION_MULTIPLIER,
@@ -372,13 +372,13 @@ export class GammaDepositStrategy extends InterfaceStrategy {
             fraction: newFraction * FRACTION_MULTIPLIER,
           },
           {
-            storeOpType: StoreOpType.RetrieveResultAssignStore,
+            storeOpType: StoreOpType.RetrieveResultAddStore,
             storeNumber: storeNumberTo0,
             offset: withdrawToOffsets[0],
             fraction: FRACTION_MULTIPLIER,
           },
           {
-            storeOpType: StoreOpType.RetrieveResultAssignStore,
+            storeOpType: StoreOpType.RetrieveResultAddStore,
             storeNumber: storeNumberTo1,
             offset: withdrawToOffsets[1],
             fraction: FRACTION_MULTIPLIER,

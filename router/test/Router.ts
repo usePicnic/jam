@@ -9,7 +9,7 @@ import { BigNumberish } from "ethers";
 enum StoreOpType {
   RetrieveStoreAssignValue, // 0
   RetrieveStoreAssignCall, // 1
-  RetrieveResultAssignStore, // 2
+  RetrieveResultAddStore, // 2
   RetrieveStoreAssignValueSubtract, // 3
   RetrieveStoreAssignCallSubtract, // 4
   SubtractStoreFromStore, // 5
@@ -234,7 +234,7 @@ describe("Router", function () {
         ),
         storeOperations: [
           {
-            storeOpType: StoreOpType.RetrieveResultAssignStore,
+            storeOpType: StoreOpType.RetrieveResultAddStore,
             storeNumber: 1,
             offset: 32 + 32 + 32 * (2 - 1),
             fraction: 1000000,
