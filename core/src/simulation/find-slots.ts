@@ -186,7 +186,12 @@ export async function findSlots({
     METHODS[1]
   );
 
-  const maxSize = Math.min(allowSize, balanceSize);
+  let maxSize;
+  if (asset.type === "aaveV3Deposit") {
+    maxSize = 40;
+  } else {
+    maxSize = Math.min(allowSize, balanceSize);
+  }
 
   return { allowSlot, balanceSlot, maxSize };
 }

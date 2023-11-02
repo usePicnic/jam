@@ -1468,7 +1468,7 @@
     "category": ["Lending", "Yield", "Blue chip"],
     "allowSlot": 53,
     "balanceSlot": 52,
-    "maxSize": 64
+    "maxSize": 40
   },
   {
     "id": "371b83f1-3301-4c69-b3ad-8d199c6d1774",
@@ -1489,7 +1489,7 @@
     "visible": true,
     "allowSlot": 53,
     "balanceSlot": 52,
-    "maxSize": 64
+    "maxSize": 40
   },
   {
     "id": "fecfd33d-e6a7-476b-89cb-910a0058fa48",
