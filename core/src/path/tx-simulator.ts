@@ -131,6 +131,11 @@ export async function simulateRouterOperation({
   );
   const routerTransactionData = routerOperation.getTransactionDetails();
 
+  console.dir(
+    { routerTransactionData },
+    { depth: null, maxStringLength: null }
+  );
+
   const populatedTx = await routerSimulator.simulateJamTx.populateTransaction(
     config.networks[chainId].routerAddress,
     sellAsset.address,

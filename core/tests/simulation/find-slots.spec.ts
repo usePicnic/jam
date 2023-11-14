@@ -20,4 +20,18 @@ test("findSlots", async () => {
       provider,
     })
   );
+
+  console.log(
+    await findSlots({
+      asset: assetStore.getAssetById("03f36f17-bbc2-4d8d-b0b2-9ce0f534d708"),
+      provider,
+    })
+  );
+
+  console.log(
+    await findSlots({
+      asset: assetStore.getAssetById("33b90e57-ded7-4da9-92c9-6d3ed0f1c53d"),
+      provider,
+    })
+  );
 }, 60000);

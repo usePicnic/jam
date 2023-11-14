@@ -2,6 +2,8 @@ import { Interface } from "ethers";
 
 import IERC20ABI from "./IERC20.json";
 import IPoolABI from "./Aave/IPool.json";
+import IVaultABI from "./Balancer/IVault.json";
+import IComposableStablePoolABI from "./Balancer/IComposableStablePool.json";
 import IBeefyVaultV6ABI from "./Beefy/IBeefyVaultV6.json";
 import IHypervisorABI from "./Gamma/IHypervisor.json";
 import IHypervisorRouterABI from "./Gamma/IHypervisorRouter.json";
@@ -13,7 +15,9 @@ import RouterSimulatorABI from "./RouterSimulator.json";
 
 export const IERC20 = new Interface(IERC20ABI.abi);
 export const IPool = new Interface(IPoolABI);
+export const IVault = new Interface(IVaultABI);
 export const IBeefyVaultV6 = new Interface(IBeefyVaultV6ABI);
+export const IComposableStablePool = new Interface(IComposableStablePoolABI);
 export const IHypervisor = new Interface(IHypervisorABI);
 export const IHypervisorRouter = new Interface(IHypervisorRouterABI.abi);
 export const GammaRatiosCalculator = new Interface(

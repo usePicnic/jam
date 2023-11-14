@@ -5,6 +5,7 @@ import { GammaDepositStrategy } from "./GammaDepositStrategy";
 import { BeefyDepositStrategy } from "./BeefyDepositStrategy";
 import { AaveV3DepositStrategy } from "./AaveV3DepositStrategy";
 import { InterfaceStrategy } from "./InterfaceStrategy";
+import { BalancerDepositStrategy } from "./BalancerDepositStrategy";
 
 export const assetTypeStrategies: {
   [chainId: number]: {
@@ -14,6 +15,7 @@ export const assetTypeStrategies: {
   137: {
     token: new TokenStrategy(),
     networkToken: new NetworkTokenStrategy(),
+    balancerDeposit: new BalancerDepositStrategy(),
     beefyDeposit: new BeefyDepositStrategy(),
     gammaDeposit: new GammaDepositStrategy(),
     aaveV3Deposit: new AaveV3DepositStrategy(),

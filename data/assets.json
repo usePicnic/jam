@@ -239,20 +239,31 @@
   },
   {
     "id": "8b695641-93b0-4c83-929b-409b646cf5e5",
-    "name": "Brazilian Digital Token",
+    "name": "Brazilian Digital Token (old)",
     "chainId": 137,
     "active": true,
     "address": "0x491a4eB4f1FC3BfF8E1d2FC856a6A46663aD556f",
     "color": "#00923E",
     "decimals": 4,
-    "symbol": "BRZ",
+    "symbol": "BRZ (old)",
     "type": "token",
     "visible": true,
     "allowSlot": 3,
-    "balanceSlot": 2,
-    "callParams": {
-      "jToken": "90f159bc-b2ef-4251-a24b-a4fa7b5b97fa"
-    }
+    "balanceSlot": 2
+  },
+  {
+    "id": "578aa621-59d8-4c4c-ad01-891f50769f4a",
+    "name": "BRZ Token (new)",
+    "chainId": 137,
+    "active": true,
+    "address": "0x4eD141110F6EeeAbA9A1df36d8c26f684d2475Dc",
+    "color": "#00923E",
+    "decimals": 4,
+    "symbol": "BRZ (new)",
+    "type": "token",
+    "visible": true,
+    "allowSlot": 3,
+    "balanceSlot": 2
   },
   {
     "id": "2376e258-b097-4aa1-b1bc-e550e0049bc6",
@@ -1226,17 +1237,31 @@
   },
   {
     "id": "e251ecf6-48c2-4538-afcd-fbb92424054d",
-    "name": "USD Coin",
+    "name": "USD Coin (Bridged)",
     "chainId": 137,
     "active": true,
     "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
     "color": "#2775ca",
     "decimals": 6,
-    "symbol": "USDC",
+    "symbol": "USDC.e",
     "type": "token",
     "visible": false,
     "allowSlot": 1,
     "balanceSlot": 0
+  },
+  {
+    "id": "33b90e57-ded7-4da9-92c9-6d3ed0f1c53d",
+    "active": true,
+    "address": "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359",
+    "color": "#2775ca",
+    "decimals": 6,
+    "name": "USD Coin (Native)",
+    "chainId": 137,
+    "symbol": "USDC",
+    "type": "token",
+    "visible": false,
+    "allowSlot": 10,
+    "balanceSlot": 9
   },
   {
     "id": "dfe40dda-5c96-4ff3-b773-386f1ca0868d",
@@ -1490,6 +1515,34 @@
     "allowSlot": 53,
     "balanceSlot": 52,
     "maxSize": 40
+  },
+  {
+    "id": "03f36f17-bbc2-4d8d-b0b2-9ce0f534d708",
+    "active": true,
+    "address": "0x42942cDeC85078Cf0e28e9CB5ACd40CB53997Ed6",
+    "callParams": {
+      "poolId": "0x42942cdec85078cf0e28e9cb5acd40cb53997ed6000000000000000000000bea",
+      "selfIndex": 1
+    },
+    "color": "#049c3c",
+    "decimals": 18,
+    "linkedAssets": [
+      {
+        "assetId": "90f159bc-b2ef-4251-a24b-a4fa7b5b97fa",
+        "fraction": 0
+      },
+      {
+        "assetId": "578aa621-59d8-4c4c-ad01-891f50769f4a",
+        "fraction": 1
+      }
+    ],
+    "name": "jBRL/BRZ",
+    "chainId": 137,
+    "symbol": "jBRL/BRZ",
+    "type": "balancerDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0
   },
   {
     "id": "fecfd33d-e6a7-476b-89cb-910a0058fa48",

@@ -25,6 +25,8 @@ export async function simulateSingleAssetToSingleAsset({
     walletAddress: config.networks[chainId].routerSimulatorAddress,
   });
 
+  console.dir({ routerOperation }, { depth: null, maxStringLength: null });
+
   const result = await simulateRouterOperation({
     chainId,
     routerOperation,
