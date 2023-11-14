@@ -134,7 +134,7 @@ export class BeefyDepositStrategy extends InterfaceStrategy {
       routerOperation.steps.push({
         stepAddress: asset.address,
         stepEncodedCall: IERC20.encodeFunctionData("balanceOf", [
-          asset.address,
+          walletAddress,
         ]),
         storeOperations: [
           {
@@ -170,7 +170,7 @@ export class BeefyDepositStrategy extends InterfaceStrategy {
       routerOperation.steps.push({
         stepAddress: asset.address,
         stepEncodedCall: IERC20.encodeFunctionData("balanceOf", [
-          asset.address,
+          walletAddress,
         ]),
         storeOperations: [
           {

@@ -10,7 +10,7 @@ test("generateTransaction: USDC to QUICK (beefyDeposit)", async () => {
   });
 });
 
-test.skip("generateTransaction: beefy.finance (beefyDeposit) to USDC", async () => {
+test("generateTransaction: beefy.finance (beefyDeposit) to USDC", async () => {
   await simulateSingleAssetToSingleAsset({
     chainId: 137,
     inputAssetId: "fecfd33d-e6a7-476b-89cb-910a0058fa48",

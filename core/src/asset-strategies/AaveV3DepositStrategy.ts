@@ -117,7 +117,7 @@ export class AaveV3DepositStrategy extends InterfaceStrategy {
       routerOperation.steps.push({
         stepAddress: asset.address,
         stepEncodedCall: IERC20.encodeFunctionData("balanceOf", [
-          asset.address,
+          walletAddress,
         ]),
         storeOperations: [
           {
@@ -156,14 +156,14 @@ export class AaveV3DepositStrategy extends InterfaceStrategy {
       routerOperation.steps.push({
         stepAddress: asset.address,
         stepEncodedCall: IERC20.encodeFunctionData("balanceOf", [
-          asset.address,
+          walletAddress,
         ]),
         storeOperations: [
           {
             storeOpType: StoreOpType.RetrieveResultAddStore,
             storeNumber: storeNumberTo,
             offset: balanceOfToOffsets[0],
-            fraction: newFraction * FRACTION_MULTIPLIER,
+            fraction: FRACTION_MULTIPLIER,
           },
           {
             storeOpType: StoreOpType.SubtractStoreFromStore,
