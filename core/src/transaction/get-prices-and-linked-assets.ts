@@ -79,5 +79,7 @@ export async function getPricesAndLinkedAssets({
     linkedAssets[assetId] = getLinkedAssets({ assetStore, asset, requestTree });
   });
 
+  console.log({ prices });
+
   return { prices, linkedAssets };
 }

@@ -275,6 +275,14 @@ export async function simulateAndChooseRoute({
   exchangeList?: Exchange[];
   aggregators?: string[];
 }): Promise<Route[]> {
+  console.log("simulateAndChooseRoute", {
+    chainId,
+    sellToken,
+    buyToken,
+    sellAmount,
+    exchangeList,
+    aggregators,
+  });
   if (sellAmount == "0") {
     throw Error("simulateAndChooseRoute: sellAmount is 0");
   }
