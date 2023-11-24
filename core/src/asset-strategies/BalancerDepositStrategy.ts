@@ -424,7 +424,133 @@ export class BalancerDepositStrategy extends InterfaceStrategy {
         ],
       });
     } else if (assetAllocation.fraction < 0) {
-      throw new Error("BalancerDepositStrategy: withdraw not implemented");
+      const storeNumbersTmp = asset.linkedAssets.map((la, i) => {
+        return routerOperation.stores.findOrInitializeStoreIdx({
+          tmpStoreName: `${asset.id} tmp store ${i} for ${la.assetId}`,
+        });
+      });
+
+      const currentFraction = currentAllocation.getAssetById({
+        assetId: asset.id,
+      }).fraction;
+      const newFraction = -assetAllocation.fraction / currentFraction;
+      const variation = newFraction * currentFraction;
+      asset.linkedAssets.map((la, i) => {
+        currentAllocation.updateFraction({
+          assetId: la.assetId,
+          delta: variation * la.fraction,
+        });
+        currentAllocation.updateFraction({
+          assetId: asset.id,
+          delta: -variation * la.fraction,
+        });
+      });
+
+      const { offsets: balanceOfToOffsets } = getMagicOffsets({
+        data: IERC20.encodeFunctionResult("balanceOf", [MAGIC_REPLACER_0]),
+        magicReplacers: [MAGIC_REPLACER_0],
+      });
+
+      asset.linkedAssets.map((la, i) => {
+        const linkedAsset = assetStore.getAssetById(la.assetId);
+        routerOperation.steps.push({
+          stepAddress: linkedAsset.address,
+          stepEncodedCall: IERC20.encodeFunctionData("balanceOf", [
+            walletAddress,
+          ]),
+          storeOperations: [
+            {
+              storeOpType: StoreOpType.RetrieveResultAddStore,
+              storeNumber: storeNumbersTmp[i],
+              offset: balanceOfToOffsets[0],
+              fraction: FRACTION_MULTIPLIER,
+            },
+          ],
+        });
+      });
+
+      const { selfIndex, orderedAddresses } = this.getSelfIndex({
+        asset,
+        assetStore,
+      });
+      console.log({ selfIndex, orderedAddresses });
+
+      const linkedAssetAddresses = asset.linkedAssets.map(
+        (la) => assetStore.getAssetById(la.assetId).address
+      );
+
+      const replacers = linkedAssetAddresses.map(() => null);
+      console.log({ replacers });
+      const amounts = orderedAddresses.map((address) => {
+        // if (address === asset.address) {
+        //   return MAGIC_REPLACERS[0]; // TODO: min amount in
+        // }
+
+        return 0;
+      });
+
+      const abiCoder = new AbiCoder();
+      const userData = abiCoder.encode(
+        ["uint256", "uint256"],
+        [
+          2, // EXACT_BPT_IN_FOR_ALL_TOKENS_OUT
+          MAGIC_REPLACERS[0], // amounts in
+        ]
+      );
+
+      const { data: exitPoolEncodedCall, offsets: exitPoolFromOffsets } =
+        getMagicOffsets({
+          data: IVault.encodeFunctionData("exitPool", [
+            asset.callParams.poolId, // poolId
+            walletAddress, // sender
+            walletAddress, // recipient
+            [
+              orderedAddresses, // assets
+              amounts, // maxAmountsIn
+              userData, // userData
+              false, // fromInternalBalance
+            ],
+          ]),
+          magicReplacers: [MAGIC_REPLACERS[0]], // Each replacer appear once in amounts and once in userData.
+        });
+
+      routerOperation.steps.push({
+        stepAddress: vaultAddress,
+        stepEncodedCall: exitPoolEncodedCall,
+        storeOperations: [
+          {
+            storeOpType: StoreOpType.RetrieveStoreAssignCallSubtract,
+            storeNumber: storeNumberPool,
+            offset: exitPoolFromOffsets[0],
+            fraction: newFraction * FRACTION_MULTIPLIER,
+          },
+        ],
+      });
+
+      asset.linkedAssets.map((la, i) => {
+        const linkedAsset = assetStore.getAssetById(la.assetId);
+
+        routerOperation.steps.push({
+          stepAddress: linkedAsset.address,
+          stepEncodedCall: IERC20.encodeFunctionData("balanceOf", [
+            walletAddress,
+          ]),
+          storeOperations: [
+            {
+              storeOpType: StoreOpType.RetrieveResultAddStore,
+              storeNumber: storeNumbersLinkedAssets[i],
+              offset: balanceOfToOffsets[0],
+              fraction: FRACTION_MULTIPLIER,
+            },
+            {
+              storeOpType: StoreOpType.SubtractStoreFromStore,
+              storeNumber: storeNumbersTmp[i],
+              offset: storeNumbersLinkedAssets[i],
+              fraction: FRACTION_MULTIPLIER,
+            },
+          ],
+        });
+      });
     }
     return routerOperation;
   }
