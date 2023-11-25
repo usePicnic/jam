@@ -10,7 +10,7 @@ import { getMagicOffsets } from "core/src/utils/get-magic-offset";
 import { IBeefyVaultV6, IERC20 } from "core/src/abis";
 import {
   FRACTION_MULTIPLIER,
-  MAGIC_REPLACER_0,
+  MAGIC_REPLACERS,
 } from "core/src/utils/get-magic-offset";
 import {
   FetchPriceDataParams,
@@ -108,9 +108,9 @@ export class BeefyDepositStrategy extends InterfaceStrategy {
         getMagicOffsets({
           data: IERC20.encodeFunctionData("approve", [
             asset.address,
-            MAGIC_REPLACER_0,
+            MAGIC_REPLACERS[0],
           ]),
-          magicReplacers: [MAGIC_REPLACER_0],
+          magicReplacers: [MAGIC_REPLACERS[0]],
         });
 
       routerOperation.steps.push({
@@ -127,8 +127,8 @@ export class BeefyDepositStrategy extends InterfaceStrategy {
       });
 
       const { offsets: balanceOfToOffsets } = getMagicOffsets({
-        data: IERC20.encodeFunctionResult("balanceOf", [MAGIC_REPLACER_0]),
-        magicReplacers: [MAGIC_REPLACER_0],
+        data: IERC20.encodeFunctionResult("balanceOf", [MAGIC_REPLACERS[0]]),
+        magicReplacers: [MAGIC_REPLACERS[0]],
       });
 
       routerOperation.steps.push({
@@ -149,9 +149,9 @@ export class BeefyDepositStrategy extends InterfaceStrategy {
       const { data: depositEncodedCall, offsets: depositFromOffsets } =
         getMagicOffsets({
           data: IBeefyVaultV6.encodeFunctionData("deposit", [
-            MAGIC_REPLACER_0, // _amount
+            MAGIC_REPLACERS[0], // _amount
           ]),
-          magicReplacers: [MAGIC_REPLACER_0],
+          magicReplacers: [MAGIC_REPLACERS[0]],
         });
 
       routerOperation.steps.push({
@@ -216,8 +216,8 @@ export class BeefyDepositStrategy extends InterfaceStrategy {
       });
 
       const { offsets: balanceOfToOffsets } = getMagicOffsets({
-        data: IERC20.encodeFunctionResult("balanceOf", [MAGIC_REPLACER_0]),
-        magicReplacers: [MAGIC_REPLACER_0],
+        data: IERC20.encodeFunctionResult("balanceOf", [MAGIC_REPLACERS[0]]),
+        magicReplacers: [MAGIC_REPLACERS[0]],
       });
 
       routerOperation.steps.push({
@@ -238,9 +238,9 @@ export class BeefyDepositStrategy extends InterfaceStrategy {
       const { data: withdrawEncodedCall, offsets: withdrawFromOffsets } =
         getMagicOffsets({
           data: IBeefyVaultV6.encodeFunctionData("withdraw", [
-            MAGIC_REPLACER_0, // _shares
+            MAGIC_REPLACERS[0], // _shares
           ]),
-          magicReplacers: [MAGIC_REPLACER_0],
+          magicReplacers: [MAGIC_REPLACERS[0]],
         });
 
       routerOperation.steps.push({

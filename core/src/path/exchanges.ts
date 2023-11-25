@@ -4,7 +4,7 @@ import { IERC20, IParaswap, ZeroXERC20 } from "../abis";
 import { Provider } from "ethers";
 import {
   FRACTION_MULTIPLIER,
-  MAGIC_REPLACER_0,
+  MAGIC_REPLACERS,
   getMagicOffsets,
 } from "../utils/get-magic-offset";
 
@@ -67,9 +67,9 @@ export class Paraswap extends Exchange {
       getMagicOffsets({
         data: IERC20.encodeFunctionData("approve", [
           path.params.approveAddress,
-          MAGIC_REPLACER_0,
+          MAGIC_REPLACERS[0],
         ]),
-        magicReplacers: [MAGIC_REPLACER_0],
+        magicReplacers: [MAGIC_REPLACERS[0]],
       });
 
     output.steps.push({
@@ -104,7 +104,7 @@ export class Paraswap extends Exchange {
         data: IParaswap.encodeFunctionData("megaSwap", [
           [
             path.fromToken, // fromToken
-            MAGIC_REPLACER_0, // fromAmount
+            MAGIC_REPLACERS[0], // fromAmount
             1, // toAmount (originally decodedData.args[0].toAmount) (minAmountOut)
             BigInt(
               "115792089237316195423570985008687907853269984665640564039457584007913129639935"
@@ -118,15 +118,15 @@ export class Paraswap extends Exchange {
             decodedData.args[0].uuid, // uuid
           ],
         ]),
-        magicReplacers: [MAGIC_REPLACER_0],
+        magicReplacers: [MAGIC_REPLACERS[0]],
       });
 
       swapEncodedCall = data;
       swapFromOffset = fromOffsets[0];
 
       const { offsets: toOffsets } = getMagicOffsets({
-        data: IParaswap.encodeFunctionResult("megaSwap", [MAGIC_REPLACER_0]),
-        magicReplacers: [MAGIC_REPLACER_0],
+        data: IParaswap.encodeFunctionResult("megaSwap", [MAGIC_REPLACERS[0]]),
+        magicReplacers: [MAGIC_REPLACERS[0]],
       });
 
       swapToOffset = toOffsets[0];
@@ -135,7 +135,7 @@ export class Paraswap extends Exchange {
         data: IParaswap.encodeFunctionData("multiSwap", [
           [
             path.fromToken, // fromToken
-            MAGIC_REPLACER_0, // fromAmount
+            MAGIC_REPLACERS[0], // fromAmount
             1, // toAmount (originally decodedData.args[0].toAmount) (minAmountOut)
             BigInt(
               "115792089237316195423570985008687907853269984665640564039457584007913129639935"
@@ -149,15 +149,15 @@ export class Paraswap extends Exchange {
             decodedData.args[0].uuid, // uuid
           ],
         ]),
-        magicReplacers: [MAGIC_REPLACER_0],
+        magicReplacers: [MAGIC_REPLACERS[0]],
       });
 
       swapEncodedCall = data;
       swapFromOffset = fromOffsets[0];
 
       const { offsets: toOffsets } = getMagicOffsets({
-        data: IParaswap.encodeFunctionResult("multiSwap", [MAGIC_REPLACER_0]),
-        magicReplacers: [MAGIC_REPLACER_0],
+        data: IParaswap.encodeFunctionResult("multiSwap", [MAGIC_REPLACERS[0]]),
+        magicReplacers: [MAGIC_REPLACERS[0]],
       });
 
       swapToOffset = toOffsets[0];
@@ -238,9 +238,9 @@ export class ZeroX extends Exchange {
       getMagicOffsets({
         data: IERC20.encodeFunctionData("approve", [
           path.params.approveAddress,
-          MAGIC_REPLACER_0,
+          MAGIC_REPLACERS[0],
         ]),
-        magicReplacers: [MAGIC_REPLACER_0],
+        magicReplacers: [MAGIC_REPLACERS[0]],
       });
 
     output.steps.push({
@@ -266,19 +266,19 @@ export class ZeroX extends Exchange {
         data: ZeroXERC20.encodeFunctionData("transformERC20", [
           path.fromToken, // inputToken
           path.toToken, // outputToken
-          MAGIC_REPLACER_0, // inputTokenAmount
+          MAGIC_REPLACERS[0], // inputTokenAmount
           1, // minOutputTokenAmount
           decodedTransformERC20[4], // transformations
         ]),
-        magicReplacers: [MAGIC_REPLACER_0],
+        magicReplacers: [MAGIC_REPLACERS[0]],
       }
     );
 
     const { offsets: swapToOffsets } = getMagicOffsets({
       data: ZeroXERC20.encodeFunctionResult("transformERC20", [
-        MAGIC_REPLACER_0,
+        MAGIC_REPLACERS[0],
       ]),
-      magicReplacers: [MAGIC_REPLACER_0],
+      magicReplacers: [MAGIC_REPLACERS[0]],
     });
 
     output.steps.push({

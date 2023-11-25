@@ -20,8 +20,7 @@ import {
 } from "core/src/abis";
 import {
   FRACTION_MULTIPLIER,
-  MAGIC_REPLACER_0,
-  MAGIC_REPLACER_1,
+  MAGIC_REPLACERS,
 } from "core/src/utils/get-magic-offset";
 import { loadConfig } from "../config/load-config";
 import {
@@ -186,18 +185,18 @@ export class GammaDepositStrategy extends InterfaceStrategy {
       } = getMagicOffsets({
         data: GammaRatiosCalculator.encodeFunctionData("calculateRatios", [
           [linkedAssetAddresses[0], linkedAssetAddresses[1]],
-          [MAGIC_REPLACER_0, MAGIC_REPLACER_1],
+          [MAGIC_REPLACERS[0], MAGIC_REPLACERS[1]],
           asset.address,
           hypervisorRouterAddress, // hypervisorRouterAddress
         ]),
-        magicReplacers: [MAGIC_REPLACER_0, MAGIC_REPLACER_1],
+        magicReplacers: [MAGIC_REPLACERS[0], MAGIC_REPLACERS[1]],
       });
       const { offsets: calculateRatiosToOffsets } = getMagicOffsets({
         data: GammaRatiosCalculator.encodeFunctionResult("calculateRatios", [
-          MAGIC_REPLACER_0,
-          MAGIC_REPLACER_1,
+          MAGIC_REPLACERS[0],
+          MAGIC_REPLACERS[1],
         ]),
-        magicReplacers: [MAGIC_REPLACER_0, MAGIC_REPLACER_1],
+        magicReplacers: [MAGIC_REPLACERS[0], MAGIC_REPLACERS[1]],
       });
 
       routerOperation.steps.push({
@@ -238,9 +237,9 @@ export class GammaDepositStrategy extends InterfaceStrategy {
           getMagicOffsets({
             data: IERC20.encodeFunctionData("approve", [
               asset.address,
-              MAGIC_REPLACER_0,
+              MAGIC_REPLACERS[0],
             ]),
-            magicReplacers: [MAGIC_REPLACER_0],
+            magicReplacers: [MAGIC_REPLACERS[0]],
           });
 
         routerOperation.steps.push({
@@ -260,20 +259,20 @@ export class GammaDepositStrategy extends InterfaceStrategy {
       const { data: depositEncodedCall, offsets: depositFromOffsets } =
         getMagicOffsets({
           data: IHypervisorRouter.encodeFunctionData("deposit", [
-            MAGIC_REPLACER_0,
-            MAGIC_REPLACER_1,
+            MAGIC_REPLACERS[0],
+            MAGIC_REPLACERS[1],
             walletAddress,
             asset.address,
             [0, 0, 0, 0], // minIn
           ]),
-          magicReplacers: [MAGIC_REPLACER_0, MAGIC_REPLACER_1],
+          magicReplacers: [MAGIC_REPLACERS[0], MAGIC_REPLACERS[1]],
         });
 
       const { offsets: depositToOffsets } = getMagicOffsets({
         data: IHypervisorRouter.encodeFunctionResult("deposit", [
-          MAGIC_REPLACER_0,
+          MAGIC_REPLACERS[0],
         ]),
-        magicReplacers: [MAGIC_REPLACER_0],
+        magicReplacers: [MAGIC_REPLACERS[0]],
       });
 
       routerOperation.steps.push({
@@ -345,20 +344,20 @@ export class GammaDepositStrategy extends InterfaceStrategy {
       const { data: withdrawEncodedCall, offsets: withdrawFromOffsets } =
         getMagicOffsets({
           data: IHypervisor.encodeFunctionData("withdraw", [
-            MAGIC_REPLACER_0,
+            MAGIC_REPLACERS[0],
             walletAddress,
             walletAddress,
             [0, 0, 0, 0], // minAmounts
           ]),
-          magicReplacers: [MAGIC_REPLACER_0],
+          magicReplacers: [MAGIC_REPLACERS[0]],
         });
 
       const { offsets: withdrawToOffsets } = getMagicOffsets({
         data: IHypervisor.encodeFunctionResult("withdraw", [
-          MAGIC_REPLACER_0,
-          MAGIC_REPLACER_1,
+          MAGIC_REPLACERS[0],
+          MAGIC_REPLACERS[1],
         ]),
-        magicReplacers: [MAGIC_REPLACER_0, MAGIC_REPLACER_1],
+        magicReplacers: [MAGIC_REPLACERS[0], MAGIC_REPLACERS[1]],
       });
 
       routerOperation.steps.push({

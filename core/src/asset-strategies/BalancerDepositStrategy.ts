@@ -10,14 +10,11 @@ import {
   getPrice,
 } from "../transaction/asset-type-strategies-helpers";
 import {
+  FRACTION_MULTIPLIER,
   MAGIC_REPLACERS,
   getMagicOffsets,
 } from "core/src/utils/get-magic-offset";
 import { IComposableStablePool, IERC20, IVault } from "core/src/abis";
-import {
-  FRACTION_MULTIPLIER,
-  MAGIC_REPLACER_0,
-} from "core/src/utils/get-magic-offset";
 import {
   FetchPriceDataParams,
   GetPriceParams,
@@ -273,9 +270,9 @@ export class BalancerDepositStrategy extends InterfaceStrategy {
           getMagicOffsets({
             data: IERC20.encodeFunctionData("approve", [
               vaultAddress,
-              MAGIC_REPLACER_0,
+              MAGIC_REPLACERS[0],
             ]),
-            magicReplacers: [MAGIC_REPLACER_0],
+            magicReplacers: [MAGIC_REPLACERS[0]],
           });
         routerOperation.steps.push({
           stepAddress: linkedAsset.address,
@@ -294,8 +291,8 @@ export class BalancerDepositStrategy extends InterfaceStrategy {
       }
 
       const { offsets: balanceOfToOffsets } = getMagicOffsets({
-        data: IERC20.encodeFunctionResult("balanceOf", [MAGIC_REPLACER_0]),
-        magicReplacers: [MAGIC_REPLACER_0],
+        data: IERC20.encodeFunctionResult("balanceOf", [MAGIC_REPLACERS[0]]),
+        magicReplacers: [MAGIC_REPLACERS[0]],
       });
       routerOperation.steps.push({
         stepAddress: asset.address,
@@ -447,8 +444,8 @@ export class BalancerDepositStrategy extends InterfaceStrategy {
       });
 
       const { offsets: balanceOfToOffsets } = getMagicOffsets({
-        data: IERC20.encodeFunctionResult("balanceOf", [MAGIC_REPLACER_0]),
-        magicReplacers: [MAGIC_REPLACER_0],
+        data: IERC20.encodeFunctionResult("balanceOf", [MAGIC_REPLACERS[0]]),
+        magicReplacers: [MAGIC_REPLACERS[0]],
       });
 
       asset.linkedAssets.map((la, i) => {
@@ -511,7 +508,7 @@ export class BalancerDepositStrategy extends InterfaceStrategy {
               false, // fromInternalBalance
             ],
           ]),
-          magicReplacers: [MAGIC_REPLACERS[0]], // Each replacer appear once in amounts and once in userData.
+          magicReplacers: [MAGIC_REPLACERS[0]],
         });
 
       routerOperation.steps.push({

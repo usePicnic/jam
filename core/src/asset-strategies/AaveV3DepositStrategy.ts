@@ -8,7 +8,7 @@ import { getMagicOffsets } from "core/src/utils/get-magic-offset";
 import { IERC20, IPool } from "core/src/abis";
 import {
   FRACTION_MULTIPLIER,
-  MAGIC_REPLACER_0,
+  MAGIC_REPLACERS,
 } from "core/src/utils/get-magic-offset";
 import {
   FetchPriceDataParams,
@@ -91,9 +91,9 @@ export class AaveV3DepositStrategy extends InterfaceStrategy {
         getMagicOffsets({
           data: IERC20.encodeFunctionData("approve", [
             poolAddress,
-            MAGIC_REPLACER_0,
+            MAGIC_REPLACERS[0],
           ]),
-          magicReplacers: [MAGIC_REPLACER_0],
+          magicReplacers: [MAGIC_REPLACERS[0]],
         });
 
       routerOperation.steps.push({
@@ -110,8 +110,8 @@ export class AaveV3DepositStrategy extends InterfaceStrategy {
       });
 
       const { offsets: balanceOfToOffsets } = getMagicOffsets({
-        data: IERC20.encodeFunctionResult("balanceOf", [MAGIC_REPLACER_0]),
-        magicReplacers: [MAGIC_REPLACER_0],
+        data: IERC20.encodeFunctionResult("balanceOf", [MAGIC_REPLACERS[0]]),
+        magicReplacers: [MAGIC_REPLACERS[0]],
       });
 
       routerOperation.steps.push({
@@ -133,11 +133,11 @@ export class AaveV3DepositStrategy extends InterfaceStrategy {
         getMagicOffsets({
           data: IPool.encodeFunctionData("supply", [
             linkedAsset.address, // asset
-            MAGIC_REPLACER_0, // amount
+            MAGIC_REPLACERS[0], // amount
             walletAddress, // onBehalfOf
             0, // referralCode
           ]),
-          magicReplacers: [MAGIC_REPLACER_0],
+          magicReplacers: [MAGIC_REPLACERS[0]],
         });
 
       routerOperation.steps.push({
@@ -202,15 +202,15 @@ export class AaveV3DepositStrategy extends InterfaceStrategy {
         getMagicOffsets({
           data: IPool.encodeFunctionData("withdraw", [
             linkedAsset.address, // asset
-            MAGIC_REPLACER_0, // _shares
+            MAGIC_REPLACERS[0], // _shares
             walletAddress, // to
           ]),
-          magicReplacers: [MAGIC_REPLACER_0],
+          magicReplacers: [MAGIC_REPLACERS[0]],
         });
 
       const { offsets: withdrawToOffsets } = getMagicOffsets({
-        data: IPool.encodeFunctionResult("withdraw", [MAGIC_REPLACER_0]),
-        magicReplacers: [MAGIC_REPLACER_0],
+        data: IPool.encodeFunctionResult("withdraw", [MAGIC_REPLACERS[0]]),
+        magicReplacers: [MAGIC_REPLACERS[0]],
       });
 
       routerOperation.steps.push({

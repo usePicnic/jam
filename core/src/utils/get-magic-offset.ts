@@ -30,10 +30,6 @@ export function getMagicOffsets({
   };
 }
 
-export const MAGIC_REPLACER_0 =
-  "0x22e876a8f23cf658879db6745b42ab3e944e526ad8e0eb1cad27a4cac1d0621f";
-export const MAGIC_REPLACER_1 =
-  "0xefda6e4e83cdb7f85cc1224007eaec8516b2c28011282b93b03063709a6e641a";
 export const MAGIC_REPLACERS = [
   "0x7fa9b53d120de9cd66856522bcf6d4a7797019996b607a7c9da51787beed38d1",
   "0x7f797936f1e9ca0b2ab9736276d6a755468ef28a6cefe78c0c0c3b1903f97a5f",
