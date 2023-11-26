@@ -1,7 +1,8 @@
 import { BigNumberish, Provider, getAddress } from "ethers";
 import { getPricesAndLinkedAssets } from "./get-prices-and-linked-assets";
 import { Router } from "core/src/abis";
-
+import path from "path";
+import fs from "fs";
 export interface Asset {
   id: string;
   name: string;
@@ -45,13 +46,31 @@ export class AssetStore {
     this.#prices = {};
     this.#linkedAssets = {};
 
-    const definiteAssets: Asset[] =
-      assets ?? require("../../../data/assets.json");
+    const consolidatedAssets = assets ?? this.loadAssets();
 
-    definiteAssets.forEach((asset) => {
+    consolidatedAssets.forEach((asset) => {
       this.#byId[asset.id] = asset;
       this.#byAddress[asset.address] = asset;
     });
+  }
+
+  loadAssets() {
+    const assetDirPath = path.join(__dirname, "../../../data/assets");
+    const chainIds = fs.readdirSync(assetDirPath);
+    let allAssets = [];
+
+    for (const chainId of chainIds) {
+      const protocolDirPath = path.join(assetDirPath, chainId);
+      const protocolTypes = fs.readdirSync(protocolDirPath);
+
+      for (const protocolType of protocolTypes) {
+        const filePath = path.join(protocolDirPath, protocolType);
+        const assets = JSON.parse(fs.readFileSync(filePath, "utf8"));
+        allAssets = allAssets.concat(assets);
+      }
+    }
+
+    return allAssets;
   }
 
   // Function that gets asset by ID, if not found throws an error

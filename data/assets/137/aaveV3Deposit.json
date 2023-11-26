@@ -1,0 +1,45 @@
+[
+  {
+    "id": "46062b41-6661-4eae-bc11-4d4ec07b062f",
+    "active": true,
+    "address": "0x6d80113e533a2C0fe82EaBD35f1875DcEA89Ea97",
+    "color": "#468af0",
+    "decimals": 18,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab",
+        "fraction": 1
+      }
+    ],
+    "name": "Aave Polygon WMATIC",
+    "chainId": 137,
+    "symbol": "aPolWMATIC",
+    "type": "aaveV3Deposit",
+    "visible": true,
+    "category": ["Lending", "Yield", "Blue chip"],
+    "allowSlot": 53,
+    "balanceSlot": 52,
+    "maxSize": 40
+  },
+  {
+    "id": "371b83f1-3301-4c69-b3ad-8d199c6d1774",
+    "active": true,
+    "address": "0x625e7708f30ca75bfd92586e17077590c60eb4cd",
+    "color": "#2775ca",
+    "decimals": 6,
+    "linkedAssets": [
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d",
+        "fraction": 1
+      }
+    ],
+    "name": "Aave Polygon USDC",
+    "chainId": 137,
+    "symbol": "aPolUSDC",
+    "type": "aaveV3Deposit",
+    "visible": true,
+    "allowSlot": 53,
+    "balanceSlot": 52,
+    "maxSize": 40
+  }
+]

@@ -1,0 +1,57 @@
+[
+  {
+    "id": "03f36f17-bbc2-4d8d-b0b2-9ce0f534d708",
+    "active": true,
+    "address": "0x42942cDeC85078Cf0e28e9CB5ACd40CB53997Ed6",
+    "callParams": {
+      "poolId": "0x42942cdec85078cf0e28e9cb5acd40cb53997ed6000000000000000000000bea",
+      "selfIndex": 1
+    },
+    "color": "#049c3c",
+    "decimals": 18,
+    "linkedAssets": [
+      {
+        "assetId": "90f159bc-b2ef-4251-a24b-a4fa7b5b97fa",
+        "fraction": 0
+      },
+      {
+        "assetId": "578aa621-59d8-4c4c-ad01-891f50769f4a",
+        "fraction": 1
+      }
+    ],
+    "name": "jBRL/BRZ",
+    "chainId": 137,
+    "symbol": "jBRL/BRZ",
+    "type": "balancerDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0
+  },
+  {
+    "id": "9b09afe5-c740-4cd7-a247-4fe4950a7f33",
+    "active": true,
+    "address": "0xcd78A20c597E367A4e478a2411cEB790604D7c8F",
+    "callParams": {
+      "poolId": "0xcd78a20c597e367a4e478a2411ceb790604d7c8f000000000000000000000c22"
+    },
+    "color": "#049c3c",
+    "decimals": 18,
+    "linkedAssets": [
+      {
+        "assetId": "8634b650-20fe-4f9e-8310-6672b38ea0ce",
+        "fraction": 0
+      },
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab",
+        "fraction": 1
+      }
+    ],
+    "name": "maticX/WMATIC",
+    "chainId": 137,
+    "symbol": "maticX/WMATIC",
+    "type": "balancerDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0
+  }
+]
