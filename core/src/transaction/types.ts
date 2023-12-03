@@ -290,7 +290,8 @@ export type AssetType =
   | "gammaDeposit"
   | "beefyDeposit"
   | "aaveV3Deposit"
-  | "balancerDeposit";
+  | "balancerDeposit"
+  | "uniswapV2Liquidity";
 
 export enum StoreOpType {
   RetrieveStoreAssignValue, // 0

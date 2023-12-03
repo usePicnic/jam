@@ -1,0 +1,1022 @@
+[
+  {
+    "id": "c6d1ecb6-8610-4770-b0d7-fa96af7dae09",
+    "name": "BEL/WETH",
+    "chainId": 137,
+    "active": false,
+    "address": "0x49ceCfa5c62b3A97F58CAd6B4aCc7c74810E1DDa",
+    "color": "#00b2f9",
+    "decimals": 18,
+    "symbol": "BEL/WETH",
+    "type": "uniswapV2Liquidity",
+    "visible": false,
+    "linkedAssets": [
+      {
+        "assetId": "76e76c54-a6cf-4dc6-a6eb-e5055ce7c6b8",
+        "fraction": 0.5
+      },
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79",
+        "fraction": 0.5
+      }
+    ],
+    "callParams": {
+      "protocol": "quickswap"
+    }
+  },
+  {
+    "id": "c708a5eb-eefd-4c89-bea3-8ec2e036a1a7",
+    "name": "CRV/WETH (Sushi)",
+    "chainId": 137,
+    "active": true,
+    "address": "0x396E655C309676cAF0acf4607a868e0CDed876dB",
+    "color": "#1fc9db",
+    "decimals": 18,
+    "symbol": "CRV/WETH",
+    "type": "uniswapV2Liquidity",
+    "visible": false,
+    "allowSlot": 2,
+    "balanceSlot": 1,
+    "maxSize": 40,
+    "linkedAssets": [
+      {
+        "assetId": "af62d010-5df9-4eae-919c-8d6dd63fe45e",
+        "fraction": 0.5
+      },
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79",
+        "fraction": 0.5
+      }
+    ],
+    "callParams": {
+      "protocol": "sushiswap"
+    }
+  },
+  {
+    "id": "c0d76d9c-efdd-4cf9-ad85-78783a5171ea",
+    "name": "DAI/MAI",
+    "chainId": 137,
+    "active": true,
+    "address": "0x74214F5d8AA71b8dc921D8A963a1Ba3605050781",
+    "color": "#fcb934",
+    "decimals": 18,
+    "symbol": "DAI/MAI",
+    "type": "uniswapV2Liquidity",
+    "visible": false,
+    "allowSlot": 2,
+    "balanceSlot": 1,
+    "linkedAssets": [
+      {
+        "assetId": "f9a0d8c9-7524-42ed-9188-968456afcd54",
+        "fraction": 0.5
+      },
+      {
+        "assetId": "c5129108-4b4d-4aa2-b75b-9d4348bd1678",
+        "fraction": 0.5
+      }
+    ],
+    "callParams": {
+      "protocol": "quickswap"
+    }
+  },
+  {
+    "id": "e8a9a721-c431-4a7e-b900-ba5f2dabd088",
+    "name": "DEFI5/WETH",
+    "chainId": 137,
+    "active": false,
+    "address": "0x654E651b658f784406125400cf648588CB9773e8",
+    "color": "#040404",
+    "decimals": 18,
+    "symbol": "DEFI5/WETH",
+    "type": "uniswapV2Liquidity",
+    "visible": false,
+    "linkedAssets": [
+      {
+        "assetId": "cb362693-b93a-4b06-832e-4ba92c864ba1",
+        "fraction": 0.5
+      },
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79",
+        "fraction": 0.5
+      }
+    ],
+    "callParams": {
+      "protocol": "quickswap"
+    }
+  },
+  {
+    "id": "da87f1c2-2303-40a2-85ce-5c00a3368657",
+    "name": "LINK/WETH",
+    "chainId": 137,
+    "active": false,
+    "address": "0x5cA6CA6c3709E1E6CFe74a50Cf6B2B6BA2Dadd67",
+    "color": "#2753d8",
+    "decimals": 18,
+    "symbol": "LINK/WETH",
+    "type": "uniswapV2Liquidity",
+    "visible": false,
+    "linkedAssets": [
+      {
+        "assetId": "e4be18c2-c20b-4e17-9c17-947dc07cc053",
+        "fraction": 0.5
+      },
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79",
+        "fraction": 0.5
+      }
+    ],
+    "callParams": {
+      "protocol": "quickswap"
+    }
+  },
+  {
+    "id": "a13cb136-200e-455e-8154-15ac19220dfa",
+    "name": "LINK/WETH (Sushi)",
+    "chainId": 137,
+    "active": true,
+    "address": "0x74D23F21F780CA26B47Db16B0504F2e3832b9321",
+    "color": "#2753d8",
+    "decimals": 18,
+    "symbol": "LINK/WETH",
+    "type": "uniswapV2Liquidity",
+    "visible": false,
+    "allowSlot": 2,
+    "balanceSlot": 1,
+    "linkedAssets": [
+      {
+        "assetId": "e4be18c2-c20b-4e17-9c17-947dc07cc053",
+        "fraction": 0.5
+      },
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79",
+        "fraction": 0.5
+      }
+    ],
+    "callParams": {
+      "protocol": "sushiswap"
+    }
+  },
+  {
+    "id": "4d7af877-0897-4e51-bcbe-c6739d4cef9a",
+    "name": "MAI/USDT",
+    "chainId": 137,
+    "active": true,
+    "address": "0xE89faE1B4AdA2c869f05a0C96C87022DaDC7709a",
+    "color": "#da3334",
+    "decimals": 18,
+    "symbol": "MAI/USDT",
+    "type": "uniswapV2Liquidity",
+    "visible": false,
+    "allowSlot": 2,
+    "balanceSlot": 1,
+    "linkedAssets": [
+      {
+        "assetId": "c5129108-4b4d-4aa2-b75b-9d4348bd1678",
+        "fraction": 0.5
+      },
+      {
+        "assetId": "dfe40dda-5c96-4ff3-b773-386f1ca0868d",
+        "fraction": 0.5
+      }
+    ],
+    "callParams": {
+      "protocol": "quickswap"
+    }
+  },
+  {
+    "id": "7119a151-2f29-460b-a7f9-f0641b717a50",
+    "name": "pAUTO/QUICK",
+    "chainId": 137,
+    "active": false,
+    "address": "0x3bb367F673D52d1a5F0812c4d8c9030E5876ad44",
+    "color": "#2d2dbc",
+    "decimals": 18,
+    "symbol": "pAUTO/QUICK",
+    "type": "uniswapV2Liquidity",
+    "visible": false,
+    "linkedAssets": [
+      {
+        "assetId": "aef468a7-2c18-4ee8-85d3-59c4e41a7080",
+        "fraction": 0.5
+      },
+      {
+        "assetId": "85d42621-43a2-4189-930f-9b1ff0cf74f4",
+        "fraction": 0.5
+      }
+    ],
+    "callParams": {
+      "protocol": "quickswap"
+    }
+  },
+  {
+    "id": "09b5d72e-14a7-4143-8e97-6836bb3af9a2",
+    "name": "USDC/DAI",
+    "chainId": 137,
+    "active": true,
+    "address": "0xf04adBF75cDFc5eD26eeA4bbbb991DB002036Bdd",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/DAI",
+    "type": "uniswapV2Liquidity",
+    "visible": false,
+    "allowSlot": 2,
+    "balanceSlot": 1,
+    "linkedAssets": [
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d",
+        "fraction": 0.5
+      },
+      {
+        "assetId": "f9a0d8c9-7524-42ed-9188-968456afcd54",
+        "fraction": 0.5
+      }
+    ],
+    "callParams": {
+      "protocol": "quickswap"
+    }
+  },
+  {
+    "id": "82e1cbf2-5d53-4d81-9de3-c33a9c0038e5",
+    "name": "USDC/DAI (Sushi)",
+    "chainId": 137,
+    "active": true,
+    "address": "0xCD578F016888B57F1b1e3f887f392F0159E26747",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/DAI",
+    "type": "uniswapV2Liquidity",
+    "visible": false,
+    "allowSlot": 2,
+    "balanceSlot": 1,
+    "linkedAssets": [
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d",
+        "fraction": 0.5
+      },
+      {
+        "assetId": "f9a0d8c9-7524-42ed-9188-968456afcd54",
+        "fraction": 0.5
+      }
+    ],
+    "callParams": {
+      "protocol": "sushiswap"
+    }
+  },
+  {
+    "id": "0a48f10e-851e-4ca9-8016-9de1dad0c708",
+    "name": "USDC/MAI",
+    "chainId": 137,
+    "active": true,
+    "address": "0x160532D2536175d65C03B97b0630A9802c274daD",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/MAI",
+    "type": "uniswapV2Liquidity",
+    "visible": false,
+    "allowSlot": 2,
+    "balanceSlot": 1,
+    "linkedAssets": [
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d",
+        "fraction": 0.5
+      },
+      {
+        "assetId": "c5129108-4b4d-4aa2-b75b-9d4348bd1678",
+        "fraction": 0.5
+      }
+    ],
+    "callParams": {
+      "protocol": "quickswap"
+    }
+  },
+  {
+    "id": "feefdcae-4f1b-45ec-89bb-58bd5a834c11",
+    "name": "USDC/pAUTO (Sushi)",
+    "chainId": 137,
+    "active": false,
+    "address": "0xd8d51Ea2eDcA2c2ea15A053A5730f559d79a1570",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/pAUTO",
+    "type": "uniswapV2Liquidity",
+    "visible": false,
+    "linkedAssets": [
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d",
+        "fraction": 0.5
+      },
+      {
+        "assetId": "aef468a7-2c18-4ee8-85d3-59c4e41a7080",
+        "fraction": 0.5
+      }
+    ],
+    "callParams": {
+      "protocol": "sushiswap"
+    }
+  },
+  {
+    "id": "760dba53-dd13-4f94-8ed7-19c656e9ee38",
+    "name": "USDC/QUICK",
+    "chainId": 137,
+    "active": false,
+    "address": "0x1F1E4c845183EF6d50E9609F16f6f9cAE43BC9Cb",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/QUICK",
+    "type": "uniswapV2Liquidity",
+    "visible": false,
+    "linkedAssets": [
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d",
+        "fraction": 0.5
+      },
+      {
+        "assetId": "85d42621-43a2-4189-930f-9b1ff0cf74f4",
+        "fraction": 0.5
+      }
+    ],
+    "callParams": {
+      "protocol": "quickswap"
+    }
+  },
+  {
+    "id": "ab65d4dc-4bea-46ef-be8b-9cc1b1093473",
+    "name": "USDC/USDT",
+    "chainId": 137,
+    "active": true,
+    "address": "0x2cF7252e74036d1Da831d11089D326296e64a728",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/USDT",
+    "type": "uniswapV2Liquidity",
+    "visible": false,
+    "allowSlot": 2,
+    "balanceSlot": 1,
+    "linkedAssets": [
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d",
+        "fraction": 0.5
+      },
+      {
+        "assetId": "dfe40dda-5c96-4ff3-b773-386f1ca0868d",
+        "fraction": 0.5
+      }
+    ],
+    "callParams": {
+      "protocol": "quickswap"
+    }
+  },
+  {
+    "id": "93b07857-acd1-48df-bb6c-a984f5c36dd5",
+    "name": "USDC/USDT (Sushi)",
+    "chainId": 137,
+    "active": true,
+    "address": "0x4B1F1e2435A9C96f7330FAea190Ef6A7C8D70001",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/USDT",
+    "type": "uniswapV2Liquidity",
+    "visible": false,
+    "allowSlot": 2,
+    "balanceSlot": 1,
+    "linkedAssets": [
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d",
+        "fraction": 0.5
+      },
+      {
+        "assetId": "dfe40dda-5c96-4ff3-b773-386f1ca0868d",
+        "fraction": 0.5
+      }
+    ],
+    "callParams": {
+      "protocol": "sushiswap"
+    }
+  },
+  {
+    "id": "56972804-cd1b-4c79-8b76-f8057c40c368",
+    "name": "USDC/WETH",
+    "chainId": 137,
+    "active": true,
+    "address": "0x853Ee4b2A13f8a742d64C8F088bE7bA2131f670d",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/WETH",
+    "type": "uniswapV2Liquidity",
+    "visible": false,
+    "allowSlot": 2,
+    "balanceSlot": 1,
+    "linkedAssets": [
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d",
+        "fraction": 0.5
+      },
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79",
+        "fraction": 0.5
+      }
+    ],
+    "callParams": {
+      "protocol": "quickswap"
+    }
+  },
+  {
+    "id": "cbe367ea-0ed9-48c1-8ae5-ccb2f81be3ce",
+    "name": "USDC/WETH (Sushi)",
+    "chainId": 137,
+    "active": true,
+    "address": "0x34965ba0ac2451A34a0471F04CCa3F990b8dea27",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/WETH",
+    "type": "uniswapV2Liquidity",
+    "visible": false,
+    "allowSlot": 2,
+    "balanceSlot": 1,
+    "linkedAssets": [
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d",
+        "fraction": 0.5
+      },
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79",
+        "fraction": 0.5
+      }
+    ],
+    "callParams": {
+      "protocol": "sushiswap"
+    }
+  },
+  {
+    "id": "78d7ea23-f68b-4e47-be8d-ef5565435865",
+    "name": "WBTC/USDC",
+    "chainId": 137,
+    "active": true,
+    "address": "0xF6a637525402643B0654a54bEAd2Cb9A83C8B498",
+    "color": "#342743",
+    "decimals": 18,
+    "symbol": "WBTC/USDC",
+    "type": "uniswapV2Liquidity",
+    "visible": false,
+    "allowSlot": 2,
+    "balanceSlot": 1,
+    "linkedAssets": [
+      {
+        "assetId": "7eecd38c-6ec4-4032-b1bd-bbd1bb82404f",
+        "fraction": 0.5
+      },
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d",
+        "fraction": 0.5
+      }
+    ],
+    "callParams": {
+      "protocol": "quickswap"
+    }
+  },
+  {
+    "id": "108309b5-19ae-49d9-a98b-bd032291db38",
+    "name": "WBTC/WETH",
+    "chainId": 137,
+    "active": true,
+    "address": "0xdC9232E2Df177d7a12FdFf6EcBAb114E2231198D",
+    "color": "#342743",
+    "decimals": 18,
+    "symbol": "WBTC/WETH",
+    "type": "uniswapV2Liquidity",
+    "visible": false,
+    "allowSlot": 2,
+    "balanceSlot": 1,
+    "linkedAssets": [
+      {
+        "assetId": "7eecd38c-6ec4-4032-b1bd-bbd1bb82404f",
+        "fraction": 0.5
+      },
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79",
+        "fraction": 0.5
+      }
+    ],
+    "callParams": {
+      "protocol": "quickswap"
+    }
+  },
+  {
+    "id": "d684c837-a8f0-4144-87cf-8b0000e953ad",
+    "name": "WBTC/WETH (Sushi)",
+    "chainId": 137,
+    "active": true,
+    "address": "0xE62Ec2e799305E0D367b0Cc3ee2CdA135bF89816",
+    "color": "#342743",
+    "decimals": 18,
+    "symbol": "WBTC/WETH",
+    "type": "uniswapV2Liquidity",
+    "visible": false,
+    "allowSlot": 2,
+    "balanceSlot": 1,
+    "linkedAssets": [
+      {
+        "assetId": "7eecd38c-6ec4-4032-b1bd-bbd1bb82404f",
+        "fraction": 0.5
+      },
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79",
+        "fraction": 0.5
+      }
+    ],
+    "callParams": {
+      "protocol": "sushiswap"
+    }
+  },
+  {
+    "id": "ee5681ee-89a5-4a15-a4cf-ff357dcc5ed2",
+    "name": "WETH/AAVE",
+    "chainId": 137,
+    "active": false,
+    "address": "0x90bc3E68Ba8393a3Bf2D79309365089975341a43",
+    "color": "#737475",
+    "decimals": 18,
+    "symbol": "WETH/AAVE",
+    "type": "uniswapV2Liquidity",
+    "visible": false,
+    "linkedAssets": [
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79",
+        "fraction": 0.5
+      },
+      {
+        "assetId": "389d84c3-9095-4b00-b01a-18948b9ada39",
+        "fraction": 0.5
+      }
+    ],
+    "callParams": {
+      "protocol": "quickswap"
+    }
+  },
+  {
+    "id": "1e773048-7da6-44b5-9f03-fa10849143e2",
+    "name": "WETH/AAVE (Sushi)",
+    "chainId": 137,
+    "active": true,
+    "address": "0x2813D43463C374a680f235c428FB1D7f08dE0B69",
+    "color": "#737475",
+    "decimals": 18,
+    "symbol": "WETH/AAVE",
+    "type": "uniswapV2Liquidity",
+    "visible": false,
+    "allowSlot": 2,
+    "balanceSlot": 1,
+    "linkedAssets": [
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79",
+        "fraction": 0.5
+      },
+      {
+        "assetId": "389d84c3-9095-4b00-b01a-18948b9ada39",
+        "fraction": 0.5
+      }
+    ],
+    "callParams": {
+      "protocol": "sushiswap"
+    }
+  },
+  {
+    "id": "8acf9142-a0f1-4f68-9a57-2b6cb558cea4",
+    "name": "WETH/CEL",
+    "chainId": 137,
+    "active": false,
+    "address": "0xEAA5E4620373d9Ded4DCB9267F46fcfc6698c867",
+    "color": "#737475",
+    "decimals": 18,
+    "symbol": "WETH/CEL",
+    "type": "uniswapV2Liquidity",
+    "visible": false,
+    "linkedAssets": [
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79",
+        "fraction": 0.5
+      },
+      {
+        "assetId": "366efbaa-66b8-43ae-9afc-c12bc48cbcee",
+        "fraction": 0.5
+      }
+    ],
+    "callParams": {
+      "protocol": "quickswap"
+    }
+  },
+  {
+    "id": "e0b42fea-ef9b-4810-b407-f74472db6432",
+    "name": "WETH/DAI",
+    "chainId": 137,
+    "active": true,
+    "address": "0x4A35582a710E1F4b2030A3F826DA20BfB6703C09",
+    "color": "#737475",
+    "decimals": 18,
+    "symbol": "WETH/DAI",
+    "type": "uniswapV2Liquidity",
+    "visible": false,
+    "allowSlot": 2,
+    "balanceSlot": 1,
+    "linkedAssets": [
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79",
+        "fraction": 0.5
+      },
+      {
+        "assetId": "f9a0d8c9-7524-42ed-9188-968456afcd54",
+        "fraction": 0.5
+      }
+    ],
+    "callParams": {
+      "protocol": "quickswap"
+    }
+  },
+  {
+    "id": "da954857-8618-4d22-9b39-7a64228511cf",
+    "name": "WETH/DAI (Sushi)",
+    "chainId": 137,
+    "active": true,
+    "address": "0x6FF62bfb8c12109E8000935A6De54daD83a4f39f",
+    "color": "#737475",
+    "decimals": 18,
+    "symbol": "WETH/DAI",
+    "type": "uniswapV2Liquidity",
+    "visible": false,
+    "allowSlot": 2,
+    "balanceSlot": 1,
+    "linkedAssets": [
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79",
+        "fraction": 0.5
+      },
+      {
+        "assetId": "f9a0d8c9-7524-42ed-9188-968456afcd54",
+        "fraction": 0.5
+      }
+    ],
+    "callParams": {
+      "protocol": "sushiswap"
+    }
+  },
+  {
+    "id": "b133b3fc-81bd-49ea-a8f8-ff47a281a0cf",
+    "name": "WETH/pAUTO",
+    "chainId": 137,
+    "active": false,
+    "address": "0x451CCe13c6e013F463Df6C156B7661b19df6541a",
+    "color": "#737475",
+    "decimals": 18,
+    "symbol": "WETH/pAUTO",
+    "type": "uniswapV2Liquidity",
+    "visible": false,
+    "linkedAssets": [
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79",
+        "fraction": 0.5
+      },
+      {
+        "assetId": "aef468a7-2c18-4ee8-85d3-59c4e41a7080",
+        "fraction": 0.5
+      }
+    ],
+    "callParams": {
+      "protocol": "quickswap"
+    }
+  },
+  {
+    "id": "40490684-2db5-437a-869d-a7acc8aacf20",
+    "name": "WETH/QUICK",
+    "chainId": 137,
+    "active": false,
+    "address": "0x1Bd06B96dd42AdA85fDd0795f3B4A79DB914ADD5",
+    "color": "#737475",
+    "decimals": 18,
+    "symbol": "WETH/QUICK",
+    "type": "uniswapV2Liquidity",
+    "visible": false,
+    "linkedAssets": [
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79",
+        "fraction": 0.5
+      },
+      {
+        "assetId": "85d42621-43a2-4189-930f-9b1ff0cf74f4",
+        "fraction": 0.5
+      }
+    ],
+    "callParams": {
+      "protocol": "quickswap"
+    }
+  },
+  {
+    "id": "fe0af006-e32b-4102-a908-4da3f7463619",
+    "name": "WETH/SX (Sushi)",
+    "chainId": 137,
+    "active": false,
+    "address": "0x1bF9805B40a5f69c7d0f9E5d1Ab718642203c652",
+    "color": "#737475",
+    "decimals": 18,
+    "symbol": "WETH/SX",
+    "type": "uniswapV2Liquidity",
+    "visible": false,
+    "linkedAssets": [
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79",
+        "fraction": 0.5
+      },
+      {
+        "assetId": "2bb04b67-dfed-40eb-921c-f1e36c2ea06a",
+        "fraction": 0.5
+      }
+    ],
+    "callParams": {
+      "protocol": "sushiswap"
+    }
+  },
+  {
+    "id": "49577c8f-00d0-4ab8-bb81-016ce42342f8",
+    "name": "WETH/TEL",
+    "chainId": 137,
+    "active": false,
+    "address": "0xFc2fC983a411C4B1E238f7Eb949308CF0218C750",
+    "color": "#737475",
+    "decimals": 18,
+    "symbol": "WETH/TEL",
+    "type": "uniswapV2Liquidity",
+    "visible": false,
+    "linkedAssets": [
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79",
+        "fraction": 0.5
+      },
+      {
+        "assetId": "d8d311f1-f3b4-4d67-8a99-b9f42ec49c17",
+        "fraction": 0.5
+      }
+    ],
+    "callParams": {
+      "protocol": "quickswap"
+    }
+  },
+  {
+    "id": "ad9cc99d-dc9b-4df8-890a-85dd03f354fa",
+    "name": "WETH/UNI",
+    "chainId": 137,
+    "active": false,
+    "address": "0xF7135272a5584Eb116f5a77425118a8B4A2ddfDb",
+    "color": "#737475",
+    "decimals": 18,
+    "symbol": "WETH/UNI",
+    "type": "uniswapV2Liquidity",
+    "visible": false,
+    "linkedAssets": [
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79",
+        "fraction": 0.5
+      },
+      {
+        "assetId": "72c7d69d-7bef-47e5-8907-4c4c6f0bd797",
+        "fraction": 0.5
+      }
+    ],
+    "callParams": {
+      "protocol": "quickswap"
+    }
+  },
+  {
+    "id": "9b9e977b-27a8-4b78-830d-cb64eeb4c0c3",
+    "name": "WETH/USDT",
+    "chainId": 137,
+    "active": false,
+    "address": "0xF6422B997c7F54D1c6a6e103bcb1499EeA0a7046",
+    "color": "#737475",
+    "decimals": 18,
+    "symbol": "WETH/USDT",
+    "type": "uniswapV2Liquidity",
+    "visible": false,
+    "linkedAssets": [
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79",
+        "fraction": 0.5
+      },
+      {
+        "assetId": "dfe40dda-5c96-4ff3-b773-386f1ca0868d",
+        "fraction": 0.5
+      }
+    ],
+    "callParams": {
+      "protocol": "quickswap"
+    }
+  },
+  {
+    "id": "c7fbac28-ee82-4361-99ec-2fb347ba9d71",
+    "name": "WETH/USDT (Sushi)",
+    "chainId": 137,
+    "active": true,
+    "address": "0xc2755915a85C6f6c1C0F3a86ac8C058F11Caa9C9",
+    "color": "#737475",
+    "decimals": 18,
+    "symbol": "WETH/USDT",
+    "type": "uniswapV2Liquidity",
+    "visible": false,
+    "allowSlot": 2,
+    "balanceSlot": 1,
+    "linkedAssets": [
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79",
+        "fraction": 0.5
+      },
+      {
+        "assetId": "dfe40dda-5c96-4ff3-b773-386f1ca0868d",
+        "fraction": 0.5
+      }
+    ],
+    "callParams": {
+      "protocol": "sushiswap"
+    }
+  },
+  {
+    "id": "4851bc83-6634-46e4-976f-6fbe45efc33e",
+    "name": "WMATIC/CGG (Sushi)",
+    "chainId": 137,
+    "active": false,
+    "address": "0xd74d23d2f23CD06a7D94f740A74c6E906F0C9005",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/CGG",
+    "type": "uniswapV2Liquidity",
+    "visible": false,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab",
+        "fraction": 0.5
+      },
+      {
+        "assetId": "b2c4298e-b4c4-46ee-84fd-6cb598c1309d",
+        "fraction": 0.5
+      }
+    ],
+    "callParams": {
+      "protocol": "sushiswap"
+    }
+  },
+  {
+    "id": "4c99db1a-fcab-4950-80eb-add596d17644",
+    "name": "WMATIC/QUICK",
+    "chainId": 137,
+    "active": false,
+    "address": "0x019ba0325f1988213D448b3472fA1cf8D07618d7",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/QUICK",
+    "type": "uniswapV2Liquidity",
+    "visible": false,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab",
+        "fraction": 0.5
+      },
+      {
+        "assetId": "85d42621-43a2-4189-930f-9b1ff0cf74f4",
+        "fraction": 0.5
+      }
+    ],
+    "callParams": {
+      "protocol": "quickswap"
+    }
+  },
+  {
+    "id": "e1213b30-f123-411b-8d2a-f3ba6678089b",
+    "name": "WMATIC/USDC",
+    "chainId": 137,
+    "active": true,
+    "address": "0x6e7a5FAFcec6BB1e78bAE2A1F0B612012BF14827",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/USDC",
+    "type": "uniswapV2Liquidity",
+    "visible": false,
+    "allowSlot": 2,
+    "balanceSlot": 1,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab",
+        "fraction": 0.5
+      },
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d",
+        "fraction": 0.5
+      }
+    ],
+    "callParams": {
+      "protocol": "quickswap"
+    }
+  },
+  {
+    "id": "2661a83e-89d7-44ee-9acf-c6e8eef87a0b",
+    "name": "WMATIC/USDT",
+    "chainId": 137,
+    "active": true,
+    "address": "0x604229c960e5CACF2aaEAc8Be68Ac07BA9dF81c3",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/USDT",
+    "type": "uniswapV2Liquidity",
+    "visible": false,
+    "allowSlot": 2,
+    "balanceSlot": 1,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab",
+        "fraction": 0.5
+      },
+      {
+        "assetId": "dfe40dda-5c96-4ff3-b773-386f1ca0868d",
+        "fraction": 0.5
+      }
+    ],
+    "callParams": {
+      "protocol": "quickswap"
+    }
+  },
+  {
+    "id": "9915284d-924f-452c-923c-b792ba3494ce",
+    "name": "WMATIC/WETH",
+    "chainId": 137,
+    "active": true,
+    "address": "0xadbF1854e5883eB8aa7BAf50705338739e558E5b",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/WETH",
+    "type": "uniswapV2Liquidity",
+    "visible": false,
+    "allowSlot": 2,
+    "balanceSlot": 1,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab",
+        "fraction": 0.5
+      },
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79",
+        "fraction": 0.5
+      }
+    ],
+    "callParams": {
+      "protocol": "quickswap"
+    }
+  },
+  {
+    "id": "b21f02fe-d94b-4eff-b132-9586bef77509",
+    "name": "WMATIC/WETH (Sushi)",
+    "chainId": 137,
+    "active": true,
+    "address": "0xc4e595acDD7d12feC385E5dA5D43160e8A0bAC0E",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/WETH",
+    "type": "uniswapV2Liquidity",
+    "visible": false,
+    "allowSlot": 2,
+    "balanceSlot": 1,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab",
+        "fraction": 0.5
+      },
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79",
+        "fraction": 0.5
+      }
+    ],
+    "callParams": {
+      "protocol": "sushiswap"
+    }
+  },
+  {
+    "id": "375a7530-c833-4d54-96e7-49082dd199d5",
+    "name": "WOO/WETH",
+    "chainId": 137,
+    "active": false,
+    "address": "0x70294d7aa244BD342C536F9B502152564057162e",
+    "color": "#000000",
+    "decimals": 18,
+    "symbol": "WOO/WETH",
+    "type": "uniswapV2Liquidity",
+    "visible": false,
+    "linkedAssets": [
+      {
+        "assetId": "41f30848-c9ae-47a7-91ab-97e722144913",
+        "fraction": 0.5
+      },
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79",
+        "fraction": 0.5
+      }
+    ],
+    "callParams": {
+      "protocol": "quickswap"
+    }
+  }
+]
