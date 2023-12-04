@@ -41,8 +41,8 @@ test.skip("Paraswap (using multiSwap): PAX Gold to MAI", async () => {
     buyAsset: assetStore.getAssetById("c5129108-4b4d-4aa2-b75b-9d4348bd1678"),
   });
 
-  console.log({ swappedValue });
-  expect(swappedValue).toBeGreaterThan(0);
+  console.log(swappedValue[0]);
+  expect(swappedValue[0]).toBeGreaterThan(0);
 });
 
 test.skip("Paraswap (using megaSwap): PAX Gold to MAI", async () => {
@@ -81,6 +81,6 @@ test.skip("Paraswap (using megaSwap): PAX Gold to MAI", async () => {
     buyAsset: assetStore.getAssetById("c5129108-4b4d-4aa2-b75b-9d4348bd1678"),
   });
 
-  console.log({ swappedValue });
-  expect(swappedValue).toBeGreaterThan(0);
+  console.log(swappedValue[0]);
+  expect(swappedValue[0]).toBeGreaterThan(0);
 });

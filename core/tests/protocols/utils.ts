@@ -1,25 +1,27 @@
 import { AssetStore, generateTransaction, loadConfig } from "core";
 import { simulateRouterOperation } from "core/src/path/tx-simulator";
+import {
+  AbsoluteAllocation,
+  FractionAllocation,
+} from "core/src/transaction/types";
 import { getProvider } from "core/src/utils/get-provider";
 
-export async function simulateSingleAssetToSingleAsset({
+export async function simulateRouterOperationHelper({
   chainId,
-  inputAssetId,
-  outputAssetId,
-  amountIn,
+  inputAllocation,
+  outputAllocation,
 }: {
   chainId: number;
-  inputAssetId: string;
-  outputAssetId: string;
-  amountIn: string;
+  inputAllocation: AbsoluteAllocation;
+  outputAllocation: FractionAllocation;
 }) {
   const assetStore = new AssetStore();
   const config = await loadConfig();
   const provider = await getProvider({ chainId: 137 });
 
   const routerOperation = await generateTransaction({
-    inputAllocation: [{ assetId: inputAssetId, amountStr: amountIn }],
-    outputAllocation: [{ assetId: outputAssetId, fraction: 1.0 }],
+    inputAllocation,
+    outputAllocation,
     assetStore,
     chainId,
     walletAddress: config.networks[chainId].routerSimulatorAddress,
@@ -31,9 +33,9 @@ export async function simulateSingleAssetToSingleAsset({
     chainId,
     routerOperation,
     provider,
-    sellAsset: assetStore.getAssetById(inputAssetId),
-    amountIn,
-    buyAsset: assetStore.getAssetById(outputAssetId),
+    sellAssets: inputAllocation.map((i) => assetStore.getAssetById(i.assetId)),
+    amountsIn: inputAllocation.map((i) => i.amountStr),
+    buyAssets: outputAllocation.map((a) => assetStore.getAssetById(a.assetId)),
   });
 
   console.dir(

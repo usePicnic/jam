@@ -49,9 +49,9 @@ export async function simulateAssetSwapTransaction({
 
   const populatedTx = await routerSimulator.simulateJamTx.populateTransaction(
     config.networks[chainId].routerAddress,
-    sellAsset.address,
-    amountIn,
-    buyAsset.address,
+    [sellAsset.address],
+    [amountIn],
+    [buyAsset.address],
     routerTransactionData.steps,
     routerTransactionData.stores
   );
@@ -71,12 +71,16 @@ export async function simulateAssetSwapTransaction({
   };
 
   try {
-    const ret = await (provider as any).send("eth_call", [
+    const rawCallResult = await (provider as any).send("eth_call", [
       callData,
       "latest",
       stateOverrides,
     ]);
-    return BigInt(ret);
+    const decodedCallResult = routerSimulator.interface.decodeFunctionResult(
+      "simulateJamTx",
+      rawCallResult
+    );
+    return BigInt(decodedCallResult[0]);
   } catch (e) {
     console.error("Failed to simulate transaction");
     console.dir(
@@ -102,17 +106,17 @@ export async function simulateRouterOperation({
   chainId,
   routerOperation,
   provider,
-  sellAsset,
-  amountIn,
-  buyAsset,
+  sellAssets,
+  amountsIn,
+  buyAssets,
 }: {
   chainId: number;
   routerOperation: RouterOperation;
   provider: Provider;
-  sellAsset: Asset;
-  amountIn: string;
-  buyAsset: Asset;
-}): Promise<BigNumberish | null> {
+  sellAssets: Asset[];
+  amountsIn: BigNumberish[];
+  buyAssets: Asset[];
+}): Promise<BigNumberish[] | null> {
   const config = await loadConfig();
 
   // const txSimulator = getTxSimulatorContract(provider) as Contract;
@@ -138,20 +142,24 @@ export async function simulateRouterOperation({
 
   const populatedTx = await routerSimulator.simulateJamTx.populateTransaction(
     config.networks[chainId].routerAddress,
-    sellAsset.address,
-    amountIn,
-    buyAsset.address,
+    sellAssets.map((a) => a.address),
+    amountsIn,
+    buyAssets.map((a) => a.address),
     routerTransactionData.steps,
     routerTransactionData.stores
   );
 
   const from = "0x6D763ee17cEA70cB1026Fa0F272dd620546A9B9F";
 
-  const stateOverrides = generateTokenApprovalStateDiff(
-    sellAsset,
-    from,
-    config.networks[chainId].routerSimulatorAddress
-  );
+  const stateOverrides = {};
+  for (const sellAsset of sellAssets) {
+    const approvalStateDiff = generateTokenApprovalStateDiff(
+      sellAsset,
+      from,
+      config.networks[chainId].routerSimulatorAddress
+    );
+    Object.assign(stateOverrides, approvalStateDiff);
+  }
 
   const callData = {
     from: from,
@@ -168,12 +176,17 @@ export async function simulateRouterOperation({
   );
 
   try {
-    const ret = await (provider as any).send("eth_call", [
+    const rawCallResult = await (provider as any).send("eth_call", [
       callData,
       "latest",
       stateOverrides,
     ]);
-    return BigInt(ret);
+    const decodedCallResult = routerSimulator.interface.decodeFunctionResult(
+      "simulateJamTx",
+      rawCallResult
+    );
+
+    return decodedCallResult.map((b) => BigInt(b));
   } catch (e) {
     console.error("Failed to simulate transaction");
     throw e;
