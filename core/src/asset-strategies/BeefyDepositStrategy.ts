@@ -174,8 +174,8 @@ export class BeefyDepositStrategy extends InterfaceStrategy {
         ]),
         storeOperations: [
           {
-            storeOpType: StoreOpType.RetrieveResultSubtractStore,
-            storeNumber: storeNumberTmp,
+            storeOpType: StoreOpType.RetrieveResultAddStore,
+            storeNumber: storeNumberTo,
             offset: balanceOfToOffsets[0],
             fraction: FRACTION_MULTIPLIER,
           },
@@ -221,7 +221,7 @@ export class BeefyDepositStrategy extends InterfaceStrategy {
       });
 
       routerOperation.steps.push({
-        stepAddress: asset.address,
+        stepAddress: linkedAsset.address,
         stepEncodedCall: IERC20.encodeFunctionData("balanceOf", [
           walletAddress,
         ]),
@@ -249,7 +249,7 @@ export class BeefyDepositStrategy extends InterfaceStrategy {
         storeOperations: [
           {
             storeOpType: StoreOpType.RetrieveStoreAssignCallSubtract,
-            storeNumber: storeNumberFrom,
+            storeNumber: storeNumberTo,
             offset: withdrawFromOffsets[0],
             fraction: newFraction * FRACTION_MULTIPLIER,
           },
@@ -257,14 +257,14 @@ export class BeefyDepositStrategy extends InterfaceStrategy {
       });
 
       routerOperation.steps.push({
-        stepAddress: asset.address,
+        stepAddress: linkedAsset.address,
         stepEncodedCall: IERC20.encodeFunctionData("balanceOf", [
           walletAddress,
         ]),
         storeOperations: [
           {
-            storeOpType: StoreOpType.RetrieveResultSubtractStore,
-            storeNumber: storeNumberTmp,
+            storeOpType: StoreOpType.RetrieveResultAddStore,
+            storeNumber: storeNumberTo,
             offset: balanceOfToOffsets[0],
             fraction: FRACTION_MULTIPLIER,
           },

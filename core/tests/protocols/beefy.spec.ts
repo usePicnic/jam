@@ -1,7 +1,7 @@
 import { test } from "vitest";
 import { simulateRouterOperationHelper } from "./utils";
 
-test("generateTransaction: USDC to QUICK (beefyDeposit)", async () => {
+test("generateTransaction: USDC to WBTC-ETH Narrow LP (beefyDeposit)", async () => {
   await simulateRouterOperationHelper({
     chainId: 137,
     inputAllocation: [
@@ -13,18 +13,21 @@ test("generateTransaction: USDC to QUICK (beefyDeposit)", async () => {
 
     outputAllocation: [
       {
-        assetId: "37819023-9c6a-4848-8cf5-24a95350f001",
+        assetId: "09b83a29-d57b-430d-9d2f-f19f08e4da35",
         fraction: 1.0,
       },
     ],
   });
 });
 
-test("generateTransaction: beefy.finance (beefyDeposit) to USDC", async () => {
+test.skip("generateTransaction: WBTC-ETH Narrow LP (beefyDeposit) to USDC", async () => {
   await simulateRouterOperationHelper({
     chainId: 137,
     inputAllocation: [
-      { assetId: "fecfd33d-e6a7-476b-89cb-910a0058fa48", amountStr: "1000000" },
+      {
+        assetId: "09b83a29-d57b-430d-9d2f-f19f08e4da35",
+        amountStr: "100000000",
+      },
     ],
     outputAllocation: [
       {

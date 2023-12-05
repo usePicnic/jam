@@ -238,28 +238,6 @@ export class BalancerDepositStrategy extends InterfaceStrategy {
         linkedAssetFractions,
         linkedAssetAddresses,
       });
-      // const storeNumberFrom = routerOperation.stores.findOrInitializeStoreIdx({
-      //   assetId: linkedAsset.id,
-      // });
-      // const storeNumberTo = routerOperation.stores.findOrInitializeStoreIdx({
-      //   assetId: asset.id,
-      // });
-      // const storeNumberTmp = routerOperation.stores.findOrInitializeStoreIdx({
-      //   tmpStoreName: `${asset.id} tmp store 0`,
-      // });
-      // const currentFraction = currentAllocation.getAssetById({
-      //   assetId: linkedAsset.id,
-      // }).fraction;
-      // const newFraction = asset.linkedAssets[0].fraction / currentFraction;
-      // const variation = currentFraction * newFraction;
-      // currentAllocation.updateFraction({
-      //   assetId: linkedAsset.id,
-      //   delta: -variation,
-      // });
-      // currentAllocation.updateFraction({
-      //   assetId: asset.id,
-      //   delta: variation,
-      // });
 
       for (const [i, linkedAsset] of linkedAssets.entries()) {
         if (linkedAssetFractions[i] === 0) {

@@ -20,6 +20,46 @@
     ]
   },
   {
+    "id": "86194d74-7df9-4493-be37-172e99e2bfb9",
+    "name": "CRV/WETH (Sushi)",
+    "chainId": 137,
+    "active": true,
+    "address": "0xE695fCeD8fD93eeE54204a7fC33323a60d41865A",
+    "color": "#1fc9db",
+    "decimals": 18,
+    "symbol": "CRV/WETH",
+    "type": "beefyDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "c708a5eb-eefd-4c89-bea3-8ec2e036a1a7",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "9c77b3e4-feed-4cb7-bb39-cbc208b5fcdb",
+    "name": "DAI/MAI",
+    "chainId": 137,
+    "active": true,
+    "address": "0x64fbCDfd1335AfdC8f81383919483c593399c738",
+    "color": "#fcb934",
+    "decimals": 18,
+    "symbol": "DAI/MAI",
+    "type": "beefyDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "c0d76d9c-efdd-4cf9-ad85-78783a5171ea",
+        "fraction": 1
+      }
+    ]
+  },
+  {
     "id": "7aef4761-daff-4a50-8d56-c3e4393b1c25",
     "name": "Gains Network",
     "chainId": 137,
@@ -35,6 +75,26 @@
     "linkedAssets": [
       {
         "assetId": "170c2077-1b4a-45e4-9a18-8ce371c63db5",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "5b6b9b2c-02b3-462a-8875-3cfec1566766",
+    "name": "LINK/WETH (Sushi)",
+    "chainId": 137,
+    "active": true,
+    "address": "0xaE65a66B3c7f8cc1ba71cEA740C953aBa0F3Ce8b",
+    "color": "#2753d8",
+    "decimals": 18,
+    "symbol": "LINK/WETH",
+    "type": "beefyDeposit",
+    "visible": true,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "a13cb136-200e-455e-8154-15ac19220dfa",
         "fraction": 1
       }
     ]
@@ -75,6 +135,474 @@
     "linkedAssets": [
       {
         "assetId": "d35b7aaf-a2ff-44e0-a3df-cdc702ed71ba",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "0d605252-a9ee-4a05-944e-692b61e9e8e0",
+    "name": "USDC/DAI",
+    "chainId": 137,
+    "active": false,
+    "address": "0x0dFd8c4dd493d8f87Be362878E41537Ca7Ee4d9e",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/DAI",
+    "type": "beefyDeposit",
+    "visible": false,
+    "linkedAssets": [
+      {
+        "assetId": "09b5d72e-14a7-4143-8e97-6836bb3af9a2",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "737ed6ad-6cdf-4abb-a581-d8eef6b29247",
+    "name": "USDC/DAI (Sushi)",
+    "chainId": 137,
+    "active": true,
+    "address": "0x75424BE5378621AeC2eEF25965f40FeB59039B52",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/DAI",
+    "type": "beefyDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "82e1cbf2-5d53-4d81-9de3-c33a9c0038e5",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "28cdc2ef-7c1a-43fa-a787-c09538aac972",
+    "name": "USDC/MAI",
+    "chainId": 137,
+    "active": true,
+    "address": "0xebe0c8d842AA5A57D7BEf8e524dEabA676F91cD1",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/MAI",
+    "type": "beefyDeposit",
+    "visible": true,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "0a48f10e-851e-4ca9-8016-9de1dad0c708",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "1539a330-d18e-4932-b251-845e9c1646ee",
+    "name": "USDC/QUICK",
+    "chainId": 137,
+    "active": false,
+    "address": "0xeD7148949c2dC8AA59A5aD8658eF347Bd7387fA8",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/QUICK",
+    "type": "beefyDeposit",
+    "visible": false,
+    "linkedAssets": [
+      {
+        "assetId": "760dba53-dd13-4f94-8ed7-19c656e9ee38",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "f4c80798-ee61-4dfe-813b-f69160eca112",
+    "name": "USDC/USDT",
+    "chainId": 137,
+    "active": true,
+    "address": "0x4462817b53E76b722c2D174D0148ddb81452f1dE",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/USDT",
+    "type": "beefyDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "ab65d4dc-4bea-46ef-be8b-9cc1b1093473",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "e879e97c-baa0-4cfb-b089-c164cb595846",
+    "name": "USDC/USDT (Sushi)",
+    "chainId": 137,
+    "active": true,
+    "address": "0xB6B89a05ad8228b98d0D8a77e1a695c54500db3b",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/USDT",
+    "type": "beefyDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "93b07857-acd1-48df-bb6c-a984f5c36dd5",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "2e6e90d2-0acf-49d2-8f61-8a56aa682624",
+    "name": "USDC/WETH",
+    "chainId": 137,
+    "active": true,
+    "address": "0x5d4B83B3011B1E14e55185c5D432987e76f6DE3C",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/WETH",
+    "type": "beefyDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "56972804-cd1b-4c79-8b76-f8057c40c368",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "59b93c5e-cf38-4015-8ce2-4e646ab16031",
+    "name": "USDC/WETH (Sushi)",
+    "chainId": 137,
+    "active": true,
+    "address": "0xE4DB97A2AAFbfef40D1a4AE8B709f61d6756F8e1",
+    "color": "#2775ca",
+    "decimals": 18,
+    "symbol": "USDC/WETH",
+    "type": "beefyDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "cbe367ea-0ed9-48c1-8ae5-ccb2f81be3ce",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "5657917b-d4e8-4c91-bdcb-885347aa2e37",
+    "name": "USDT/MAI",
+    "chainId": 137,
+    "active": true,
+    "address": "0xe5844a9Af7748492dAba745506bfB2b91f19be62",
+    "color": "#da3334",
+    "decimals": 18,
+    "symbol": "USDT/MAI",
+    "type": "beefyDeposit",
+    "visible": false,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "4d7af877-0897-4e51-bcbe-c6739d4cef9a",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "09b83a29-d57b-430d-9d2f-f19f08e4da35",
+    "name": "WBTC/USDC",
+    "chainId": 137,
+    "active": true,
+    "address": "0x91a55E4b057119e20334258f7C5EAB8822491CEb",
+    "color": "#342743",
+    "decimals": 18,
+    "symbol": "WBTC/USDC",
+    "type": "beefyDeposit",
+    "visible": true,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "78d7ea23-f68b-4e47-be8d-ef5565435865",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "8f2221e7-b2f0-4a8b-b841-6e89a527381d",
+    "name": "WBTC/WETH",
+    "chainId": 137,
+    "active": true,
+    "address": "0xf26607237355D7c6183ea66EC908729E9c6eEB6b",
+    "color": "#342743",
+    "decimals": 18,
+    "symbol": "WBTC/WETH",
+    "type": "beefyDeposit",
+    "visible": true,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "108309b5-19ae-49d9-a98b-bd032291db38",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "fe0b4d48-3739-45d2-8dcb-5eeeb58b71b6",
+    "name": "WBTC/WETH (Sushi)",
+    "chainId": 137,
+    "active": true,
+    "address": "0x6530E351074f1f9fdf254dC7d7d8A44324E158a4",
+    "color": "#342743",
+    "decimals": 18,
+    "symbol": "WBTC/WETH",
+    "type": "beefyDeposit",
+    "visible": true,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "d684c837-a8f0-4144-87cf-8b0000e953ad",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "6c8f29b8-ca01-4400-a565-1a707299fc8d",
+    "name": "WETH/AAVE (Sushi)",
+    "chainId": 137,
+    "active": true,
+    "address": "0x866a910F3375d0dEBDdD904A36B3940aFcD29900",
+    "color": "#737475",
+    "decimals": 18,
+    "symbol": "WETH/AAVE",
+    "type": "beefyDeposit",
+    "visible": true,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "1e773048-7da6-44b5-9f03-fa10849143e2",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "f49e2d25-5434-4631-8cf7-6f307adedcff",
+    "name": "WETH/DAI",
+    "chainId": 137,
+    "active": true,
+    "address": "0x9DA4048550C1a73686E594f726310F0b0585fBA3",
+    "color": "#737475",
+    "decimals": 18,
+    "symbol": "WETH/DAI",
+    "type": "beefyDeposit",
+    "visible": true,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "e0b42fea-ef9b-4810-b407-f74472db6432",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "d4b1832a-8252-40e8-82b9-c0080e4c4b73",
+    "name": "WETH/DAI (Sushi)",
+    "chainId": 137,
+    "active": true,
+    "address": "0x6b6ca47520dDC9333B8bD09a1e64204648B63274",
+    "color": "#737475",
+    "decimals": 18,
+    "symbol": "WETH/DAI",
+    "type": "beefyDeposit",
+    "visible": true,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "da954857-8618-4d22-9b39-7a64228511cf",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "ed1e32c1-c7c1-4161-be6f-bddb0ea24529",
+    "name": "WETH/QUICK",
+    "chainId": 137,
+    "active": false,
+    "address": "0x66df1B2d22759D03A9f37BAaAc826089e56a5936",
+    "color": "#737475",
+    "decimals": 18,
+    "symbol": "WETH/QUICK",
+    "type": "beefyDeposit",
+    "visible": false,
+    "linkedAssets": [
+      {
+        "assetId": "40490684-2db5-437a-869d-a7acc8aacf20",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "b49b5528-e8e7-4d7b-a056-08949414abd4",
+    "name": "WETH/TEL",
+    "chainId": 137,
+    "active": false,
+    "address": "0x5c26afCd15Fb65Ec27f99F47474A1D5b03673b49",
+    "color": "#737475",
+    "decimals": 18,
+    "symbol": "WETH/TEL",
+    "type": "beefyDeposit",
+    "visible": false,
+    "linkedAssets": [
+      {
+        "assetId": "49577c8f-00d0-4ab8-bb81-016ce42342f8",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "26a99eb3-443a-4285-9a90-504674c4698f",
+    "name": "WETH/USDT",
+    "chainId": 137,
+    "active": false,
+    "address": "0xC422261EdC5dB679CAd9BC403e886351De540e77",
+    "color": "#737475",
+    "decimals": 18,
+    "symbol": "WETH/USDT",
+    "type": "beefyDeposit",
+    "visible": false,
+    "linkedAssets": [
+      {
+        "assetId": "9b9e977b-27a8-4b78-830d-cb64eeb4c0c3",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "e577de88-1744-4501-9ae0-cd727285241e",
+    "name": "WETH/USDT (Sushi)",
+    "chainId": 137,
+    "active": true,
+    "address": "0xE8417099971151CD5CfAE264e25634Fac05cA2b3",
+    "color": "#737475",
+    "decimals": 18,
+    "symbol": "WETH/USDT",
+    "type": "beefyDeposit",
+    "visible": true,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "c7fbac28-ee82-4361-99ec-2fb347ba9d71",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "869b9e97-1561-454e-9857-5b49dfd4e5b8",
+    "name": "WMATIC/QUICK",
+    "chainId": 137,
+    "active": false,
+    "address": "0xa008B727ddBa283Ddb178b47BB227Cdbea5C1bfD",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/QUICK",
+    "type": "beefyDeposit",
+    "visible": false,
+    "linkedAssets": [
+      {
+        "assetId": "4c99db1a-fcab-4950-80eb-add596d17644",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "3cae6acd-08d8-4b89-8c1d-b9a318c090d2",
+    "name": "WMATIC/USDC",
+    "chainId": 137,
+    "active": true,
+    "address": "0xC1A2e8274D390b67A7136708203D71BF3877f158",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/USDC",
+    "type": "beefyDeposit",
+    "visible": true,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "e1213b30-f123-411b-8d2a-f3ba6678089b",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "06585097-7316-41e8-9305-4f193c2762b0",
+    "name": "WMATIC/USDT",
+    "chainId": 137,
+    "active": true,
+    "address": "0x7c0E28652523e36f0dF89C5A895cF59D493cb04c",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/USDT",
+    "type": "beefyDeposit",
+    "visible": true,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "2661a83e-89d7-44ee-9acf-c6e8eef87a0b",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "c0446403-7790-4955-a659-54a80774f9f7",
+    "name": "WMATIC/WETH",
+    "chainId": 137,
+    "active": true,
+    "address": "0x8b89477dFde285849E1B07947E25012206F4D674",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/WETH",
+    "type": "beefyDeposit",
+    "visible": true,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "9915284d-924f-452c-923c-b792ba3494ce",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "627d9bd8-4fe2-4d8b-a3e5-cd2dd0b756f2",
+    "name": "WMATIC/WETH (Sushi)",
+    "chainId": 137,
+    "active": true,
+    "address": "0xC8e809a9180d637Cc23dAf60b41B70CA1ad5Fc08",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC/WETH",
+    "type": "beefyDeposit",
+    "visible": true,
+    "allowSlot": 1,
+    "balanceSlot": 0,
+    "linkedAssets": [
+      {
+        "assetId": "b21f02fe-d94b-4eff-b132-9586bef77509",
         "fraction": 1
       }
     ]
