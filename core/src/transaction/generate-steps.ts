@@ -60,7 +60,7 @@ async function processBridges({
     ) {
       const asset = assetStore.getAssetById(assetId);
       const value = totalValue * fraction;
-      console.log("step", { asset, fraction, rewards });
+      console.log("processBridges step", { asset, fraction, rewards });
 
       const assetAllocation = currentLayer[assetId];
 
@@ -421,7 +421,7 @@ export async function generateSteps({
     { depth: null }
   );
 
-  for (let i = diff.length - 1; i > 0; i -= 1) {
+  for (let i = 1; i < diff.length; i += 1) {
     output = await processBridges({
       chainId,
       walletAddress,
