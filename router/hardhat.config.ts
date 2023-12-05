@@ -4,6 +4,9 @@ import "@nomicfoundation/hardhat-toolbox";
 import dotenv from "dotenv";
 dotenv.config({ path: "../.env" });
 
+import * as tdly from "@tenderly/hardhat-tenderly";
+tdly.setup();
+
 const config: HardhatUserConfig = {
   solidity: "0.8.20",
   networks: {
@@ -21,6 +24,11 @@ const config: HardhatUserConfig = {
     apiKey: {
       polygon: process.env.ETHERSCAN_KEY as string,
     },
+  },
+  tenderly: {
+    username: "<insert username>",
+    project: "<insert project name>",
+    privateVerification: false,
   },
 };
 
