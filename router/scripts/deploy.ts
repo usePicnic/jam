@@ -33,15 +33,17 @@ async function main() {
     let verificationSuccess = false;
     while (!verificationSuccess) {
       try {
-        await run("verify:verify", {
+        const verifyReturn = await run("verify:verify", {
           address,
           constructorArguments,
         });
+        console.log({ verifyReturn });
         verificationSuccess = true; // Breaks the loop if verification succeeds
         console.log(`Successfully verified contract at ${address}`);
       } catch (e) {
+        console.log({ e });
         console.error(
-          `Verification failed for ${address}. Retrying in 5 seconds.`
+          `Verification failed for ${address}. Retrying in 30 seconds.`
         );
         await new Promise((resolve) => setTimeout(resolve, 5000)); // Waits for 5 seconds before retrying
       }
