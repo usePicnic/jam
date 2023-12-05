@@ -79,6 +79,7 @@ export class Paraswap extends Exchange {
         {
           storeOpType: StoreOpType.RetrieveStoreAssignCall,
           storeNumber: storeNumberFrom,
+          secondaryStoreNumber: 0,
           offset: approveFromOffsets[0],
           fraction: Math.round(path.fraction * FRACTION_MULTIPLIER),
         },
@@ -172,12 +173,14 @@ export class Paraswap extends Exchange {
         {
           storeOpType: StoreOpType.RetrieveStoreAssignCallSubtract,
           storeNumber: storeNumberFrom,
+          secondaryStoreNumber: 0,
           offset: swapFromOffset,
           fraction: Math.round(path.fraction * FRACTION_MULTIPLIER),
         },
         {
           storeOpType: StoreOpType.RetrieveResultAddStore,
           storeNumber: storeNumberTo,
+          secondaryStoreNumber: 0,
           offset: swapToOffset,
           fraction: 0,
         },
@@ -250,6 +253,7 @@ export class ZeroX extends Exchange {
         {
           storeOpType: StoreOpType.RetrieveStoreAssignCall,
           storeNumber: storeNumberFrom,
+          secondaryStoreNumber: 0,
           offset: approveFromOffsets[0],
           fraction: Math.round(path.fraction * FRACTION_MULTIPLIER),
         },
@@ -288,12 +292,14 @@ export class ZeroX extends Exchange {
         {
           storeOpType: StoreOpType.RetrieveStoreAssignCallSubtract,
           storeNumber: storeNumberFrom,
+          secondaryStoreNumber: 0,
           offset: swapFromOffsets[0],
           fraction: Math.round(path.fraction * FRACTION_MULTIPLIER),
         },
         {
           storeOpType: StoreOpType.RetrieveResultAddStore,
           storeNumber: storeNumberTo,
+          secondaryStoreNumber: 0,
           offset: swapToOffsets[0],
           fraction: 0,
         },

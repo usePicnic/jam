@@ -103,6 +103,7 @@ export class AaveV3DepositStrategy extends InterfaceStrategy {
           {
             storeOpType: StoreOpType.RetrieveStoreAssignCall,
             storeNumber: storeNumberFrom,
+            secondaryStoreNumber: 0,
             offset: approveFromOffsets[0],
             fraction: Math.round(FRACTION_MULTIPLIER * newFraction),
           },
@@ -123,6 +124,7 @@ export class AaveV3DepositStrategy extends InterfaceStrategy {
           {
             storeOpType: StoreOpType.RetrieveResultAddStore,
             storeNumber: storeNumberTmp,
+            secondaryStoreNumber: 0,
             offset: balanceOfToOffsets[0],
             fraction: FRACTION_MULTIPLIER,
           },
@@ -147,8 +149,9 @@ export class AaveV3DepositStrategy extends InterfaceStrategy {
           {
             storeOpType: StoreOpType.RetrieveStoreAssignCallSubtract,
             storeNumber: storeNumberFrom,
+            secondaryStoreNumber: 0,
             offset: supplyFromOffsets[0],
-            fraction: newFraction * FRACTION_MULTIPLIER,
+            fraction: Math.round(newFraction * FRACTION_MULTIPLIER),
           },
         ],
       });
@@ -162,13 +165,15 @@ export class AaveV3DepositStrategy extends InterfaceStrategy {
           {
             storeOpType: StoreOpType.RetrieveResultAddStore,
             storeNumber: storeNumberTo,
+            secondaryStoreNumber: 0,
             offset: balanceOfToOffsets[0],
             fraction: FRACTION_MULTIPLIER,
           },
           {
             storeOpType: StoreOpType.SubtractStoreFromStore,
-            storeNumber: storeNumberTmp,
-            offset: storeNumberTo,
+            storeNumber: storeNumberTo,
+            secondaryStoreNumber: storeNumberTmp,
+            offset: 0,
             fraction: FRACTION_MULTIPLIER,
           },
         ],
@@ -220,12 +225,14 @@ export class AaveV3DepositStrategy extends InterfaceStrategy {
           {
             storeOpType: StoreOpType.RetrieveStoreAssignCallSubtract,
             storeNumber: storeNumberFrom,
+            secondaryStoreNumber: 0,
             offset: withdrawFromOffsets[0],
-            fraction: newFraction * FRACTION_MULTIPLIER,
+            fraction: Math.round(newFraction * FRACTION_MULTIPLIER),
           },
           {
             storeOpType: StoreOpType.RetrieveResultAddStore,
             storeNumber: storeNumberTo,
+            secondaryStoreNumber: 0,
             offset: withdrawToOffsets[0],
             fraction: FRACTION_MULTIPLIER,
           },

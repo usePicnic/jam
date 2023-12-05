@@ -259,6 +259,7 @@ export class BalancerDepositStrategy extends InterfaceStrategy {
             {
               storeOpType: StoreOpType.RetrieveStoreAssignCall,
               storeNumber: storeNumbersLinkedAssets[i],
+              secondaryStoreNumber: 0,
               offset: approveFromOffsets[0],
               fraction: Math.round(
                 FRACTION_MULTIPLIER * linkedAssetFractions[i]
@@ -281,6 +282,7 @@ export class BalancerDepositStrategy extends InterfaceStrategy {
           {
             storeOpType: StoreOpType.RetrieveResultAddStore,
             storeNumber: storeNumberTmp,
+            secondaryStoreNumber: 0,
             offset: balanceOfToOffsets[0],
             fraction: FRACTION_MULTIPLIER,
           },
@@ -361,14 +363,16 @@ export class BalancerDepositStrategy extends InterfaceStrategy {
         storeOperations.push({
           storeOpType: StoreOpType.RetrieveStoreAssignCall,
           storeNumber: storeNumbersLinkedAssets[i],
+          secondaryStoreNumber: 0,
           offset: joinPoolFromOffsets[i],
-          fraction: linkedAssetFractions[i] * FRACTION_MULTIPLIER,
+          fraction: Math.round(linkedAssetFractions[i] * FRACTION_MULTIPLIER),
         });
         storeOperations.push({
           storeOpType: StoreOpType.RetrieveStoreAssignCallSubtract,
           storeNumber: storeNumbersLinkedAssets[i],
+          secondaryStoreNumber: 0,
           offset: joinPoolFromOffsets[i + usedReplacers.length],
-          fraction: linkedAssetFractions[i] * FRACTION_MULTIPLIER,
+          fraction: Math.round(linkedAssetFractions[i] * FRACTION_MULTIPLIER),
         });
       }
 
@@ -387,13 +391,15 @@ export class BalancerDepositStrategy extends InterfaceStrategy {
           {
             storeOpType: StoreOpType.RetrieveResultAddStore,
             storeNumber: storeNumberPool,
+            secondaryStoreNumber: 0,
             offset: balanceOfToOffsets[0],
             fraction: FRACTION_MULTIPLIER,
           },
           {
             storeOpType: StoreOpType.SubtractStoreFromStore,
-            storeNumber: storeNumberTmp,
-            offset: storeNumberPool,
+            storeNumber: storeNumberPool,
+            secondaryStoreNumber: storeNumberTmp,
+            offset: 0,
             fraction: FRACTION_MULTIPLIER,
           },
         ],
@@ -437,6 +443,7 @@ export class BalancerDepositStrategy extends InterfaceStrategy {
             {
               storeOpType: StoreOpType.RetrieveResultAddStore,
               storeNumber: storeNumbersTmp[i],
+              secondaryStoreNumber: 0,
               offset: balanceOfToOffsets[0],
               fraction: FRACTION_MULTIPLIER,
             },
@@ -496,8 +503,9 @@ export class BalancerDepositStrategy extends InterfaceStrategy {
           {
             storeOpType: StoreOpType.RetrieveStoreAssignCallSubtract,
             storeNumber: storeNumberPool,
+            secondaryStoreNumber: 0,
             offset: exitPoolFromOffsets[0],
-            fraction: newFraction * FRACTION_MULTIPLIER,
+            fraction: Math.round(newFraction * FRACTION_MULTIPLIER),
           },
         ],
       });
@@ -514,13 +522,15 @@ export class BalancerDepositStrategy extends InterfaceStrategy {
             {
               storeOpType: StoreOpType.RetrieveResultAddStore,
               storeNumber: storeNumbersLinkedAssets[i],
+              secondaryStoreNumber: 0,
               offset: balanceOfToOffsets[0],
               fraction: FRACTION_MULTIPLIER,
             },
             {
               storeOpType: StoreOpType.SubtractStoreFromStore,
-              storeNumber: storeNumbersTmp[i],
-              offset: storeNumbersLinkedAssets[i],
+              storeNumber: storeNumbersLinkedAssets[i],
+              secondaryStoreNumber: storeNumbersTmp[i],
+              offset: 0,
               fraction: FRACTION_MULTIPLIER,
             },
           ],

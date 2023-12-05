@@ -301,12 +301,14 @@ export enum StoreOpType {
   RetrieveStoreAssignValueSubtract, // 4
   RetrieveStoreAssignCallSubtract, // 5
   SubtractStoreFromStore, // 6
+  AddStoreToStore, // 7
 }
 
 export type StoreOperations = {
   storeOpType: StoreOpType;
   storeNumber: BigNumberish;
-  offset: BigNumberish;
+  secondaryStoreNumber?: BigNumberish;
+  offset?: BigNumberish;
   fraction: BigNumberish;
 };
 export type DetailedStep = {
@@ -461,6 +463,7 @@ export class RouterOperation {
         storeOperations: step.storeOperations.map((storeOperation) => ({
           storeOpType: storeOperation.storeOpType,
           storeNumber: storeOperation.storeNumber,
+          secondaryStoreNumber: storeOperation.secondaryStoreNumber,
           offset: storeOperation.offset,
           fraction: storeOperation.fraction,
         })),

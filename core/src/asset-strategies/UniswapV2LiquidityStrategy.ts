@@ -158,6 +158,7 @@ export class UniswapV2LiquidityStrategy extends InterfaceStrategy {
             {
               storeOpType: StoreOpType.RetrieveStoreAssignCall,
               storeNumber: storeNumbersLinkedAssets[i],
+              secondaryStoreNumber: 0,
               offset: approveFromOffsets[0],
               fraction: Math.round(
                 FRACTION_MULTIPLIER * linkedAssetFractions[i]
@@ -210,30 +211,35 @@ export class UniswapV2LiquidityStrategy extends InterfaceStrategy {
           {
             storeOpType: StoreOpType.RetrieveStoreAssignCall,
             storeNumber: storeNumbersLinkedAssets[0],
+            secondaryStoreNumber: 0,
             offset: addLiquidityFromOffsets[0],
-            fraction: linkedAssetFractions[0] * FRACTION_MULTIPLIER,
+            fraction: Math.round(linkedAssetFractions[0] * FRACTION_MULTIPLIER),
           },
           {
             storeOpType: StoreOpType.RetrieveStoreAssignCall,
             storeNumber: storeNumbersLinkedAssets[1],
+            secondaryStoreNumber: 0,
             offset: addLiquidityFromOffsets[1],
-            fraction: linkedAssetFractions[1] * FRACTION_MULTIPLIER,
+            fraction: Math.round(linkedAssetFractions[1] * FRACTION_MULTIPLIER),
           },
           {
             storeOpType: StoreOpType.RetrieveResultSubtractStore,
             storeNumber: storeNumbersLinkedAssets[0],
+            secondaryStoreNumber: 0,
             offset: addLiquidityToOffsets[0],
             fraction: FRACTION_MULTIPLIER,
           },
           {
             storeOpType: StoreOpType.RetrieveResultSubtractStore,
             storeNumber: storeNumbersLinkedAssets[1],
+            secondaryStoreNumber: 0,
             offset: addLiquidityToOffsets[1],
             fraction: FRACTION_MULTIPLIER,
           },
           {
             storeOpType: StoreOpType.RetrieveResultAddStore,
             storeNumber: storeNumberPool,
+            secondaryStoreNumber: 0,
             offset: addLiquidityToOffsets[2],
             fraction: FRACTION_MULTIPLIER,
           },
@@ -294,18 +300,21 @@ export class UniswapV2LiquidityStrategy extends InterfaceStrategy {
           {
             storeOpType: StoreOpType.RetrieveStoreAssignCallSubtract,
             storeNumber: storeNumberPool,
+            secondaryStoreNumber: 0,
             offset: removeLiquidityFromOffsets[0],
-            fraction: newFraction * FRACTION_MULTIPLIER,
+            fraction: Math.round(newFraction * FRACTION_MULTIPLIER),
           },
           {
             storeOpType: StoreOpType.RetrieveResultAddStore,
             storeNumber: storeNumbersLinkedAssets[0],
+            secondaryStoreNumber: 0,
             offset: removeLiquidityToOffsets[0],
             fraction: FRACTION_MULTIPLIER,
           },
           {
             storeOpType: StoreOpType.RetrieveResultAddStore,
             storeNumber: storeNumbersLinkedAssets[1],
+            secondaryStoreNumber: 0,
             offset: removeLiquidityToOffsets[1],
             fraction: FRACTION_MULTIPLIER,
           },

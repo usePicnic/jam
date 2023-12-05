@@ -30,8 +30,11 @@ contract Router {
         // - subtracts calculated value from store
         RetrieveStoreAssignCallSubtract,
         // 6: Subtracts store value from another store
-        // - subtracts store value at store "storeNumber" from store at "offset"
-        SubtractStoreFromStore
+        // - subtracts store value multiplied by "fraction" at store "secondaryStoreNumber" from store at "storeNumber"
+        SubtractStoreFromStore,
+        // 7: Add store value to another store
+        // - adds store value multiplied by "fraction" at store "secondaryStoreNumber" to store at "storeNumber"
+        AddStoreToStore
     }
 
     // This function takes the original ABI-encoded calldata `encodedCall`,
@@ -71,9 +74,10 @@ contract Router {
 
     struct StoreOperation {
         StoreOpType storeOpType;
-        uint256 storeNumber;
-        uint256 offset;
-        uint256 fraction;
+        uint8 storeNumber;
+        uint8 secondaryStoreNumber;
+        uint16 offset;
+        uint24 fraction;
     }
 
     // Step 2: Define a struct for the outer array element
@@ -183,9 +187,20 @@ contract Router {
                     steps[i].storeOperations[j].storeOpType ==
                     StoreOpType.SubtractStoreFromStore
                 ) {
-                    stores[steps[i].storeOperations[j].offset] -= stores[
-                        steps[i].storeOperations[j].storeNumber
-                    ];
+                    stores[steps[i].storeOperations[j].storeNumber] -=
+                        (stores[
+                            steps[i].storeOperations[j].secondaryStoreNumber
+                        ] * steps[i].storeOperations[j].fraction) /
+                        1000000;
+                } else if (
+                    steps[i].storeOperations[j].storeOpType ==
+                    StoreOpType.AddStoreToStore
+                ) {
+                    stores[steps[i].storeOperations[j].storeNumber] +=
+                        (stores[
+                            steps[i].storeOperations[j].secondaryStoreNumber
+                        ] * steps[i].storeOperations[j].fraction) /
+                        1000000;
                 }
             }
         }

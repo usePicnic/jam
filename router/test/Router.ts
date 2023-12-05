@@ -88,6 +88,7 @@ describe("Router", function () {
           {
             storeOpType: StoreOpType.RetrieveStoreAssignValue,
             storeNumber: 0,
+            secondaryStoreNumber: 0,
             offset: 0,
             fraction: 1000000,
           },
@@ -128,6 +129,7 @@ describe("Router", function () {
           {
             storeOpType: StoreOpType.RetrieveStoreAssignValue,
             storeNumber: 0,
+            secondaryStoreNumber: 0,
             offset: 0,
             fraction: 1000000,
           },
@@ -204,6 +206,7 @@ describe("Router", function () {
           {
             storeOpType: StoreOpType.RetrieveStoreAssignValue,
             storeNumber: 0,
+            secondaryStoreNumber: 0,
             offset: 0,
             fraction: 1000000,
           },
@@ -236,6 +239,7 @@ describe("Router", function () {
           {
             storeOpType: StoreOpType.RetrieveResultAddStore,
             storeNumber: 1,
+            secondaryStoreNumber: 0,
             offset: 32 + 32 + 32 * (2 - 1),
             fraction: 1000000,
           },
@@ -251,6 +255,7 @@ describe("Router", function () {
           {
             storeOpType: StoreOpType.RetrieveStoreAssignCall,
             storeNumber: 1,
+            secondaryStoreNumber: 0,
             offset: 4 + 32,
             fraction: 1000000,
           },
@@ -267,6 +272,7 @@ describe("Router", function () {
           {
             storeOpType: StoreOpType.RetrieveStoreAssignCall,
             storeNumber: 1,
+            secondaryStoreNumber: 0,
             offset: 4 + 32,
             fraction: 1000000,
           },
