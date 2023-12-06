@@ -82,7 +82,7 @@ describe("Router", function () {
 
     var steps = [
       {
-        stepAddress: await wmatic.getAddress(),
+        stepAddress: await wmatic.target,
         stepEncodedCall: wmatic.interface.encodeFunctionData("deposit"),
         storeOperations: [
           {
@@ -101,9 +101,9 @@ describe("Router", function () {
       stores,
     ]);
 
-    await testWallet.runSteps(await router.getAddress(), encodedCall);
+    await testWallet.nativeContract.runSteps(await router.target, encodedCall);
 
-    const wmaticBalance = await wmatic.balanceOf(await testWallet.getAddress());
+    const wmaticBalance = await wmatic.balanceOf(await testWallet.target);
 
     expect(wmaticBalance).to.equal(ethers.parseEther("50.0"));
     // testWallet.expect(await testWallet.balanceOf(owner.address)).to.equal(1000);
@@ -123,7 +123,7 @@ describe("Router", function () {
 
     var steps = [
       {
-        stepAddress: await wmatic.getAddress(),
+        stepAddress: await wmatic.target,
         stepEncodedCall: wmatic.interface.encodeFunctionData("deposit"),
         storeOperations: [
           {
@@ -136,7 +136,7 @@ describe("Router", function () {
         ],
       },
       {
-        stepAddress: await wmatic.getAddress(),
+        stepAddress: await wmatic.target,
         stepEncodedCall: wmatic.interface.encodeFunctionData("approve", [
           "0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff",
           value,
@@ -144,7 +144,7 @@ describe("Router", function () {
         storeOperations: [],
       },
       {
-        stepAddress: await quickswap.getAddress(),
+        stepAddress: await quickswap.target,
         stepEncodedCall: quickswap.interface.encodeFunctionData(
           "swapExactTokensForTokens",
           [
@@ -154,7 +154,7 @@ describe("Router", function () {
               "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
               "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
             ],
-            await testWallet.getAddress(),
+            await testWallet.target,
             (await time.latest()) + 10000,
           ]
         ),
@@ -167,13 +167,13 @@ describe("Router", function () {
       stores,
     ]);
 
-    await testWallet.runSteps(await router.getAddress(), encodedCall);
+    await testWallet.nativeContract.runSteps(await router.target, encodedCall);
 
     const { token: usdc } = await getERC20({
       address: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
     });
 
-    const usdcBalance = await usdc.balanceOf(await testWallet.getAddress());
+    const usdcBalance = await usdc.balanceOf(await testWallet.target);
 
     console.log({ usdcBalance });
 
@@ -200,7 +200,7 @@ describe("Router", function () {
 
     var steps = [
       {
-        stepAddress: await wmatic.getAddress(),
+        stepAddress: await wmatic.target,
         stepEncodedCall: wmatic.interface.encodeFunctionData("deposit"),
         storeOperations: [
           {
@@ -213,7 +213,7 @@ describe("Router", function () {
         ],
       },
       {
-        stepAddress: await wmatic.getAddress(),
+        stepAddress: await wmatic.target,
         stepEncodedCall: wmatic.interface.encodeFunctionData("approve", [
           "0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff",
           value,
@@ -221,7 +221,7 @@ describe("Router", function () {
         storeOperations: [],
       },
       {
-        stepAddress: await quickswap.getAddress(),
+        stepAddress: await quickswap.target,
         stepEncodedCall: quickswap.interface.encodeFunctionData(
           "swapExactTokensForTokens",
           [
@@ -231,7 +231,7 @@ describe("Router", function () {
               "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
               "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
             ],
-            await testWallet.getAddress(),
+            await testWallet.target,
             (await time.latest()) + 10000,
           ]
         ),
@@ -246,9 +246,9 @@ describe("Router", function () {
         ],
       },
       {
-        stepAddress: await usdc.getAddress(),
+        stepAddress: await usdc.target,
         stepEncodedCall: usdc.interface.encodeFunctionData("approve", [
-          await comet.getAddress(),
+          await comet.target,
           0,
         ]),
         storeOperations: [
@@ -263,7 +263,7 @@ describe("Router", function () {
       },
 
       {
-        stepAddress: await comet.getAddress(),
+        stepAddress: await comet.target,
         stepEncodedCall: comet.interface.encodeFunctionData("supply", [
           "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
           0,
@@ -285,10 +285,10 @@ describe("Router", function () {
       stores,
     ]);
 
-    await testWallet.runSteps(await router.getAddress(), encodedCall);
+    await testWallet.nativeContract.runSteps(await router.target, encodedCall);
 
-    const usdcBalance = await usdc.balanceOf(await testWallet.getAddress());
-    const cometBalance = await comet.balanceOf(await testWallet.getAddress());
+    const usdcBalance = await usdc.balanceOf(await testWallet.target);
+    const cometBalance = await comet.balanceOf(await testWallet.target);
 
     console.log({ usdcBalance, cometBalance });
 
