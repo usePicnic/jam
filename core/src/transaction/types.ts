@@ -289,6 +289,7 @@ export type AssetType =
   | "networkToken"
   | "gammaDeposit"
   | "beefyDeposit"
+  | "aaveV2Deposit"
   | "aaveV3Deposit"
   | "balancerDeposit"
   | "uniswapV2Liquidity";

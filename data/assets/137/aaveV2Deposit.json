@@ -1,0 +1,254 @@
+[
+  {
+    "id": "de097779-c272-4548-add6-915c771e35c1",
+    "name": "Aave",
+    "chainId": 137,
+    "active": true,
+    "address": "0x1d2a0E5EC8E5bBDCA5CB219e649B565d8e5c3360",
+    "color": "#8a77a8",
+    "decimals": 18,
+    "symbol": "AAVE",
+    "type": "aaveV2Deposit",
+    "visible": false,
+    "maxSize": 40,
+    "allowSlot": 53,
+    "balanceSlot": 52,
+    "linkedAssets": [
+      {
+        "assetId": "389d84c3-9095-4b00-b01a-18948b9ada39",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "82ca1dcb-9c63-4a8c-9e62-005bfba46e1e",
+    "name": "Aavegotchi",
+    "chainId": 137,
+    "active": true,
+    "address": "0x080b5BF8f360F624628E0fb961F4e67c9e3c7CF1",
+    "color": "#fc34f4",
+    "decimals": 18,
+    "symbol": "GHST",
+    "type": "aaveV2Deposit",
+    "visible": false,
+    "maxSize": 40,
+    "allowSlot": 53,
+    "balanceSlot": 52,
+    "linkedAssets": [
+      {
+        "assetId": "babfc3f7-41ae-4ad5-954e-1cbf7198cc67",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "ea3d3c1a-53c8-47f6-ab43-80262c03c788",
+    "name": "Balancer",
+    "chainId": 137,
+    "active": true,
+    "address": "0xc4195D4060DaEac44058Ed668AA5EfEc50D77ff6",
+    "color": "#040404",
+    "decimals": 18,
+    "symbol": "BAL",
+    "type": "aaveV2Deposit",
+    "visible": false,
+    "maxSize": 40,
+    "allowSlot": 53,
+    "balanceSlot": 52,
+    "linkedAssets": [
+      {
+        "assetId": "6fdd3fc4-3844-4760-9aa1-184f2a7e1283",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "459b5a5f-e739-4911-8095-b54d0d93879d",
+    "name": "ChainLink",
+    "chainId": 137,
+    "active": true,
+    "address": "0x0Ca2e42e8c21954af73Bc9af1213E4e81D6a669A",
+    "color": "#2753d8",
+    "decimals": 18,
+    "symbol": "LINK",
+    "type": "aaveV2Deposit",
+    "visible": false,
+    "maxSize": 40,
+    "allowSlot": 53,
+    "balanceSlot": 52,
+    "linkedAssets": [
+      {
+        "assetId": "e4be18c2-c20b-4e17-9c17-947dc07cc053",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "06db051c-6cb4-4f75-b7f8-512071bdc4a7",
+    "name": "CRV",
+    "chainId": 137,
+    "active": true,
+    "address": "0x3Df8f92b7E798820ddcCA2EBEA7BAbda2c90c4aD",
+    "color": "#1fc9db",
+    "decimals": 18,
+    "symbol": "CRV",
+    "type": "aaveV2Deposit",
+    "visible": false,
+    "maxSize": 40,
+    "allowSlot": 53,
+    "balanceSlot": 52,
+    "linkedAssets": [
+      {
+        "assetId": "af62d010-5df9-4eae-919c-8d6dd63fe45e",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "0ed514f8-a0a7-47d1-b8d0-2d17d6818131",
+    "name": "DAI",
+    "chainId": 137,
+    "active": true,
+    "address": "0x27F8D03b3a2196956ED754baDc28D73be8830A6e",
+    "color": "#fcb934",
+    "decimals": 18,
+    "symbol": "DAI",
+    "type": "aaveV2Deposit",
+    "visible": true,
+    "maxSize": 40,
+    "allowSlot": 53,
+    "balanceSlot": 52,
+    "linkedAssets": [
+      {
+        "assetId": "f9a0d8c9-7524-42ed-9188-968456afcd54",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "43804aa8-381f-4b74-b874-50de4daf9314",
+    "name": "Sushi",
+    "chainId": 137,
+    "active": true,
+    "address": "0x21eC9431B5B55c5339Eb1AE7582763087F98FAc2",
+    "color": "#7a8eb4",
+    "decimals": 18,
+    "symbol": "SUSHI",
+    "type": "aaveV2Deposit",
+    "visible": false,
+    "maxSize": 40,
+    "allowSlot": 53,
+    "balanceSlot": 52,
+    "linkedAssets": [
+      {
+        "assetId": "0cd75561-8f74-471b-8ae4-256143fdbaff",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "7860c217-bf77-4fdd-bfe1-b7613555606a",
+    "name": "USD Coin",
+    "chainId": 137,
+    "active": true,
+    "address": "0x1a13F4Ca1d028320A707D99520AbFefca3998b7F",
+    "color": "#2775ca",
+    "decimals": 6,
+    "symbol": "USDC",
+    "type": "aaveV2Deposit",
+    "visible": true,
+    "maxSize": 40,
+    "allowSlot": 53,
+    "balanceSlot": 52,
+    "linkedAssets": [
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "7e8997e9-15ca-46f4-8c91-156f8167d658",
+    "name": "USDT",
+    "chainId": 137,
+    "active": true,
+    "address": "0x60D55F02A771d515e077c9C2403a1ef324885CeC",
+    "color": "#54ae93",
+    "decimals": 6,
+    "symbol": "USDT",
+    "type": "aaveV2Deposit",
+    "visible": true,
+    "maxSize": 40,
+    "allowSlot": 53,
+    "balanceSlot": 52,
+    "linkedAssets": [
+      {
+        "assetId": "dfe40dda-5c96-4ff3-b773-386f1ca0868d",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "60361af6-1c00-425b-86cb-2d7980c25618",
+    "name": "Wrapped Bitcoin",
+    "chainId": 137,
+    "active": true,
+    "address": "0x5c2ed810328349100A66B82b78a1791B101C9D61",
+    "color": "#342743",
+    "decimals": 8,
+    "symbol": "WBTC",
+    "type": "aaveV2Deposit",
+    "visible": true,
+    "maxSize": 40,
+    "allowSlot": 53,
+    "balanceSlot": 52,
+    "linkedAssets": [
+      {
+        "assetId": "7eecd38c-6ec4-4032-b1bd-bbd1bb82404f",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "66d10ee1-1a78-46d3-a9d5-77862e36cb66",
+    "name": "Wrapped Ether",
+    "chainId": 137,
+    "active": true,
+    "address": "0x28424507fefb6f7f8E9D3860F56504E4e5f5f390",
+    "color": "#737475",
+    "decimals": 18,
+    "symbol": "WETH",
+    "type": "aaveV2Deposit",
+    "visible": true,
+    "maxSize": 40,
+    "allowSlot": 53,
+    "balanceSlot": 52,
+    "linkedAssets": [
+      {
+        "assetId": "88f2647c-740e-4bbb-baed-c809302fea79",
+        "fraction": 1
+      }
+    ]
+  },
+  {
+    "id": "d3f691b5-4f84-4cea-974f-dea306faef71",
+    "name": "Wrapped Matic",
+    "chainId": 137,
+    "active": true,
+    "address": "0x8dF3aad3a84da6b69A4DA8aeC3eA40d9091B2Ac4",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "WMATIC",
+    "type": "aaveV2Deposit",
+    "visible": true,
+    "maxSize": 40,
+    "allowSlot": 53,
+    "balanceSlot": 52,
+    "linkedAssets": [
+      {
+        "assetId": "d604439e-d464-4df5-bed1-66815b348cab",
+        "fraction": 1
+      }
+    ]
+  }
+]
