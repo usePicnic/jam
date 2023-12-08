@@ -6,7 +6,6 @@ import {
   getPrice,
 } from "../transaction/asset-type-strategies-helpers";
 import { Contract } from "ethers";
-import { getMagicOffsets } from "core/src/utils/get-magic-offset";
 import { IERC20, UniswapV2Pair, UniswapV2Router02 } from "core/src/abis";
 import {
   FRACTION_MULTIPLIER,
@@ -143,23 +142,20 @@ export class UniswapV2LiquidityStrategy extends InterfaceStrategy {
           continue;
         }
 
-        const { data: approveEncodedCall, offsets: approveFromOffsets } =
-          getMagicOffsets({
-            data: IERC20.encodeFunctionData("approve", [
-              routerAddress,
-              MAGIC_REPLACERS[0],
-            ]),
-            magicReplacers: [MAGIC_REPLACERS[0]],
-          });
-        routerOperation.steps.push({
+        routerOperation.addStep({
           stepAddress: linkedAsset.address,
-          stepEncodedCall: approveEncodedCall,
+          encodedFunctionData: IERC20.encodeFunctionData("approve", [
+            routerAddress,
+            MAGIC_REPLACERS[0],
+          ]),
           storeOperations: [
             {
               storeOpType: StoreOpType.RetrieveStoreAssignCall,
               storeNumber: storeNumbersLinkedAssets[i],
-              secondaryStoreNumber: 0,
-              offset: approveFromOffsets[0],
+              offsetReplacer: {
+                replacer: MAGIC_REPLACERS[0],
+                occurrence: 0,
+              },
               fraction: Math.round(
                 FRACTION_MULTIPLIER * linkedAssetFractions[i]
               ),
@@ -174,73 +170,74 @@ export class UniswapV2LiquidityStrategy extends InterfaceStrategy {
         throw new Error("Failed to fetch the latest block");
       }
 
-      const {
-        data: addLiquidityEncodedCall,
-        offsets: addLiquidityFromOffsets,
-      } = getMagicOffsets({
-        data: UniswapV2Router02.encodeFunctionData("addLiquidity", [
-          linkedAssets[0].address, //        address tokenA,
-          linkedAssets[1].address, //        address tokenB,
-          MAGIC_REPLACERS[0], //        uint amountADesired,
-          MAGIC_REPLACERS[1], //        uint amountBDesired,
-          1, //        uint amountAMin, // TODO: set minimum amount
-          1, //        uint amountBMin, // TODO: set minimum amount
-          walletAddress, //  address to,
-          block.timestamp + 100000, //   uint deadline
-        ]),
-        magicReplacers: [MAGIC_REPLACERS[0], MAGIC_REPLACERS[1]],
-      });
-
-      const { offsets: addLiquidityToOffsets } = getMagicOffsets({
-        data: UniswapV2Router02.encodeFunctionResult("addLiquidity", [
-          MAGIC_REPLACERS[0],
-          MAGIC_REPLACERS[1],
-          MAGIC_REPLACERS[2],
-        ]),
-        magicReplacers: [
-          MAGIC_REPLACERS[0],
-          MAGIC_REPLACERS[1],
-          MAGIC_REPLACERS[2],
-        ],
-      });
-
-      routerOperation.steps.push({
+      routerOperation.addStep({
         stepAddress: routerAddress,
-        stepEncodedCall: addLiquidityEncodedCall,
+        encodedFunctionData: UniswapV2Router02.encodeFunctionData(
+          "addLiquidity",
+          [
+            linkedAssets[0].address, //        address tokenA,
+            linkedAssets[1].address, //        address tokenB,
+            MAGIC_REPLACERS[0], //        uint amountADesired,
+            MAGIC_REPLACERS[1], //        uint amountBDesired,
+            1, //        uint amountAMin, // TODO: set minimum amount
+            1, //        uint amountBMin, // TODO: set minimum amount
+            walletAddress, //  address to,
+            block.timestamp + 100000, //   uint deadline
+          ]
+        ),
+        encodedFunctionResult: UniswapV2Router02.encodeFunctionResult(
+          "addLiquidity",
+          [MAGIC_REPLACERS[0], MAGIC_REPLACERS[1], MAGIC_REPLACERS[2]]
+        ),
         storeOperations: [
           {
             storeOpType: StoreOpType.RetrieveStoreAssignCall,
             storeNumber: storeNumbersLinkedAssets[0],
-            secondaryStoreNumber: 0,
-            offset: addLiquidityFromOffsets[0],
+
+            offsetReplacer: {
+              replacer: MAGIC_REPLACERS[0],
+              occurrence: 0,
+            },
             fraction: Math.round(linkedAssetFractions[0] * FRACTION_MULTIPLIER),
           },
           {
             storeOpType: StoreOpType.RetrieveStoreAssignCall,
             storeNumber: storeNumbersLinkedAssets[1],
-            secondaryStoreNumber: 0,
-            offset: addLiquidityFromOffsets[1],
+
+            offsetReplacer: {
+              replacer: MAGIC_REPLACERS[1],
+              occurrence: 0,
+            },
             fraction: Math.round(linkedAssetFractions[1] * FRACTION_MULTIPLIER),
           },
           {
             storeOpType: StoreOpType.RetrieveResultSubtractStore,
             storeNumber: storeNumbersLinkedAssets[0],
-            secondaryStoreNumber: 0,
-            offset: addLiquidityToOffsets[0],
+
+            offsetReplacer: {
+              replacer: MAGIC_REPLACERS[0],
+              occurrence: 0,
+            },
             fraction: FRACTION_MULTIPLIER,
           },
           {
             storeOpType: StoreOpType.RetrieveResultSubtractStore,
             storeNumber: storeNumbersLinkedAssets[1],
-            secondaryStoreNumber: 0,
-            offset: addLiquidityToOffsets[1],
+
+            offsetReplacer: {
+              replacer: MAGIC_REPLACERS[1],
+              occurrence: 0,
+            },
             fraction: FRACTION_MULTIPLIER,
           },
           {
             storeOpType: StoreOpType.RetrieveResultAddStore,
             storeNumber: storeNumberPool,
-            secondaryStoreNumber: 0,
-            offset: addLiquidityToOffsets[2],
+
+            offsetReplacer: {
+              replacer: MAGIC_REPLACERS[2],
+              occurrence: 0,
+            },
             fraction: FRACTION_MULTIPLIER,
           },
         ],
@@ -269,53 +266,53 @@ export class UniswapV2LiquidityStrategy extends InterfaceStrategy {
         throw new Error("Failed to fetch the latest block");
       }
 
-      const {
-        data: removeLiquidityEncodedCall,
-        offsets: removeLiquidityFromOffsets,
-      } = getMagicOffsets({
-        data: UniswapV2Router02.encodeFunctionData("removeLiquidity", [
-          linkedAssets[0].address, // tokenA
-          linkedAssets[1].address, // tokenB
-          MAGIC_REPLACERS[0], // liquidity,
-          1, // amountAMin // TODO: set minimum amount
-          1, // amountBMin // TODO: set minimum amount
-          walletAddress, // address to,
-          block.timestamp + 100000, // uint deadline
-        ]),
-        magicReplacers: [MAGIC_REPLACERS[0]],
-      });
-
-      const { offsets: removeLiquidityToOffsets } = getMagicOffsets({
-        data: UniswapV2Router02.encodeFunctionResult("removeLiquidity", [
-          MAGIC_REPLACERS[0],
-          MAGIC_REPLACERS[1],
-        ]),
-        magicReplacers: [MAGIC_REPLACERS[0], MAGIC_REPLACERS[1]],
-      });
-
-      routerOperation.steps.push({
+      routerOperation.addStep({
         stepAddress: routerAddress,
-        stepEncodedCall: removeLiquidityEncodedCall,
+        encodedFunctionData: UniswapV2Router02.encodeFunctionData(
+          "removeLiquidity",
+          [
+            linkedAssets[0].address, // tokenA
+            linkedAssets[1].address, // tokenB
+            MAGIC_REPLACERS[0], // liquidity,
+            1, // amountAMin // TODO: set minimum amount
+            1, // amountBMin // TODO: set minimum amount
+            walletAddress, // address to,
+            block.timestamp + 100000, // uint deadline
+          ]
+        ),
+        encodedFunctionResult: UniswapV2Router02.encodeFunctionResult(
+          "removeLiquidity",
+          [MAGIC_REPLACERS[0], MAGIC_REPLACERS[1]]
+        ),
         storeOperations: [
           {
             storeOpType: StoreOpType.RetrieveStoreAssignCallSubtract,
             storeNumber: storeNumberPool,
-            secondaryStoreNumber: 0,
-            offset: removeLiquidityFromOffsets[0],
+
+            offsetReplacer: {
+              replacer: MAGIC_REPLACERS[0],
+              occurrence: 0,
+            },
             fraction: Math.round(newFraction * FRACTION_MULTIPLIER),
           },
           {
             storeOpType: StoreOpType.RetrieveResultAddStore,
             storeNumber: storeNumbersLinkedAssets[0],
-            secondaryStoreNumber: 0,
-            offset: removeLiquidityToOffsets[0],
+
+            offsetReplacer: {
+              replacer: MAGIC_REPLACERS[0],
+              occurrence: 0,
+            },
             fraction: FRACTION_MULTIPLIER,
           },
           {
             storeOpType: StoreOpType.RetrieveResultAddStore,
             storeNumber: storeNumbersLinkedAssets[1],
-            secondaryStoreNumber: 0,
-            offset: removeLiquidityToOffsets[1],
+
+            offsetReplacer: {
+              replacer: MAGIC_REPLACERS[1],
+              occurrence: 0,
+            },
             fraction: FRACTION_MULTIPLIER,
           },
         ],

@@ -5,7 +5,6 @@ import { Provider } from "ethers";
 import {
   FRACTION_MULTIPLIER,
   MAGIC_REPLACERS,
-  getMagicOffsets,
 } from "../utils/get-magic-offset";
 
 interface BuildSwapOutputParams {
@@ -63,24 +62,17 @@ export class Paraswap extends Exchange {
       address: path.toToken,
     });
 
-    const { data: approveEncodedCall, offsets: approveFromOffsets } =
-      getMagicOffsets({
-        data: IERC20.encodeFunctionData("approve", [
-          path.params.approveAddress,
-          MAGIC_REPLACERS[0],
-        ]),
-        magicReplacers: [MAGIC_REPLACERS[0]],
-      });
-
-    output.steps.push({
+    output.addStep({
       stepAddress: path.fromToken,
-      stepEncodedCall: approveEncodedCall,
+      encodedFunctionData: IERC20.encodeFunctionData("approve", [
+        path.params.approveAddress,
+        MAGIC_REPLACERS[0],
+      ]),
       storeOperations: [
         {
           storeOpType: StoreOpType.RetrieveStoreAssignCall,
           storeNumber: storeNumberFrom,
-          secondaryStoreNumber: 0,
-          offset: approveFromOffsets[0],
+          offsetReplacer: { replacer: MAGIC_REPLACERS[0], occurrence: 0 },
           fraction: Math.round(path.fraction * FRACTION_MULTIPLIER),
         },
       ],
@@ -101,8 +93,9 @@ export class Paraswap extends Exchange {
     }
 
     if (decodedData?.name === "megaSwap") {
-      const { data, offsets: fromOffsets } = getMagicOffsets({
-        data: IParaswap.encodeFunctionData("megaSwap", [
+      output.addStep({
+        stepAddress: path.params.paraswapAddress as string,
+        encodedFunctionData: IParaswap.encodeFunctionData("megaSwap", [
           [
             path.fromToken, // fromToken
             MAGIC_REPLACERS[0], // fromAmount
@@ -119,21 +112,30 @@ export class Paraswap extends Exchange {
             decodedData.args[0].uuid, // uuid
           ],
         ]),
-        magicReplacers: [MAGIC_REPLACERS[0]],
+        encodedFunctionResult: IParaswap.encodeFunctionResult("megaSwap", [
+          MAGIC_REPLACERS[0],
+        ]),
+        storeOperations: [
+          {
+            storeOpType: StoreOpType.RetrieveStoreAssignCallSubtract,
+            storeNumber: storeNumberFrom,
+
+            offsetReplacer: { replacer: MAGIC_REPLACERS[0], occurrence: 0 },
+            fraction: Math.round(path.fraction * FRACTION_MULTIPLIER),
+          },
+          {
+            storeOpType: StoreOpType.RetrieveResultAddStore,
+            storeNumber: storeNumberTo,
+
+            offsetReplacer: { replacer: MAGIC_REPLACERS[0], occurrence: 0 },
+            fraction: 0,
+          },
+        ],
       });
-
-      swapEncodedCall = data;
-      swapFromOffset = fromOffsets[0];
-
-      const { offsets: toOffsets } = getMagicOffsets({
-        data: IParaswap.encodeFunctionResult("megaSwap", [MAGIC_REPLACERS[0]]),
-        magicReplacers: [MAGIC_REPLACERS[0]],
-      });
-
-      swapToOffset = toOffsets[0];
     } else if (decodedData?.name === "multiSwap") {
-      const { data, offsets: fromOffsets } = getMagicOffsets({
-        data: IParaswap.encodeFunctionData("multiSwap", [
+      output.addStep({
+        stepAddress: path.params.paraswapAddress as string,
+        encodedFunctionData: IParaswap.encodeFunctionData("multiSwap", [
           [
             path.fromToken, // fromToken
             MAGIC_REPLACERS[0], // fromAmount
@@ -150,42 +152,27 @@ export class Paraswap extends Exchange {
             decodedData.args[0].uuid, // uuid
           ],
         ]),
-        magicReplacers: [MAGIC_REPLACERS[0]],
+        encodedFunctionResult: IParaswap.encodeFunctionResult("multiSwap", [
+          MAGIC_REPLACERS[0],
+        ]),
+        storeOperations: [
+          {
+            storeOpType: StoreOpType.RetrieveStoreAssignCallSubtract,
+            storeNumber: storeNumberFrom,
+            offsetReplacer: { replacer: MAGIC_REPLACERS[0], occurrence: 0 },
+            fraction: Math.round(path.fraction * FRACTION_MULTIPLIER),
+          },
+          {
+            storeOpType: StoreOpType.RetrieveResultAddStore,
+            storeNumber: storeNumberTo,
+            offsetReplacer: { replacer: MAGIC_REPLACERS[0], occurrence: 0 },
+            fraction: 0,
+          },
+        ],
       });
-
-      swapEncodedCall = data;
-      swapFromOffset = fromOffsets[0];
-
-      const { offsets: toOffsets } = getMagicOffsets({
-        data: IParaswap.encodeFunctionResult("multiSwap", [MAGIC_REPLACERS[0]]),
-        magicReplacers: [MAGIC_REPLACERS[0]],
-      });
-
-      swapToOffset = toOffsets[0];
     } else {
       throw new Error(`Paraswap: unimplemented function ${decodedData?.name}`);
     }
-
-    output.steps.push({
-      stepAddress: path.params.paraswapAddress as string,
-      stepEncodedCall: swapEncodedCall,
-      storeOperations: [
-        {
-          storeOpType: StoreOpType.RetrieveStoreAssignCallSubtract,
-          storeNumber: storeNumberFrom,
-          secondaryStoreNumber: 0,
-          offset: swapFromOffset,
-          fraction: Math.round(path.fraction * FRACTION_MULTIPLIER),
-        },
-        {
-          storeOpType: StoreOpType.RetrieveResultAddStore,
-          storeNumber: storeNumberTo,
-          secondaryStoreNumber: 0,
-          offset: swapToOffset,
-          fraction: 0,
-        },
-      ],
-    });
 
     console.dir(
       {
@@ -237,24 +224,17 @@ export class ZeroX extends Exchange {
       address: path.toToken,
     });
 
-    const { data: approveEncodedCall, offsets: approveFromOffsets } =
-      getMagicOffsets({
-        data: IERC20.encodeFunctionData("approve", [
-          path.params.approveAddress,
-          MAGIC_REPLACERS[0],
-        ]),
-        magicReplacers: [MAGIC_REPLACERS[0]],
-      });
-
-    output.steps.push({
+    output.addStep({
       stepAddress: path.fromToken,
-      stepEncodedCall: approveEncodedCall,
+      encodedFunctionData: IERC20.encodeFunctionData("approve", [
+        path.params.approveAddress,
+        MAGIC_REPLACERS[0],
+      ]),
       storeOperations: [
         {
           storeOpType: StoreOpType.RetrieveStoreAssignCall,
           storeNumber: storeNumberFrom,
-          secondaryStoreNumber: 0,
-          offset: approveFromOffsets[0],
+          offsetReplacer: { replacer: MAGIC_REPLACERS[0], occurrence: 0 },
           fraction: Math.round(path.fraction * FRACTION_MULTIPLIER),
         },
       ],
@@ -265,42 +245,29 @@ export class ZeroX extends Exchange {
       path.params.data
     );
 
-    const { data: swapEncodedCall, offsets: swapFromOffsets } = getMagicOffsets(
-      {
-        data: ZeroXERC20.encodeFunctionData("transformERC20", [
-          path.fromToken, // inputToken
-          path.toToken, // outputToken
-          MAGIC_REPLACERS[0], // inputTokenAmount
-          1, // minOutputTokenAmount
-          decodedTransformERC20[4], // transformations
-        ]),
-        magicReplacers: [MAGIC_REPLACERS[0]],
-      }
-    );
-
-    const { offsets: swapToOffsets } = getMagicOffsets({
-      data: ZeroXERC20.encodeFunctionResult("transformERC20", [
+    output.addStep({
+      stepAddress: path.params.zeroXAddress as string,
+      encodedFunctionData: ZeroXERC20.encodeFunctionData("transformERC20", [
+        path.fromToken, // inputToken
+        path.toToken, // outputToken
+        MAGIC_REPLACERS[0], // inputTokenAmount
+        1, // minOutputTokenAmount
+        decodedTransformERC20[4], // transformations
+      ]),
+      encodedFunctionResult: ZeroXERC20.encodeFunctionResult("transformERC20", [
         MAGIC_REPLACERS[0],
       ]),
-      magicReplacers: [MAGIC_REPLACERS[0]],
-    });
-
-    output.steps.push({
-      stepAddress: path.params.zeroXAddress as string,
-      stepEncodedCall: swapEncodedCall,
       storeOperations: [
         {
           storeOpType: StoreOpType.RetrieveStoreAssignCallSubtract,
           storeNumber: storeNumberFrom,
-          secondaryStoreNumber: 0,
-          offset: swapFromOffsets[0],
+          offsetReplacer: { replacer: MAGIC_REPLACERS[0], occurrence: 0 },
           fraction: Math.round(path.fraction * FRACTION_MULTIPLIER),
         },
         {
           storeOpType: StoreOpType.RetrieveResultAddStore,
           storeNumber: storeNumberTo,
-          secondaryStoreNumber: 0,
-          offset: swapToOffsets[0],
+          offsetReplacer: { replacer: MAGIC_REPLACERS[0], occurrence: 0 },
           fraction: 0,
         },
       ],

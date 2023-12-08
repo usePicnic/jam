@@ -306,7 +306,15 @@ export enum StoreOpType {
   AddStoreToStore, // 7
 }
 
-export type StoreOperations = {
+export type StoreOperation = {
+  storeOpType: StoreOpType;
+  storeNumber: BigNumberish;
+  secondaryStoreNumber?: BigNumberish;
+  offsetReplacer?: { replacer: string; occurrence: BigNumberish };
+  fraction: BigNumberish;
+};
+
+export type DetailedStoreOperation = {
   storeOpType: StoreOpType;
   storeNumber: BigNumberish;
   secondaryStoreNumber?: BigNumberish;
@@ -316,7 +324,7 @@ export type StoreOperations = {
 export type DetailedStep = {
   stepAddress: string;
   stepEncodedCall: string;
-  storeOperations: StoreOperations[];
+  storeOperations: DetailedStoreOperation[];
 };
 export class DetailedStore {
   assetId?: string;
@@ -443,6 +451,136 @@ export class RouterOperation {
   constructor() {
     this.steps = [];
     this.stores = new DetailedStores();
+  }
+
+  addStep({
+    stepAddress,
+    encodedFunctionData,
+    encodedFunctionResult,
+    storeOperations,
+  }: {
+    stepAddress: string;
+    encodedFunctionData: string;
+    encodedFunctionResult?: string;
+    storeOperations: StoreOperation[];
+  }) {
+    function nthIndex(str, pat, n) {
+      console.log({ str, pat, n });
+
+      var L = str.length,
+        i = -1;
+      while (n-- >= 0 && i++ < L) {
+        i = str.indexOf(pat, i);
+        if (i < 0) break;
+      }
+
+      console.log({ i });
+      return i;
+    }
+
+    const detailedStoreOperations: DetailedStoreOperation[] =
+      storeOperations.map((storeOperation) => {
+        if (
+          storeOperation.storeOpType === StoreOpType.RetrieveStoreAssignCall ||
+          storeOperation.storeOpType ===
+            StoreOpType.RetrieveStoreAssignCallSubtract
+        ) {
+          const replacerWithout0x =
+            storeOperation.offsetReplacer.replacer.substring(2);
+          const idx = nthIndex(
+            encodedFunctionData,
+            replacerWithout0x,
+            storeOperation.offsetReplacer.occurrence
+          );
+          if (idx === -1) {
+            throw new Error(
+              `Replacer ${storeOperation.offsetReplacer.replacer} not found in data ${encodedFunctionData}`
+            );
+          }
+          const offset = idx / 2 - 1;
+          return {
+            storeOpType: storeOperation.storeOpType,
+            fraction: storeOperation.fraction,
+            storeNumber: storeOperation.storeNumber,
+            secondaryStoreNumber: 0,
+            offset,
+          };
+        } else if (
+          storeOperation.storeOpType === StoreOpType.RetrieveResultAddStore ||
+          storeOperation.storeOpType === StoreOpType.RetrieveResultSubtractStore
+        ) {
+          const replacerWithout0x =
+            storeOperation.offsetReplacer.replacer.substring(2);
+          const idx = nthIndex(
+            encodedFunctionResult,
+            replacerWithout0x,
+            storeOperation.offsetReplacer.occurrence
+          );
+          if (idx === -1) {
+            throw new Error(
+              `Replacer ${storeOperation.offsetReplacer.replacer} not found in data ${encodedFunctionResult}`
+            );
+          }
+          const offset = idx / 2 - 1;
+          return {
+            storeOpType: storeOperation.storeOpType,
+            fraction: storeOperation.fraction,
+            storeNumber: storeOperation.storeNumber,
+            secondaryStoreNumber: 0,
+            offset,
+          };
+        } else if (
+          storeOperation.storeOpType === StoreOpType.RetrieveStoreAssignValue ||
+          storeOperation.storeOpType ===
+            StoreOpType.RetrieveStoreAssignValueSubtract
+        ) {
+          return {
+            storeOpType: storeOperation.storeOpType,
+            fraction: storeOperation.fraction,
+            storeNumber: storeOperation.storeNumber,
+            secondaryStoreNumber: 0,
+            offset: 0,
+          };
+        } else if (
+          storeOperation.storeOpType === StoreOpType.AddStoreToStore ||
+          storeOperation.storeOpType === StoreOpType.SubtractStoreFromStore
+        ) {
+          return {
+            storeOpType: storeOperation.storeOpType,
+            fraction: storeOperation.fraction,
+            storeNumber: storeOperation.storeNumber,
+            secondaryStoreNumber: storeOperation.secondaryStoreNumber,
+            offset: 0,
+          };
+        } else {
+          throw new Error(
+            `Invalid store operation type ${storeOperation.storeOpType}`
+          );
+        }
+      });
+
+    let stepEncodedCall = encodedFunctionData;
+    storeOperations.map((storeOperation) => {
+      if (
+        storeOperation.storeOpType === StoreOpType.RetrieveStoreAssignCall ||
+        storeOperation.storeOpType ===
+          StoreOpType.RetrieveStoreAssignCallSubtract
+      ) {
+        const replacerWithout0x =
+          storeOperation.offsetReplacer.replacer.substring(2);
+        const zeroReplacer = "0".repeat(replacerWithout0x.length);
+        stepEncodedCall = stepEncodedCall.replaceAll(
+          replacerWithout0x,
+          zeroReplacer
+        );
+      }
+    });
+
+    this.steps.push({
+      stepAddress,
+      stepEncodedCall,
+      storeOperations: detailedStoreOperations,
+    });
   }
 
   getTransactionDetails(): {

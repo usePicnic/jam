@@ -3,7 +3,7 @@ import {
   Asset,
   AssetStore,
   StoreOpType,
-  StoreOperations,
+  StoreOperation,
 } from "../transaction/types";
 import {
   fetchPriceData,
@@ -12,7 +12,6 @@ import {
 import {
   FRACTION_MULTIPLIER,
   MAGIC_REPLACERS,
-  getMagicOffsets,
 } from "core/src/utils/get-magic-offset";
 import { IComposableStablePool, IERC20, IVault } from "core/src/abis";
 import {
@@ -244,23 +243,18 @@ export class BalancerDepositStrategy extends InterfaceStrategy {
           continue;
         }
 
-        const { data: approveEncodedCall, offsets: approveFromOffsets } =
-          getMagicOffsets({
-            data: IERC20.encodeFunctionData("approve", [
-              vaultAddress,
-              MAGIC_REPLACERS[0],
-            ]),
-            magicReplacers: [MAGIC_REPLACERS[0]],
-          });
-        routerOperation.steps.push({
+        routerOperation.addStep({
           stepAddress: linkedAsset.address,
-          stepEncodedCall: approveEncodedCall,
+          encodedFunctionData: IERC20.encodeFunctionData("approve", [
+            vaultAddress,
+            MAGIC_REPLACERS[0],
+          ]),
           storeOperations: [
             {
               storeOpType: StoreOpType.RetrieveStoreAssignCall,
               storeNumber: storeNumbersLinkedAssets[i],
-              secondaryStoreNumber: 0,
-              offset: approveFromOffsets[0],
+
+              offsetReplacer: { replacer: MAGIC_REPLACERS[0], occurrence: 0 },
               fraction: Math.round(
                 FRACTION_MULTIPLIER * linkedAssetFractions[i]
               ),
@@ -269,29 +263,26 @@ export class BalancerDepositStrategy extends InterfaceStrategy {
         });
       }
 
-      const { offsets: balanceOfToOffsets } = getMagicOffsets({
-        data: IERC20.encodeFunctionResult("balanceOf", [MAGIC_REPLACERS[0]]),
-        magicReplacers: [MAGIC_REPLACERS[0]],
-      });
-      routerOperation.steps.push({
+      routerOperation.addStep({
         stepAddress: asset.address,
-        stepEncodedCall: IERC20.encodeFunctionData("balanceOf", [
+        encodedFunctionData: IERC20.encodeFunctionData("balanceOf", [
           walletAddress,
+        ]),
+        encodedFunctionResult: IERC20.encodeFunctionResult("balanceOf", [
+          MAGIC_REPLACERS[0],
         ]),
         storeOperations: [
           {
             storeOpType: StoreOpType.RetrieveResultAddStore,
             storeNumber: storeNumberTmp,
-            secondaryStoreNumber: 0,
-            offset: balanceOfToOffsets[0],
+            offsetReplacer: {
+              replacer: MAGIC_REPLACERS[0],
+              occurrence: 0,
+            },
             fraction: FRACTION_MULTIPLIER,
           },
         ],
       });
-
-      // ordered assets
-      // amounts (following same order)
-      // selfIndex
 
       const { selfIndex, orderedAddresses } = this.getSelfIndex({
         asset,
@@ -333,73 +324,64 @@ export class BalancerDepositStrategy extends InterfaceStrategy {
 
       console.log({ selfIndex, amountsMinusSelf, userData });
 
-      const usedReplacers = MAGIC_REPLACERS.slice(0, amountsMinusSelf.length);
-      const { data: joinPoolEncodedCall, offsets: joinPoolFromOffsets } =
-        getMagicOffsets({
-          data: IVault.encodeFunctionData("joinPool", [
-            asset.callParams.poolId, // poolId
-            walletAddress, // sender
-            walletAddress, // recipient
-            [
-              orderedAddresses, // assets
-              amounts, // maxAmountsIn
-              userData, // userData
-              false, // fromInternalBalance
-            ],
-          ]),
-          magicReplacers: [...usedReplacers, ...usedReplacers], // Each replacer appear once in amounts and once in userData.
-        });
-
-      const storeOperations: StoreOperations[] = [];
+      const storeOperations: StoreOperation[] = [];
       console.log({
         storeNumbersLinkedAssets,
-        joinPoolEncodedCall,
-        joinPoolFromOffsets,
         linkedAssetFractions,
         mreplacers: MAGIC_REPLACERS.slice(0, amountsMinusSelf.length),
       });
       for (const [i] of linkedAssets.entries()) {
-        console.log({ i1: i, i2: i + usedReplacers.length });
         storeOperations.push({
           storeOpType: StoreOpType.RetrieveStoreAssignCall,
           storeNumber: storeNumbersLinkedAssets[i],
-          secondaryStoreNumber: 0,
-          offset: joinPoolFromOffsets[i],
+          offsetReplacer: { replacer: MAGIC_REPLACERS[i], occurrence: 0 },
           fraction: Math.round(linkedAssetFractions[i] * FRACTION_MULTIPLIER),
         });
         storeOperations.push({
           storeOpType: StoreOpType.RetrieveStoreAssignCallSubtract,
           storeNumber: storeNumbersLinkedAssets[i],
-          secondaryStoreNumber: 0,
-          offset: joinPoolFromOffsets[i + usedReplacers.length],
+          offsetReplacer: { replacer: MAGIC_REPLACERS[i], occurrence: 1 },
           fraction: Math.round(linkedAssetFractions[i] * FRACTION_MULTIPLIER),
         });
       }
 
-      routerOperation.steps.push({
+      routerOperation.addStep({
         stepAddress: vaultAddress,
-        stepEncodedCall: joinPoolEncodedCall,
+        encodedFunctionData: IVault.encodeFunctionData("joinPool", [
+          asset.callParams.poolId, // poolId
+          walletAddress, // sender
+          walletAddress, // recipient
+          [
+            orderedAddresses, // assets
+            amounts, // maxAmountsIn
+            userData, // userData
+            false, // fromInternalBalance
+          ],
+        ]),
         storeOperations,
       });
 
-      routerOperation.steps.push({
+      //
+
+      routerOperation.addStep({
         stepAddress: asset.address,
-        stepEncodedCall: IERC20.encodeFunctionData("balanceOf", [
+        encodedFunctionData: IERC20.encodeFunctionData("balanceOf", [
           walletAddress,
+        ]),
+        encodedFunctionResult: IERC20.encodeFunctionResult("balanceOf", [
+          MAGIC_REPLACERS[0],
         ]),
         storeOperations: [
           {
             storeOpType: StoreOpType.RetrieveResultAddStore,
             storeNumber: storeNumberPool,
-            secondaryStoreNumber: 0,
-            offset: balanceOfToOffsets[0],
+            offsetReplacer: { replacer: MAGIC_REPLACERS[0], occurrence: 0 },
             fraction: FRACTION_MULTIPLIER,
           },
           {
             storeOpType: StoreOpType.SubtractStoreFromStore,
             storeNumber: storeNumberPool,
             secondaryStoreNumber: storeNumberTmp,
-            offset: 0,
             fraction: FRACTION_MULTIPLIER,
           },
         ],
@@ -427,24 +409,25 @@ export class BalancerDepositStrategy extends InterfaceStrategy {
         });
       });
 
-      const { offsets: balanceOfToOffsets } = getMagicOffsets({
-        data: IERC20.encodeFunctionResult("balanceOf", [MAGIC_REPLACERS[0]]),
-        magicReplacers: [MAGIC_REPLACERS[0]],
-      });
-
       asset.linkedAssets.map((la, i) => {
         const linkedAsset = assetStore.getAssetById(la.assetId);
-        routerOperation.steps.push({
+
+        routerOperation.addStep({
           stepAddress: linkedAsset.address,
-          stepEncodedCall: IERC20.encodeFunctionData("balanceOf", [
+          encodedFunctionData: IERC20.encodeFunctionData("balanceOf", [
             walletAddress,
+          ]),
+          encodedFunctionResult: IERC20.encodeFunctionResult("balanceOf", [
+            MAGIC_REPLACERS[0],
           ]),
           storeOperations: [
             {
               storeOpType: StoreOpType.RetrieveResultAddStore,
               storeNumber: storeNumbersTmp[i],
-              secondaryStoreNumber: 0,
-              offset: balanceOfToOffsets[0],
+              offsetReplacer: {
+                replacer: MAGIC_REPLACERS[0],
+                occurrence: 0,
+              },
               fraction: FRACTION_MULTIPLIER,
             },
           ],
@@ -480,31 +463,28 @@ export class BalancerDepositStrategy extends InterfaceStrategy {
         ]
       );
 
-      const { data: exitPoolEncodedCall, offsets: exitPoolFromOffsets } =
-        getMagicOffsets({
-          data: IVault.encodeFunctionData("exitPool", [
-            asset.callParams.poolId, // poolId
-            walletAddress, // sender
-            walletAddress, // recipient
-            [
-              orderedAddresses, // assets
-              amounts, // maxAmountsIn
-              userData, // userData
-              false, // fromInternalBalance
-            ],
-          ]),
-          magicReplacers: [MAGIC_REPLACERS[0]],
-        });
-
-      routerOperation.steps.push({
+      routerOperation.addStep({
         stepAddress: vaultAddress,
-        stepEncodedCall: exitPoolEncodedCall,
+        encodedFunctionData: IVault.encodeFunctionData("exitPool", [
+          asset.callParams.poolId, // poolId
+          walletAddress, // sender
+          walletAddress, // recipient
+          [
+            orderedAddresses, // assets
+            amounts, // maxAmountsIn
+            userData, // userData
+            false, // fromInternalBalance
+          ],
+        ]),
         storeOperations: [
           {
             storeOpType: StoreOpType.RetrieveStoreAssignCallSubtract,
             storeNumber: storeNumberPool,
-            secondaryStoreNumber: 0,
-            offset: exitPoolFromOffsets[0],
+
+            offsetReplacer: {
+              replacer: MAGIC_REPLACERS[0],
+              occurrence: 0,
+            },
             fraction: Math.round(newFraction * FRACTION_MULTIPLIER),
           },
         ],
@@ -513,24 +493,26 @@ export class BalancerDepositStrategy extends InterfaceStrategy {
       asset.linkedAssets.map((la, i) => {
         const linkedAsset = assetStore.getAssetById(la.assetId);
 
-        routerOperation.steps.push({
+        routerOperation.addStep({
           stepAddress: linkedAsset.address,
-          stepEncodedCall: IERC20.encodeFunctionData("balanceOf", [
+          encodedFunctionData: IERC20.encodeFunctionData("balanceOf", [
             walletAddress,
+          ]),
+          encodedFunctionResult: IERC20.encodeFunctionResult("balanceOf", [
+            MAGIC_REPLACERS[0],
           ]),
           storeOperations: [
             {
               storeOpType: StoreOpType.RetrieveResultAddStore,
               storeNumber: storeNumbersLinkedAssets[i],
-              secondaryStoreNumber: 0,
-              offset: balanceOfToOffsets[0],
+
+              offsetReplacer: { replacer: MAGIC_REPLACERS[0], occurrence: 0 },
               fraction: FRACTION_MULTIPLIER,
             },
             {
               storeOpType: StoreOpType.SubtractStoreFromStore,
               storeNumber: storeNumbersLinkedAssets[i],
               secondaryStoreNumber: storeNumbersTmp[i],
-              offset: 0,
               fraction: FRACTION_MULTIPLIER,
             },
           ],

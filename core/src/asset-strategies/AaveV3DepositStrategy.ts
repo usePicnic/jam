@@ -4,7 +4,6 @@ import {
   fetchPriceData,
   getPrice,
 } from "../transaction/asset-type-strategies-helpers";
-import { getMagicOffsets } from "core/src/utils/get-magic-offset";
 import { IERC20, IPool } from "core/src/abis";
 import {
   FRACTION_MULTIPLIER,
@@ -87,93 +86,77 @@ export class AaveV3DepositStrategy extends InterfaceStrategy {
         delta: variation,
       });
 
-      const { data: approveEncodedCall, offsets: approveFromOffsets } =
-        getMagicOffsets({
-          data: IERC20.encodeFunctionData("approve", [
-            poolAddress,
-            MAGIC_REPLACERS[0],
-          ]),
-          magicReplacers: [MAGIC_REPLACERS[0]],
-        });
-
-      routerOperation.steps.push({
+      routerOperation.addStep({
         stepAddress: linkedAsset.address,
-        stepEncodedCall: approveEncodedCall,
+        encodedFunctionData: IERC20.encodeFunctionData("approve", [
+          poolAddress,
+          MAGIC_REPLACERS[0],
+        ]),
         storeOperations: [
           {
             storeOpType: StoreOpType.RetrieveStoreAssignCall,
             storeNumber: storeNumberFrom,
-            secondaryStoreNumber: 0,
-            offset: approveFromOffsets[0],
+            offsetReplacer: { replacer: MAGIC_REPLACERS[0], occurrence: 0 },
             fraction: Math.round(FRACTION_MULTIPLIER * newFraction),
           },
         ],
       });
 
-      const { offsets: balanceOfToOffsets } = getMagicOffsets({
-        data: IERC20.encodeFunctionResult("balanceOf", [MAGIC_REPLACERS[0]]),
-        magicReplacers: [MAGIC_REPLACERS[0]],
-      });
-
-      routerOperation.steps.push({
+      routerOperation.addStep({
         stepAddress: asset.address,
-        stepEncodedCall: IERC20.encodeFunctionData("balanceOf", [
+        encodedFunctionData: IERC20.encodeFunctionData("balanceOf", [
           walletAddress,
+        ]),
+        encodedFunctionResult: IERC20.encodeFunctionResult("balanceOf", [
+          MAGIC_REPLACERS[0],
         ]),
         storeOperations: [
           {
             storeOpType: StoreOpType.RetrieveResultAddStore,
             storeNumber: storeNumberTmp,
-            secondaryStoreNumber: 0,
-            offset: balanceOfToOffsets[0],
+            offsetReplacer: { replacer: MAGIC_REPLACERS[0], occurrence: 0 },
             fraction: FRACTION_MULTIPLIER,
           },
         ],
       });
 
-      const { data: supplyEncodedCall, offsets: supplyFromOffsets } =
-        getMagicOffsets({
-          data: IPool.encodeFunctionData("supply", [
-            linkedAsset.address, // asset
-            MAGIC_REPLACERS[0], // amount
-            walletAddress, // onBehalfOf
-            0, // referralCode
-          ]),
-          magicReplacers: [MAGIC_REPLACERS[0]],
-        });
-
-      routerOperation.steps.push({
+      routerOperation.addStep({
         stepAddress: poolAddress,
-        stepEncodedCall: supplyEncodedCall,
+        encodedFunctionData: IPool.encodeFunctionData("supply", [
+          linkedAsset.address, // asset
+          MAGIC_REPLACERS[0], // amount
+          walletAddress, // onBehalfOf
+          0, // referralCode
+        ]),
         storeOperations: [
           {
             storeOpType: StoreOpType.RetrieveStoreAssignCallSubtract,
             storeNumber: storeNumberFrom,
-            secondaryStoreNumber: 0,
-            offset: supplyFromOffsets[0],
+            offsetReplacer: { replacer: MAGIC_REPLACERS[0], occurrence: 0 },
             fraction: Math.round(newFraction * FRACTION_MULTIPLIER),
           },
         ],
       });
 
-      routerOperation.steps.push({
+      routerOperation.addStep({
         stepAddress: asset.address,
-        stepEncodedCall: IERC20.encodeFunctionData("balanceOf", [
+        encodedFunctionData: IERC20.encodeFunctionData("balanceOf", [
           walletAddress,
+        ]),
+        encodedFunctionResult: IERC20.encodeFunctionResult("balanceOf", [
+          MAGIC_REPLACERS[0],
         ]),
         storeOperations: [
           {
             storeOpType: StoreOpType.RetrieveResultAddStore,
             storeNumber: storeNumberTo,
-            secondaryStoreNumber: 0,
-            offset: balanceOfToOffsets[0],
+            offsetReplacer: { replacer: MAGIC_REPLACERS[0], occurrence: 0 },
             fraction: FRACTION_MULTIPLIER,
           },
           {
             storeOpType: StoreOpType.SubtractStoreFromStore,
             storeNumber: storeNumberTo,
             secondaryStoreNumber: storeNumberTmp,
-            offset: 0,
             fraction: FRACTION_MULTIPLIER,
           },
         ],
@@ -203,37 +186,29 @@ export class AaveV3DepositStrategy extends InterfaceStrategy {
         });
       });
 
-      const { data: withdrawEncodedCall, offsets: withdrawFromOffsets } =
-        getMagicOffsets({
-          data: IPool.encodeFunctionData("withdraw", [
-            linkedAsset.address, // asset
-            MAGIC_REPLACERS[0], // _shares
-            walletAddress, // to
-          ]),
-          magicReplacers: [MAGIC_REPLACERS[0]],
-        });
-
-      const { offsets: withdrawToOffsets } = getMagicOffsets({
-        data: IPool.encodeFunctionResult("withdraw", [MAGIC_REPLACERS[0]]),
-        magicReplacers: [MAGIC_REPLACERS[0]],
-      });
-
-      routerOperation.steps.push({
+      routerOperation.addStep({
         stepAddress: poolAddress,
-        stepEncodedCall: withdrawEncodedCall,
+        encodedFunctionData: IPool.encodeFunctionData("withdraw", [
+          linkedAsset.address, // asset
+          MAGIC_REPLACERS[0], // _shares
+          walletAddress, // to
+        ]),
+        encodedFunctionResult: IPool.encodeFunctionResult("withdraw", [
+          MAGIC_REPLACERS[0],
+        ]),
         storeOperations: [
           {
             storeOpType: StoreOpType.RetrieveStoreAssignCallSubtract,
             storeNumber: storeNumberFrom,
-            secondaryStoreNumber: 0,
-            offset: withdrawFromOffsets[0],
+
+            offsetReplacer: { replacer: MAGIC_REPLACERS[0], occurrence: 0 },
             fraction: Math.round(newFraction * FRACTION_MULTIPLIER),
           },
           {
             storeOpType: StoreOpType.RetrieveResultAddStore,
             storeNumber: storeNumberTo,
-            secondaryStoreNumber: 0,
-            offset: withdrawToOffsets[0],
+
+            offsetReplacer: { replacer: MAGIC_REPLACERS[0], occurrence: 0 },
             fraction: FRACTION_MULTIPLIER,
           },
         ],

@@ -4,7 +4,6 @@ import {
   fetchPriceData,
   getPrice,
 } from "../transaction/asset-type-strategies-helpers";
-import { getMagicOffsets } from "core/src/utils/get-magic-offset";
 import { IERC20, SavingsDai } from "core/src/abis";
 import {
   FRACTION_MULTIPLIER,
@@ -83,61 +82,45 @@ export class SavingsDaiDepositStrategy extends InterfaceStrategy {
         delta: variation,
       });
 
-      const { data: approveEncodedCall, offsets: approveFromOffsets } =
-        getMagicOffsets({
-          data: IERC20.encodeFunctionData("approve", [
-            asset.address,
-            MAGIC_REPLACERS[0],
-          ]),
-          magicReplacers: [MAGIC_REPLACERS[0]],
-        });
-
-      routerOperation.steps.push({
+      routerOperation.addStep({
         stepAddress: linkedAsset.address,
-        stepEncodedCall: approveEncodedCall,
+        encodedFunctionData: IERC20.encodeFunctionData("approve", [
+          asset.address,
+          MAGIC_REPLACERS[0],
+        ]),
         storeOperations: [
           {
             storeOpType: StoreOpType.RetrieveStoreAssignCall,
             storeNumber: storeNumberDai,
-            secondaryStoreNumber: 0,
-            offset: approveFromOffsets[0],
+            offsetReplacer: {
+              replacer: MAGIC_REPLACERS[0],
+              occurrence: 0,
+            },
             fraction: Math.round(FRACTION_MULTIPLIER * newFraction),
           },
         ],
       });
 
-      const { data: depositEncodedCall, offsets: depositFromOffsets } =
-        getMagicOffsets({
-          data: SavingsDai.encodeFunctionData("deposit", [
-            MAGIC_REPLACERS[0], // assets
-            walletAddress, // receiver
-          ]),
-          magicReplacers: [MAGIC_REPLACERS[0]],
-        });
-
-      const { offsets: depositToOffsets } = getMagicOffsets({
-        data: SavingsDai.encodeFunctionResult("deposit", [
+      routerOperation.addStep({
+        stepAddress: asset.address,
+        encodedFunctionData: SavingsDai.encodeFunctionData("deposit", [
+          MAGIC_REPLACERS[0], // assets
+          walletAddress, // receiver
+        ]),
+        encodedFunctionResult: SavingsDai.encodeFunctionResult("deposit", [
           MAGIC_REPLACERS[0], // shares
         ]),
-        magicReplacers: [MAGIC_REPLACERS[0]],
-      });
-
-      routerOperation.steps.push({
-        stepAddress: asset.address,
-        stepEncodedCall: depositEncodedCall,
         storeOperations: [
           {
             storeOpType: StoreOpType.RetrieveStoreAssignCallSubtract,
             storeNumber: storeNumberDai,
-            secondaryStoreNumber: 0,
-            offset: depositFromOffsets[0],
+            offsetReplacer: { replacer: MAGIC_REPLACERS[0], occurrence: 0 },
             fraction: Math.round(newFraction * FRACTION_MULTIPLIER),
           },
           {
             storeOpType: StoreOpType.RetrieveResultAddStore,
             storeNumber: storeNumberSDai,
-            secondaryStoreNumber: 0,
-            offset: depositToOffsets[0],
+            offsetReplacer: { replacer: MAGIC_REPLACERS[0], occurrence: 0 },
             fraction: FRACTION_MULTIPLIER,
           },
         ],
@@ -160,37 +143,33 @@ export class SavingsDaiDepositStrategy extends InterfaceStrategy {
         });
       });
 
-      const { data: redeemEncodedCall, offsets: redeemFromOffsets } =
-        getMagicOffsets({
-          data: SavingsDai.encodeFunctionData("redeem", [
-            MAGIC_REPLACERS[0], // shares
-            walletAddress, // receiver
-            walletAddress, // owner
-          ]),
-          magicReplacers: [MAGIC_REPLACERS[0]],
-        });
-
-      const { offsets: redeemToOffsets } = getMagicOffsets({
-        data: SavingsDai.encodeFunctionResult("redeem", [MAGIC_REPLACERS[0]]),
-        magicReplacers: [MAGIC_REPLACERS[0]],
-      });
-
-      routerOperation.steps.push({
+      routerOperation.addStep({
         stepAddress: asset.address,
-        stepEncodedCall: redeemEncodedCall,
+        encodedFunctionData: SavingsDai.encodeFunctionData("redeem", [
+          MAGIC_REPLACERS[0], // shares
+          walletAddress, // receiver
+          walletAddress, // owner
+        ]),
+        encodedFunctionResult: SavingsDai.encodeFunctionResult("redeem", [
+          MAGIC_REPLACERS[0],
+        ]),
         storeOperations: [
           {
             storeOpType: StoreOpType.RetrieveStoreAssignCallSubtract,
             storeNumber: storeNumberSDai,
-            secondaryStoreNumber: 0,
-            offset: redeemFromOffsets[0],
+            offsetReplacer: {
+              replacer: MAGIC_REPLACERS[0],
+              occurrence: 0,
+            },
             fraction: Math.round(newFraction * FRACTION_MULTIPLIER),
           },
           {
             storeOpType: StoreOpType.RetrieveResultAddStore,
             storeNumber: storeNumberDai,
-            secondaryStoreNumber: 0,
-            offset: redeemToOffsets[0],
+            offsetReplacer: {
+              replacer: MAGIC_REPLACERS[0],
+              occurrence: 0,
+            },
             fraction: FRACTION_MULTIPLIER,
           },
         ],

@@ -4,7 +4,6 @@ import {
   fetchPriceData,
   getPrice,
 } from "../transaction/asset-type-strategies-helpers";
-import { getMagicOffsets } from "core/src/utils/get-magic-offset";
 import { AaveIncentivesController, IERC20, LendingPool } from "core/src/abis";
 import {
   FRACTION_MULTIPLIER,
@@ -95,56 +94,41 @@ export class AaveV2DepositStrategy extends InterfaceStrategy {
         delta: variation,
       });
 
-      const { data: approveEncodedCall, offsets: approveFromOffsets } =
-        getMagicOffsets({
-          data: IERC20.encodeFunctionData("approve", [
-            lendingPoolAddress,
-            MAGIC_REPLACERS[0],
-          ]),
-          magicReplacers: [MAGIC_REPLACERS[0]],
-        });
-
-      routerOperation.steps.push({
+      routerOperation.addStep({
         stepAddress: linkedAsset.address,
-        stepEncodedCall: approveEncodedCall,
+        encodedFunctionData: IERC20.encodeFunctionData("approve", [
+          lendingPoolAddress,
+          MAGIC_REPLACERS[0],
+        ]),
         storeOperations: [
           {
             storeOpType: StoreOpType.RetrieveStoreAssignCall,
             storeNumber: storeNumberToken,
-            secondaryStoreNumber: 0,
-            offset: approveFromOffsets[0],
+            offsetReplacer: { replacer: MAGIC_REPLACERS[0], occurrence: 0 },
             fraction: Math.round(FRACTION_MULTIPLIER * newFraction),
           },
         ],
       });
 
-      const { data: depositEncodedCall, offsets: depositFromOffsets } =
-        getMagicOffsets({
-          data: LendingPool.encodeFunctionData("deposit", [
-            linkedAsset.address, // assetIn
-            MAGIC_REPLACERS[0], // amount
-            walletAddress, // onBehalfOf
-            0, // referralCode
-          ]),
-          magicReplacers: [MAGIC_REPLACERS[0]],
-        });
-
-      routerOperation.steps.push({
+      routerOperation.addStep({
         stepAddress: lendingPoolAddress,
-        stepEncodedCall: depositEncodedCall,
+        encodedFunctionData: LendingPool.encodeFunctionData("deposit", [
+          linkedAsset.address, // assetIn
+          MAGIC_REPLACERS[0], // amount
+          walletAddress, // onBehalfOf
+          0, // referralCode
+        ]),
         storeOperations: [
           {
             storeOpType: StoreOpType.RetrieveStoreAssignCallSubtract,
             storeNumber: storeNumberToken,
-            secondaryStoreNumber: 0,
-            offset: depositFromOffsets[0],
+            offsetReplacer: { replacer: MAGIC_REPLACERS[0], occurrence: 0 },
             fraction: Math.round(newFraction * FRACTION_MULTIPLIER),
           },
           {
             storeOpType: StoreOpType.AddStoreToStore,
             storeNumber: storeNumberAToken,
             secondaryStoreNumber: storeNumberToken,
-            offset: 0,
             fraction: Math.round(newFraction * FRACTION_MULTIPLIER),
           },
         ],
@@ -173,108 +157,74 @@ export class AaveV2DepositStrategy extends InterfaceStrategy {
         });
       });
 
-      const { data: withdrawEncodedCall, offsets: withdrawFromOffsets } =
-        getMagicOffsets({
-          data: LendingPool.encodeFunctionData("withdraw", [
-            linkedAsset.address, // asset
-            MAGIC_REPLACERS[0], // amount
-            walletAddress, // to
-          ]),
-          magicReplacers: [MAGIC_REPLACERS[0]],
-        });
-
-      const { offsets: withdrawToOffsets } = getMagicOffsets({
-        data: LendingPool.encodeFunctionResult("withdraw", [
+      routerOperation.addStep({
+        stepAddress: lendingPoolAddress,
+        encodedFunctionData: LendingPool.encodeFunctionData("withdraw", [
+          linkedAsset.address, // asset
+          MAGIC_REPLACERS[0], // amount
+          walletAddress, // to
+        ]),
+        encodedFunctionResult: LendingPool.encodeFunctionResult("withdraw", [
           MAGIC_REPLACERS[0],
         ]),
-        magicReplacers: [MAGIC_REPLACERS[0]],
-      });
-
-      routerOperation.steps.push({
-        stepAddress: lendingPoolAddress,
-        stepEncodedCall: withdrawEncodedCall,
         storeOperations: [
           {
             storeOpType: StoreOpType.RetrieveStoreAssignCallSubtract,
             storeNumber: storeNumberAToken,
-            secondaryStoreNumber: 0,
-            offset: withdrawFromOffsets[0],
+            offsetReplacer: { replacer: MAGIC_REPLACERS[0], occurrence: 0 },
             fraction: Math.round(newFraction * FRACTION_MULTIPLIER),
           },
           {
             storeOpType: StoreOpType.RetrieveResultAddStore,
             storeNumber: storeNumberToken,
-            secondaryStoreNumber: 0,
-            offset: withdrawToOffsets[0],
+            offsetReplacer: { replacer: MAGIC_REPLACERS[0], occurrence: 0 },
             fraction: FRACTION_MULTIPLIER,
           },
         ],
       });
 
-      // uint256 amountToClaim = distributor.getRewardsBalance(assets, address(this));
-      // uint256 claimedReward = distributor.claimRewards(assets, amountToClaim, address(this));
-
-      const {
-        data: getRewardBalanceEncodedCall,
-        offsets: _getRewardBalanceFromOffsets,
-      } = getMagicOffsets({
-        data: AaveIncentivesController.encodeFunctionData("getRewardsBalance", [
-          [asset.address], // assets
-          walletAddress, // to
-        ]),
-        magicReplacers: [],
-      });
-
-      const { offsets: getRewardBalanceToOffsets } = getMagicOffsets({
-        data: AaveIncentivesController.encodeFunctionResult(
+      routerOperation.addStep({
+        stepAddress: incentivesControllerAddress,
+        encodedFunctionData: AaveIncentivesController.encodeFunctionData(
+          "getRewardsBalance",
+          [
+            [asset.address], // assets
+            walletAddress, // to
+          ]
+        ),
+        encodedFunctionResult: AaveIncentivesController.encodeFunctionResult(
           "getRewardsBalance",
           [MAGIC_REPLACERS[0]]
         ),
-        magicReplacers: [MAGIC_REPLACERS[0]],
-      });
-
-      routerOperation.steps.push({
-        stepAddress: incentivesControllerAddress,
-        stepEncodedCall: getRewardBalanceEncodedCall,
         storeOperations: [
           {
             storeOpType: StoreOpType.RetrieveResultAddStore,
             storeNumber: storeNumberReward,
-            secondaryStoreNumber: 0,
-            offset: withdrawToOffsets[0],
+            offsetReplacer: { replacer: MAGIC_REPLACERS[0], occurrence: 0 },
             fraction: FRACTION_MULTIPLIER,
           },
         ],
       });
 
-      const {
-        data: claimRewardsEncodedCall,
-        offsets: claimRewardsFromOffsets,
-      } = getMagicOffsets({
-        data: AaveIncentivesController.encodeFunctionData("claimRewards", [
-          [asset.address], // assets
-          MAGIC_REPLACERS[0], // amount
-          walletAddress, // to
-        ]),
-        magicReplacers: [MAGIC_REPLACERS[0]],
-      });
-
-      const { offsets: claimRewardsToOffsets } = getMagicOffsets({
-        data: AaveIncentivesController.encodeFunctionResult("claimRewards", [
-          MAGIC_REPLACERS[0],
-        ]),
-        magicReplacers: [MAGIC_REPLACERS[0]],
-      });
-
-      routerOperation.steps.push({
+      routerOperation.addStep({
         stepAddress: incentivesControllerAddress,
-        stepEncodedCall: claimRewardsEncodedCall,
+        encodedFunctionData: AaveIncentivesController.encodeFunctionData(
+          "claimRewards",
+          [
+            [asset.address], // assets
+            MAGIC_REPLACERS[0], // amount
+            walletAddress, // to
+          ]
+        ),
+        encodedFunctionResult: AaveIncentivesController.encodeFunctionResult(
+          "claimRewards",
+          [MAGIC_REPLACERS[0]]
+        ),
         storeOperations: [
           {
             storeOpType: StoreOpType.RetrieveStoreAssignCall,
             storeNumber: storeNumberReward,
-            secondaryStoreNumber: 0,
-            offset: withdrawFromOffsets[0],
+            offsetReplacer: { replacer: MAGIC_REPLACERS[0], occurrence: 0 },
             fraction: FRACTION_MULTIPLIER,
           },
         ],

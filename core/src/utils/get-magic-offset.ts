@@ -1,35 +1,3 @@
-export function getMagicOffsets({
-  data,
-  magicReplacers,
-}: {
-  data: string;
-  magicReplacers: string[];
-}): { data: string; offsets: number[] } {
-  let updatedData = data;
-  const offsets: number[] = [];
-
-  for (const magicReplacer of magicReplacers) {
-    const magicReplacerWithout0x = magicReplacer.substring(2);
-    const indexOf = updatedData.indexOf(magicReplacerWithout0x);
-
-    if (indexOf === -1) {
-      throw new Error(`Magic replacer ${magicReplacer} not found in data`);
-    }
-
-    const before = updatedData.substring(0, indexOf);
-    const after = updatedData.substring(indexOf + 64);
-    const zeroReplacer = "0".repeat(64);
-
-    updatedData = before + zeroReplacer + after;
-    offsets.push(indexOf / 2 - 1);
-  }
-
-  return {
-    data: updatedData,
-    offsets: offsets,
-  };
-}
-
 export const MAGIC_REPLACERS = [
   "0x7fa9b53d120de9cd66856522bcf6d4a7797019996b607a7c9da51787beed38d1",
   "0x7f797936f1e9ca0b2ab9736276d6a755468ef28a6cefe78c0c0c3b1903f97a5f",
