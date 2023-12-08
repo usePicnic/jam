@@ -8,6 +8,7 @@ import { AaveV2DepositStrategy } from "./AaveV2DepositStrategy";
 import { AaveV3DepositStrategy } from "./AaveV3DepositStrategy";
 import { InterfaceStrategy } from "./InterfaceStrategy";
 import { BalancerDepositStrategy } from "./BalancerDepositStrategy";
+import { SavingsDaiDepositStrategy } from "./SavingsDaiDepositStrategy";
 
 export const assetTypeStrategies: {
   [chainId: number]: {
@@ -23,5 +24,6 @@ export const assetTypeStrategies: {
     gammaDeposit: new GammaDepositStrategy(),
     aaveV2Deposit: new AaveV2DepositStrategy(),
     aaveV3Deposit: new AaveV3DepositStrategy(),
+    savingsDaiDeposit: new SavingsDaiDepositStrategy(),
   },
 };

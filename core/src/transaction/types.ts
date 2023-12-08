@@ -291,6 +291,7 @@ export type AssetType =
   | "beefyDeposit"
   | "aaveV2Deposit"
   | "aaveV3Deposit"
+  | "savingsDaiDeposit"
   | "balancerDeposit"
   | "uniswapV2Liquidity";
 

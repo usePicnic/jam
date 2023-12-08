@@ -1,0 +1,14 @@
+[
+  {
+    "id": "48f0325c-e5cc-4dac-9873-793f6c12fe08",
+    "name": "Matic",
+    "chainId": 137,
+    "active": true,
+    "address": "0x0000000000000000000000000000000000001010",
+    "color": "#468af0",
+    "decimals": 18,
+    "symbol": "MATIC",
+    "type": "networkToken",
+    "visible": true
+  }
+]

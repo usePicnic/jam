@@ -1,0 +1,23 @@
+[
+  {
+    "id": "8bd1bd78-4938-4204-a945-fa63f57c642b",
+    "name": "Savings Dai",
+    "chainId": 1,
+    "active": true,
+    "address": "0x83F20F44975D03b1b09e64809B757c47f942BEeA",
+    "color": "#79A63A",
+    "decimals": 18,
+    "symbol": "sDAI",
+    "type": "savingsDaiDeposit",
+    "visible": true,
+    "maxSize": 64,
+    "allowSlot": 2,
+    "balanceSlot": 1,
+    "linkedAssets": [
+      {
+        "assetId": "389d84c3-9095-4b00-b01a-18948b9ada39",
+        "fraction": 1
+      }
+    ]
+  }
+]

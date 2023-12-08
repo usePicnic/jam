@@ -15,6 +15,7 @@ import UniswapV2FactoryABI from "./UniswapV2/UniswapV2Factory.json";
 import UniswapV2PairABI from "./UniswapV2/UniswapV2Pair.json";
 import UniswapV2Router02ABI from "./UniswapV2/UniswapV2Router02.json";
 import ZeroXERC20ABI from "./ZeroX/ZeroXERC20.json";
+import SavingsDaiABI from "./Maker/SavingsDai.json";
 import RouterABI from "./Router.json";
 import RouterSimulatorABI from "./RouterSimulator.json";
 
@@ -37,5 +38,6 @@ export const UniswapV2Factory = new Interface(UniswapV2FactoryABI);
 export const UniswapV2Pair = new Interface(UniswapV2PairABI);
 export const UniswapV2Router02 = new Interface(UniswapV2Router02ABI);
 export const ZeroXERC20 = new Interface(ZeroXERC20ABI.abi);
+export const SavingsDai = new Interface(SavingsDaiABI);
 export const Router = new Interface(RouterABI.abi);
 export const RouterSimulator = new Interface(RouterSimulatorABI.abi);

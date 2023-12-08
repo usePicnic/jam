@@ -1,0 +1,14 @@
+[
+  {
+    "id": "98887ce0-466f-481d-a0a0-3d5bf5ea6d83",
+    "name": "Ether",
+    "chainId": 1,
+    "active": true,
+    "address": "0x0000000000000000000000000000000000001010",
+    "color": "#818181",
+    "decimals": 18,
+    "symbol": "ETH",
+    "type": "networkToken",
+    "visible": true
+  }
+]

@@ -39,11 +39,11 @@
     "linkedAssets": [
       {
         "assetId": "8634b650-20fe-4f9e-8310-6672b38ea0ce",
-        "fraction": 0
+        "fraction": 0.7951
       },
       {
         "assetId": "d604439e-d464-4df5-bed1-66815b348cab",
-        "fraction": 1
+        "fraction": 0.2049
       }
     ],
     "name": "maticX/WMATIC",
