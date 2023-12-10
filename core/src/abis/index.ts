@@ -11,6 +11,7 @@ import IHypervisorABI from "./Gamma/IHypervisor.json";
 import IHypervisorRouterABI from "./Gamma/IHypervisorRouter.json";
 import GammaRatiosCalculatorABI from "./Gamma/GammaRatiosCalculator.json";
 import IParaswapABI from "./Paraswap/IParaswap.json";
+import StargateRouterABI from "./Stargate/Router.json";
 import UniswapV2FactoryABI from "./UniswapV2/UniswapV2Factory.json";
 import UniswapV2PairABI from "./UniswapV2/UniswapV2Pair.json";
 import UniswapV2Router02ABI from "./UniswapV2/UniswapV2Router02.json";
@@ -34,6 +35,7 @@ export const GammaRatiosCalculator = new Interface(
   GammaRatiosCalculatorABI.abi
 );
 export const IParaswap = new Interface(IParaswapABI);
+export const StargateRouter = new Interface(StargateRouterABI);
 export const UniswapV2Factory = new Interface(UniswapV2FactoryABI);
 export const UniswapV2Pair = new Interface(UniswapV2PairABI);
 export const UniswapV2Router02 = new Interface(UniswapV2Router02ABI);

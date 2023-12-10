@@ -1,0 +1,48 @@
+[
+  {
+    "id": "c722c277-37b7-4416-9219-ab594a3fa5fe",
+    "name": "USDT",
+    "chainId": 137,
+    "active": true,
+    "address": "0x29e38769f23701A2e4A8Ef0492e19dA4604Be62c",
+    "callParams": {
+      "poolId": 2
+    },
+    "color": "#54ae93",
+    "decimals": 6,
+    "linkedAssets": [
+      {
+        "assetId": "dfe40dda-5c96-4ff3-b773-386f1ca0868d",
+        "fraction": 1
+      }
+    ],
+    "symbol": "USDT",
+    "type": "stargateDeposit",
+    "visible": false,
+    "allowSlot": 6,
+    "balanceSlot": 5
+  },
+  {
+    "id": "1a0755ad-7af3-4134-a5ff-374d8c4ec6ef",
+    "name": "USD Coin",
+    "chainId": 137,
+    "active": true,
+    "address": "0x1205f31718499dBf1fCa446663B532Ef87481fe1",
+    "callParams": {
+      "poolId": 1
+    },
+    "color": "#2775ca",
+    "decimals": 6,
+    "linkedAssets": [
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d",
+        "fraction": 1
+      }
+    ],
+    "symbol": "USDC",
+    "type": "stargateDeposit",
+    "visible": false,
+    "allowSlot": 6,
+    "balanceSlot": 5
+  }
+]
