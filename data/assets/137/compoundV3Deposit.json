@@ -1,0 +1,20 @@
+[
+  {
+    "id": "1f6a8b7c-d4bd-4598-9514-ee6d06151e51",
+    "active": true,
+    "address": "0xF25212E676D1F7F89Cd72fFEe66158f541246445",
+    "type": "compoundV3Deposit",
+    "color": "#2775ca",
+    "decimals": 6,
+    "linkedAssets": [
+      {
+        "assetId": "e251ecf6-48c2-4538-afcd-fbb92424054d",
+        "fraction": 1
+      }
+    ],
+    "name": "USD Coin",
+    "chainId": 137,
+    "symbol": "cUSDC",
+    "visible": true
+  }
+]
