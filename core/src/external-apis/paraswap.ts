@@ -13,7 +13,9 @@ async function callParaswapFullAPI({
   sellToken: string;
   sellAmount: string;
 }): Promise<any> {
-  const url = `https://apiv5.paraswap.io/prices/?destDecimals=${buyToken.decimals}&srcToken=${sellToken}&destToken=${buyToken.address}&amount=${sellAmount}&side=SELL&network=137`;
+  const chainId = buyToken.chainId;
+
+  const url = `https://apiv5.paraswap.io/prices/?destDecimals=${buyToken.decimals}&srcToken=${sellToken}&destToken=${buyToken.address}&amount=${sellAmount}&side=SELL&network=${chainId}`;
   const req = await fetch(url);
   const reqClone = req.clone(); // workaround to avoid response already read error
 

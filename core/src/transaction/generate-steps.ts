@@ -64,7 +64,7 @@ async function processBridges({
 
       const assetAllocation = currentLayer[assetId];
 
-      output = await assetTypeStrategies[chainId][asset.type].generateStep({
+      output = await assetTypeStrategies[asset.type].generateStep({
         chainId,
         provider,
         walletAddress,

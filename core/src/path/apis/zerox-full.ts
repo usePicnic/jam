@@ -16,8 +16,17 @@ async function callZeroXFullAPI({
   sellAmount,
   exchangeNames,
 }: ParamsAPI): Promise<any> {
+  let baseUrl;
+  if (buyToken.chainId === 1) {
+    baseUrl = "https://api.0x.org";
+  } else if (buyToken.chainId === 137) {
+    baseUrl = "https://polygon.api.0x.org";
+  } else {
+    throw new Error("Unsupported chainId");
+  }
+
   const adjustedSellAmount = adjustAmount(sellAmount);
-  const url = `https://polygon.api.0x.org/swap/v1/quote?buyToken=${buyToken.address}&sellToken=${sellToken.address}&sellAmount=${adjustedSellAmount}`;
+  const url = `${baseUrl}/swap/v1/quote?buyToken=${buyToken.address}&sellToken=${sellToken.address}&sellAmount=${adjustedSellAmount}`;
 
   const req = await fetch(url, {
     headers: {

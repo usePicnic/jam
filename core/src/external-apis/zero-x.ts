@@ -46,7 +46,15 @@ async function call0XAPIUnfiltered({
   sellToken,
   sellAmount,
 }: ParamsAPI): Promise<any> {
-  const url = `https://polygon.api.0x.org/swap/v1/quote?buyToken=${buyToken.address}&sellToken=${sellToken.address}&sellAmount=${sellAmount}`;
+  let baseUrl;
+  if (buyToken.chainId === 1) {
+    baseUrl = "https://api.0x.org";
+  } else if (buyToken.chainId === 137) {
+    baseUrl = "https://polygon.api.0x.org";
+  } else {
+    throw new Error("Unsupported chainId");
+  }
+  const url = `${baseUrl}/swap/v1/quote?buyToken=${buyToken.address}&sellToken=${sellToken.address}&sellAmount=${sellAmount}`;
   const req = await fetch(url);
   const data = (await req.json()) as Order0X;
   console.debug(

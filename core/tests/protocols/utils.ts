@@ -5,19 +5,22 @@ import {
   FractionAllocation,
 } from "core/src/transaction/types";
 import { getProvider } from "core/src/utils/get-provider";
+import { Provider } from "ethers";
 
 export async function simulateRouterOperationHelper({
   chainId,
+  provider,
   inputAllocation,
   outputAllocation,
 }: {
   chainId: number;
+  provider?: Provider;
   inputAllocation: AbsoluteAllocation;
   outputAllocation: FractionAllocation;
 }) {
   const assetStore = new AssetStore();
   const config = await loadConfig();
-  const provider = await getProvider({ chainId: 137 });
+  const actualProvider = provider ? provider : await getProvider({ chainId });
 
   const routerOperation = await generateTransaction({
     inputAllocation,

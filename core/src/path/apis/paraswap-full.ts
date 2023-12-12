@@ -15,7 +15,9 @@ async function callParaswapFullAPI({
   sellAmount,
   exchangeNames,
 }: ParamsAPI): Promise<any> {
-  const url = `https://apiv5.paraswap.io/prices/?srcToken=${sellToken.address}&srcDecimals=${sellToken.decimals}&destToken=${buyToken.address}&destDecimals=${buyToken.decimals}&amount=${sellAmount}&side=SELL&network=137&includeContractMethods=MegaSwap,MultiSwap`;
+  const chainId = buyToken.chainId;
+
+  const url = `https://apiv5.paraswap.io/prices/?srcToken=${sellToken.address}&srcDecimals=${sellToken.decimals}&destToken=${buyToken.address}&destDecimals=${buyToken.decimals}&amount=${sellAmount}&side=SELL&network=${chainId}&includeContractMethods=MegaSwap,MultiSwap`;
 
   const req = await fetch(url);
 
@@ -30,10 +32,12 @@ async function callParaswapFullAPI({
 // ParaswapTxAPIParams has one field, which is body of type any
 interface ParaswapTxAPIParams {
   body: any;
+  chainId: number;
 }
 
 async function callParaswapFullTxAPI({
   body,
+  chainId,
 }: ParaswapTxAPIParams): Promise<any> {
   const finalBody = {
     network: body.network,
@@ -48,8 +52,7 @@ async function callParaswapFullTxAPI({
     userAddress: "0xee13C86EE4eb1EC3a05E2cc3AB70576F31666b3b",
   };
 
-  const transactionsUrl =
-    "https://apiv5.paraswap.io/transactions/137?ignoreChecks=true";
+  const transactionsUrl = `https://apiv5.paraswap.io/transactions/${chainId}?ignoreChecks=true`;
 
   const req = await fetch(transactionsUrl, {
     method: "POST",
@@ -73,11 +76,13 @@ export async function getParaswapFullData(
     throw new Error(`Paraswap API returned an error: ${JSON.stringify(data)}`);
   }
 
+  const chainId = buyToken.chainId;
   const paraswapAddress = data.priceRoute.contractAddress;
   const approveAddress = data.priceRoute.tokenTransferProxy;
 
   const txData = await useLimiter(limiterParaswap, callParaswapFullTxAPI, {
     body: data.priceRoute,
+    chainId,
   });
 
   return [

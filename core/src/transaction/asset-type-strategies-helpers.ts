@@ -4,7 +4,6 @@ import { Provider } from "ethers";
 import { assetTypeStrategies } from "../asset-strategies/asset-type-strategies";
 import { BigNumberish, formatUnits } from "ethers";
 
-export const USDC_ADDRESS = "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174";
 export const SELL_AMOUNT = "25000000"; // 25 USD
 
 export function getAmount({
@@ -26,7 +25,7 @@ export function getPrice({
   asset: Asset;
   requestTree: RequestTree;
 }): number {
-  const strategy = assetTypeStrategies[asset.chainId][asset.type];
+  const strategy = assetTypeStrategies[asset.type];
 
   if (strategy === null || strategy === undefined) {
     throw new Error(
@@ -55,7 +54,7 @@ export function getLinkedAssets({
   asset: Asset;
   requestTree: RequestTree;
 }): LinkedAsset[] {
-  const strategy = assetTypeStrategies[asset.chainId][asset.type];
+  const strategy = assetTypeStrategies[asset.type];
 
   if (strategy === null || strategy === undefined) {
     throw new Error(
@@ -93,7 +92,7 @@ export function fetchPriceData({
       `fetchData: invalid chainId or type for asset ID ${asset?.id}`
     );
   }
-  const strategy = assetTypeStrategies[asset.chainId][asset.type];
+  const strategy = assetTypeStrategies[asset.type];
 
   if (strategy === null || strategy === undefined) {
     throw new Error(
