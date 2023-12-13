@@ -2,9 +2,9 @@ import { test } from "vitest";
 import { simulateRouterOperationHelper } from "./utils";
 import { JsonRpcProvider } from "ethers";
 
-test("generateTransaction: WETH to yvWETH (yearnDeposit)", async () => {
+test.skip("generateTransaction: WETH to yvWETH (yearnDeposit)", async () => {
   const provider = new JsonRpcProvider(
-    "https://rpc.tenderly.co/fork/5e9c3441-0528-4cc0-b9ef-809076a0df43"
+    "<<< insert tenderly fork RPC URL here >>>"
   );
   await simulateRouterOperationHelper({
     chainId: 1,
@@ -23,7 +23,7 @@ test("generateTransaction: WETH to yvWETH (yearnDeposit)", async () => {
 
 test.skip("generateTransaction: yvWETH (yearnDeposit) to WETH", async () => {
   const provider = new JsonRpcProvider(
-    "https://rpc.tenderly.co/fork/5e9c3441-0528-4cc0-b9ef-809076a0df43"
+    "<<< insert tenderly fork RPC URL here >>>"
   );
   await simulateRouterOperationHelper({
     chainId: 1,
