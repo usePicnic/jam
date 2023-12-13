@@ -1,0 +1,21 @@
+[
+  {
+    "id": "e6062600-14a4-46e1-b3a3-62bbf90df7a8",
+    "name": "WETH yVault",
+    "chainId": 1,
+    "active": true,
+    "address": "0xa258C4606Ca8206D8aA700cE2143D7db854D168c",
+    "color": "#737475",
+    "decimals": 18,
+    "symbol": "yvWETH",
+    "type": "yearnDeposit",
+    "visible": true,
+    "isVyper": true,
+    "linkedAssets": [
+      {
+        "assetId": "e9ac450f-efa3-4af1-929d-476c078e9ac6",
+        "fraction": 1
+      }
+    ]
+  }
+]

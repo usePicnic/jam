@@ -37,7 +37,7 @@
     "visible": false,
     "allowSlot": 2,
     "balanceSlot": 1,
-    "maxSize": 40,
+    "maxSize": 64,
     "linkedAssets": [
       {
         "assetId": "af62d010-5df9-4eae-919c-8d6dd63fe45e",

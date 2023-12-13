@@ -20,6 +20,7 @@ export interface Asset {
   balanceSlot?: number;
   callParams?: any;
   price?: number;
+  isVyper?: boolean;
   // rawLogoUri?: string;
   // logos?: {
   //   logoUri: string;

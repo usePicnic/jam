@@ -4,7 +4,6 @@ import {
   getAddressOrProxy,
   getAllowIndex,
   getBalanceIndex,
-  isVyper,
 } from "core/src/simulation/generate-token-approval-state-diff";
 import { Asset } from "../transaction/types";
 
@@ -128,7 +127,7 @@ async function simulateSlot(
 
   return findSlot(asset, provider, data, method.index, {
     ...params,
-    isVyper: isVyper(asset),
+    isVyper: asset.isVyper === true,
   });
 }
 

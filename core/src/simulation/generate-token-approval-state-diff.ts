@@ -55,11 +55,6 @@ export function generateFHexString(size: number, stringLen: number = 64) {
   return "0x" + repeatString("f", size).padStart(stringLen, "0");
 }
 
-export function isVyper(asset: Asset) {
-  const vyperTypes = ["IGauge", "ICurveLiquidity"];
-  return vyperTypes.includes(asset.type);
-}
-
 export function generateTokenApprovalStateDiff(
   asset: Asset,
   from: string,
@@ -70,15 +65,16 @@ export function generateTokenApprovalStateDiff(
       `Asset allowSlot or balanceSlot are undefined: ${asset.name} ${asset.type} ${asset.address}`
     );
   }
+
   const allowIndex = getAllowIndex(asset.allowSlot, {
     from,
     to,
-    isVyper: isVyper(asset),
+    isVyper: asset.isVyper === true,
   });
 
   const balanceIndex = getBalanceIndex(asset.balanceSlot, {
     from,
-    isVyper: isVyper(asset),
+    isVyper: asset.isVyper === true,
   });
 
   const address = getAddressOrProxy(asset);
