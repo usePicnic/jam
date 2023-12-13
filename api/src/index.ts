@@ -20,11 +20,6 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 
 const PORT = process.env.PORT ?? 8000;
-if (!process.env.MONGODB_URI) {
-  throw new Error("Missing MONGODB_URI env var");
-}
-
-const MONGODB_URI = process.env.MONGODB_URI;
 
 const server = http.createServer(app);
 server.listen(PORT, () => {
