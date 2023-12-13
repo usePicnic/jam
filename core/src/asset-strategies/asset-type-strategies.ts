@@ -11,6 +11,7 @@ import { InterfaceStrategy } from "./InterfaceStrategy";
 import { BalancerDepositStrategy } from "./BalancerDepositStrategy";
 import { SavingsDaiDepositStrategy } from "./SavingsDaiDepositStrategy";
 import { CompoundDepositStrategy } from "./CompoundV3DepositStrategy";
+import { YearnDepositStrategy } from "./YearnDepositStrategy";
 
 export const assetTypeStrategies: {
   [interfaceName in AssetType]: InterfaceStrategy;
@@ -26,4 +27,5 @@ export const assetTypeStrategies: {
   compoundV3Deposit: new CompoundDepositStrategy(),
   stargateDeposit: new StargateDepositStrategy(),
   savingsDaiDeposit: new SavingsDaiDepositStrategy(),
+  yearnDeposit: new YearnDepositStrategy(),
 };

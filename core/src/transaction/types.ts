@@ -294,6 +294,7 @@ export type AssetType =
   | "compoundV3Deposit"
   | "stargateDeposit"
   | "savingsDaiDeposit"
+  | "yearnDeposit"
   | "balancerDeposit"
   | "uniswapV2Liquidity";
 

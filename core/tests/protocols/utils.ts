@@ -35,7 +35,7 @@ export async function simulateRouterOperationHelper({
   const result = await simulateRouterOperation({
     chainId,
     routerOperation,
-    provider,
+    provider: actualProvider,
     sellAssets: inputAllocation.map((i) => assetStore.getAssetById(i.assetId)),
     amountsIn: inputAllocation.map((i) => i.amountStr),
     buyAssets: outputAllocation.map((a) => assetStore.getAssetById(a.assetId)),
