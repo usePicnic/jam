@@ -20,19 +20,11 @@ export class AaveV2DepositStrategy extends InterfaceStrategy {
   fetchPriceData({ provider, assetStore, asset }: FetchPriceDataParams) {
     const linkedAsset = assetStore.getAssetById(asset.linkedAssets[0].assetId);
 
-    let requestTree: RequestTree = {};
-
-    requestTree[asset.address] = {};
-
-    const fetchedData = fetchPriceData({
+    const requestTree: RequestTree = fetchPriceData({
       provider,
       assetStore,
       asset: linkedAsset,
     });
-    requestTree = {
-      ...requestTree,
-      ...fetchedData,
-    };
     return requestTree;
   }
 
